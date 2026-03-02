@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Code2, BarChart3, FileText, MonitorSmartphone } from "lucide-react";
+import {
+  ExternalLink,
+  Github,
+  Code2,
+  BarChart3,
+  FileText,
+  MonitorSmartphone,
+} from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/data/projects";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
@@ -10,14 +17,14 @@ import { fadeInUp, staggerContainer } from "@/lib/animations";
 const projectIcons: Record<string, React.ElementType> = {
   "persona-style": Code2,
   "investment-platform": BarChart3,
-  "auto-blog": FileText,
+  "synapso.dev": FileText,
   "remote-desktop": MonitorSmartphone,
 };
 
 const projectGradients: Record<string, string> = {
   "persona-style": "from-violet-600/20 via-purple-600/10 to-fuchsia-600/20",
   "investment-platform": "from-blue-600/20 via-cyan-600/10 to-teal-600/20",
-  "auto-blog": "from-emerald-600/20 via-green-600/10 to-lime-600/20",
+  "synapso.dev": "from-emerald-600/20 via-green-600/10 to-lime-600/20",
   "remote-desktop": "from-orange-600/20 via-amber-600/10 to-yellow-600/20",
 };
 
@@ -49,8 +56,8 @@ export default function ProjectsSection() {
             variants={fadeInUp}
             className="mx-auto max-w-2xl text-base leading-relaxed text-text-secondary"
           >
-            기획부터 배포까지, 직접 만든 서비스들입니다.
-            각 프로젝트를 클릭하여 라이브 데모를 확인해보세요.
+            기획부터 배포까지, 직접 만든 서비스들입니다. 각 프로젝트를 클릭하여
+            라이브 데모를 확인해보세요.
           </motion.p>
         </motion.div>
 
@@ -64,7 +71,8 @@ export default function ProjectsSection() {
         >
           {projects.map((project) => {
             const Icon = projectIcons[project.id] || Code2;
-            const gradient = projectGradients[project.id] || "from-accent/20 to-accent/5";
+            const gradient =
+              projectGradients[project.id] || "from-accent/20 to-accent/5";
 
             return (
               <ProjectCard

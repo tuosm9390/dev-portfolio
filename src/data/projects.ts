@@ -31,13 +31,13 @@ export const projects: Project[] = [
     imageUrl: "/images/project-investment.webp",
   },
   {
-    id: "auto-blog",
+    id: "Synapso.dev",
     title: "Auto Dev Blog",
     summary: "GitHub 연동 자동 포스팅 블로그",
     description:
       "GitHub 레포지토리의 변경사항을 자동으로 분석하여 기술 블로그 포스트로 변환하는 시스템입니다. AI가 코드 변경 이유를 분석하고 가독성 높은 콘텐츠를 자동 생성합니다.",
     techStack: ["Next.js", "TypeScript", "GitHub API", "Gemini API", "MDX"],
-    liveUrl: "https://auto-blog-eta.vercel.app",
+    liveUrl: "https://synapso-dev.vercel.app",
     imageUrl: "/images/project-auto-blog.webp",
   },
   {
