@@ -32,7 +32,7 @@ export const projects: Project[] = [
   },
   {
     id: "Synapso.dev",
-    title: "Auto Dev Blog",
+    title: "Synapso.dev",
     summary: "GitHub 연동 자동 포스팅 블로그",
     description:
       "GitHub 레포지토리의 변경사항을 자동으로 분석하여 기술 블로그 포스트로 변환하는 시스템입니다. AI가 코드 변경 이유를 분석하고 가독성 높은 콘텐츠를 자동 생성합니다.",
@@ -41,13 +41,44 @@ export const projects: Project[] = [
     imageUrl: "/images/project-auto-blog.webp",
   },
   {
-    id: "remote-desktop",
-    title: "Remote Desktop Extension",
-    summary: "크롬 확장 프로그램 기반 원격 데스크톱",
+    id: "league-auction",
+    title: "League Auction",
+    summary: "실시간 리그 경매 시뮬레이션 플랫폼",
     description:
-      "WebRTC 기반의 크롬 확장 프로그램으로, PC와 모바일에서 원격 데스크톱 접속을 지원합니다. 화면 공유, 원격 제어, 실시간 음성 통신 기능을 포함합니다.",
-    techStack: ["Chrome Extension", "WebRTC", "TypeScript", "Node.js"],
-    liveUrl: "https://chrome.google.com/webstore",
-    imageUrl: "/images/project-remote-desktop.webp",
+      "Supabase 실시간 데이터베이스를 활용한 리그 경매 웹 애플리케이션입니다. 실시간 양방향 통신, 유저별 상태 관리 및 모바일 반응형 UI를 제공하여 원활한 경매 경험을 지원합니다.",
+    techStack: ["Next.js", "TypeScript", "Supabase", "Zustand", "Tailwind CSS"],
+    liveUrl: "https://league-auction.vercel.app",
+    githubUrl: "https://github.com/tuosm/league-auction",
+    imageUrl: "/images/project-league-auction.webp",
   },
+  {
+    id: "quote-builder",
+    title: "스마트 견적서 생성기",
+    summary: "블록 기반 PDF 견적서 에디터",
+    description:
+      "BlockNote 에디터를 연동하여 Notion처럼 블록 단위로 문서를 작성하고, html2canvas 및 jsPDF를 활용하여 고품질의 PDF 견적서를 즉시 내보낼 수 있는 유틸리티 웹 서비스입니다.",
+    techStack: ["Next.js", "TypeScript", "BlockNote", "Mantine", "jsPDF", "Tailwind CSS"],
+    liveUrl: "https://quote-builder.vercel.app",
+    imageUrl: "/images/project-quote-builder.webp",
+  },
+  {
+    id: "ai-kanban-board",
+    title: "AI Kanban Board",
+    summary: "드래그 앤 드롭 지원 칸반 보드",
+    description:
+      "dnd-kit을 적용한 향상된 드래그 앤 드롭 칸반 보드입니다. 부드러운 애니메이션(Framer Motion)과 Zustand를 활용한 깔끔한 클라이언트 상태 관리를 통해 직관적인 프로젝트 관리 경험을 제공합니다.",
+    techStack: ["Next.js", "TypeScript", "dnd-kit", "Zustand", "Framer Motion", "Tailwind CSS"],
+    liveUrl: "https://ai-kanban-board.vercel.app",
+    imageUrl: "/images/project-ai-kanban.webp",
+  },
+  {
+    id: "k-realestate",
+    title: "K-Realestate AI Studio",
+    summary: "AI 기반 부동산 자산 관리 및 분석 스튜디오",
+    description:
+      "Gemini AI 모델을 결합해 부동산 시장 데이터를 기반으로 맞춤형 분석을 수행합니다. Drizzle ORM과 로컬 SQLite 환경을 갖추고 있어 빠른 데이터 처리 및 질의 분석이 가능합니다.",
+    techStack: ["Next.js", "TypeScript", "Gemini API", "Drizzle ORM", "SQLite", "NextAuth"],
+    liveUrl: "https://k-realestate.vercel.app",
+    imageUrl: "/images/project-k-realestate.webp",
+  }
 ];

@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   ExternalLink,
@@ -9,6 +9,7 @@ import {
   BarChart3,
   FileText,
   MonitorSmartphone,
+  ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/data/projects";
@@ -22,10 +23,10 @@ const projectIcons: Record<string, React.ElementType> = {
 };
 
 const projectGradients: Record<string, string> = {
-  "persona-style": "from-violet-600/20 via-purple-600/10 to-fuchsia-600/20",
-  "investment-platform": "from-blue-600/20 via-cyan-600/10 to-teal-600/20",
-  "synapso.dev": "from-emerald-600/20 via-green-600/10 to-lime-600/20",
-  "remote-desktop": "from-orange-600/20 via-amber-600/10 to-yellow-600/20",
+  "persona-style": "from-violet-600/30 via-purple-600/15 to-fuchsia-600/30",
+  "investment-platform": "from-blue-600/30 via-cyan-600/15 to-teal-600/30",
+  "synapso.dev": "from-emerald-600/30 via-green-600/15 to-lime-600/30",
+  "remote-desktop": "from-orange-600/30 via-amber-600/15 to-yellow-600/30",
 };
 
 export default function ProjectsSection() {
@@ -38,26 +39,25 @@ export default function ProjectsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-16 text-center"
+          className="mb-20 text-center"
         >
-          <motion.p
-            variants={fadeInUp}
-            className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent"
-          >
-            Projects
-          </motion.p>
+          <motion.div variants={fadeInUp} className="mb-4 inline-block">
+            <span className="rounded-full border border-accent/20 bg-accent/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-accent">
+              Portfolio
+            </span>
+          </motion.div>
           <motion.h2
             variants={fadeInUp}
-            className="mb-6 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight sm:text-4xl"
+            className="mb-6 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
           >
-            최근 작업물
+            선별된 <span className="gradient-text">프로젝트</span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="mx-auto max-w-2xl text-base leading-relaxed text-text-secondary"
+            className="mx-auto max-w-2xl text-lg leading-relaxed text-text-secondary"
           >
-            기획부터 배포까지, 직접 만든 서비스들입니다. 각 프로젝트를 클릭하여
-            라이브 데모를 확인해보세요.
+            복잡한 문제를 단순하고 우아한 솔루션으로 풀어낸 작업들입니다.
+            각 카드의 디테일과 라이브 데모를 확인해보세요.
           </motion.p>
         </motion.div>
 
@@ -67,12 +67,12 @@ export default function ProjectsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-8 md:grid-cols-2"
+          className="grid gap-10 md:grid-cols-2"
         >
-          {projects.map((project) => {
+          {projects.map((project, index) => {
             const Icon = projectIcons[project.id] || Code2;
             const gradient =
-              projectGradients[project.id] || "from-accent/20 to-accent/5";
+              projectGradients[project.id] || "from-accent/30 to-accent/10";
 
             return (
               <ProjectCard
@@ -80,6 +80,7 @@ export default function ProjectsSection() {
                 project={project}
                 Icon={Icon}
                 gradient={gradient}
+                index={index}
               />
             );
           })}
@@ -93,107 +94,114 @@ function ProjectCard({
   project,
   Icon,
   gradient,
+  index,
 }: {
   project: (typeof projects)[0];
   Icon: React.ElementType;
   gradient: string;
+  index: number;
 }) {
   const [imgError, setImgError] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--mouse-x", x + "px");
+    cardRef.current.style.setProperty("--mouse-y", y + "px");
+  };
 
   return (
     <motion.article
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
       variants={fadeInUp}
-      className="group relative overflow-hidden rounded-2xl border border-border bg-bg-secondary transition-all duration-500 hover:border-border-hover hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
+      className="group spotlight-card relative flex flex-col overflow-hidden rounded-[2rem] border border-border bg-bg-secondary/40 transition-all duration-500 hover:border-accent/40 hover:bg-bg-secondary/60"
     >
-      {/* Image / Placeholder */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-bg-tertiary">
+      {/* Image Container */}
+      <div className="relative aspect-[16/10] overflow-hidden">
         {!imgError ? (
           <Image
             src={project.imageUrl}
             alt={project.title}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-1000 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, 50vw"
             unoptimized
             onError={() => setImgError(true)}
           />
         ) : (
-          /* Gradient placeholder */
-          <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
+          <div className={"absolute inset-0 bg-gradient-to-br " + gradient}>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex flex-col items-center gap-3">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border/50 bg-bg-secondary/80 backdrop-blur-sm">
-                  <Icon className="h-8 w-8 text-text-secondary" />
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110">
+                  <Icon className="h-10 w-10 text-white/80" />
                 </div>
-                <span className="text-sm font-medium text-text-muted">
-                  {project.summary}
-                </span>
               </div>
             </div>
-            {/* Decorative grid */}
-            <div
-              className="absolute inset-0 opacity-[0.04]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
-              }}
-            />
           </div>
         )}
-        {/* Image overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-secondary via-transparent to-transparent opacity-60" />
-
-        {/* Hover overlay with links */}
-        <div className="absolute inset-0 flex items-center justify-center gap-3 bg-bg-primary/60 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-white transition-transform hover:scale-110"
-            aria-label={`${project.title} 라이브 보기`}
-          >
-            <ExternalLink className="h-5 w-5" />
-          </a>
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-bg-secondary text-text-primary transition-transform hover:scale-110"
-              aria-label={`${project.title} GitHub`}
-            >
-              <Github className="h-5 w-5" />
-            </a>
-          )}
+        
+        {/* Decorative Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-80" />
+        
+        {/* Floating Tags (Optional) */}
+        <div className="absolute left-6 top-6 flex gap-2">
+          {project.techStack.slice(0, 2).map((tech) => (
+            <span key={tech} className="rounded-full bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white/70 backdrop-blur-md border border-white/10">
+              {tech}
+            </span>
+          ))}
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <div className="mb-3 flex items-start justify-between">
-          <div>
-            <h3 className="mb-1 font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight transition-colors group-hover:text-accent">
-              {project.title}
-            </h3>
-            <p className="text-sm text-text-muted">{project.summary}</p>
+      <div className="relative z-10 flex flex-grow flex-col p-8 sm:p-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-tight text-white group-hover:text-accent transition-colors duration-300 sm:text-3xl">
+            {project.title}
+          </h3>
+          <div className="flex gap-3">
+             <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-primary/50 text-text-secondary hover:bg-accent hover:text-white transition-all duration-300"
+            >
+              <Github className="h-5 w-5" />
+            </a>
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white hover:bg-accent-hover hover:scale-110 transition-all duration-300"
+            >
+              <ExternalLink className="h-5 w-5" />
+            </a>
           </div>
         </div>
 
-        <p className="mb-4 text-sm leading-relaxed text-text-secondary">
+        <p className="mb-8 text-base leading-relaxed text-text-secondary line-clamp-3">
           {project.description}
         </p>
 
-        {/* Tech stack tags */}
-        <div className="flex flex-wrap gap-2">
-          {project.techStack.map((tech) => (
-            <span
-              key={tech}
-              className="rounded-md border border-border bg-bg-primary px-2.5 py-1 text-xs font-medium text-text-muted transition-colors group-hover:border-accent/30 group-hover:text-text-secondary"
-            >
-              {tech}
-            </span>
-          ))}
+        <div className="mt-auto flex items-center justify-between">
+          <div className="flex flex-wrap gap-2">
+            {project.techStack.map((tech) => (
+              <span
+                key={tech}
+                className="text-xs font-medium text-text-muted"
+              >
+                #{tech}
+              </span>
+            ))}
+          </div>
+          <button className="flex items-center gap-2 text-sm font-bold text-accent group/btn hover:text-accent-hover transition-colors">
+            Detail 
+            <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+          </button>
         </div>
       </div>
     </motion.article>
