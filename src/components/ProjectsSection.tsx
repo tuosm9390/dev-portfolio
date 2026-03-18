@@ -1,37 +1,26 @@
-﻿"use client";
+"use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ExternalLink,
   Github,
   Code2,
-  BarChart3,
-  FileText,
-  MonitorSmartphone,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/data/projects";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { cn } from "@/lib/utils";
 
-const projectIcons: Record<string, React.ElementType> = {
-  "persona-style": Code2,
-  "investment-platform": BarChart3,
-  "synapso.dev": FileText,
-  "remote-desktop": MonitorSmartphone,
-};
-
-const projectGradients: Record<string, string> = {
-  "persona-style": "from-violet-600/30 via-purple-600/15 to-fuchsia-600/30",
-  "investment-platform": "from-blue-600/30 via-cyan-600/15 to-teal-600/30",
-  "synapso.dev": "from-emerald-600/30 via-green-600/15 to-lime-600/30",
-  "remote-desktop": "from-orange-600/30 via-amber-600/15 to-yellow-600/30",
-};
-
+/**
+ * Toss-style Project Section
+ * Focused on: Extreme readability, Soft shadows, and Premium Blue accents.
+ */
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="section-padding px-6">
+    <section id="projects" className="section-padding px-6 bg-background">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <motion.div
@@ -39,25 +28,24 @@ export default function ProjectsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-20 text-center"
+          className="mb-16 text-left md:text-center"
         >
-          <motion.div variants={fadeInUp} className="mb-4 inline-block">
-            <span className="rounded-full border border-accent/20 bg-accent/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-accent">
-              Portfolio
-            </span>
+          <motion.div variants={fadeInUp} className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+            <Sparkles className="h-4 w-4" />
+            <span>Portfolio</span>
           </motion.div>
           <motion.h2
             variants={fadeInUp}
-            className="mb-6 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+            className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
           >
-            선별된 <span className="gradient-text">프로젝트</span>
+            선별된 <span className="text-primary">프로젝트</span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="mx-auto max-w-2xl text-lg leading-relaxed text-text-secondary"
+            className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground"
           >
             복잡한 문제를 단순하고 우아한 솔루션으로 풀어낸 작업들입니다.
-            각 카드의 디테일과 라이브 데모를 확인해보세요.
+            Toss 스타일의 정제된 감각으로 완성된 결과물을 확인해보세요.
           </motion.p>
         </motion.div>
 
@@ -67,23 +55,15 @@ export default function ProjectsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-10 md:grid-cols-2"
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-2"
         >
-          {projects.map((project, index) => {
-            const Icon = projectIcons[project.id] || Code2;
-            const gradient =
-              projectGradients[project.id] || "from-accent/30 to-accent/10";
-
-            return (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                Icon={Icon}
-                gradient={gradient}
-                index={index}
-              />
-            );
-          })}
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+            />
+          ))}
         </motion.div>
       </div>
     </section>
@@ -92,65 +72,52 @@ export default function ProjectsSection() {
 
 function ProjectCard({
   project,
-  Icon,
-  gradient,
   index,
 }: {
   project: (typeof projects)[0];
-  Icon: React.ElementType;
-  gradient: string;
   index: number;
 }) {
   const [imgError, setImgError] = useState(false);
-  const cardRef = useRef<HTMLElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    cardRef.current.style.setProperty("--mouse-x", x + "px");
-    cardRef.current.style.setProperty("--mouse-y", y + "px");
-  };
 
   return (
     <motion.article
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
       variants={fadeInUp}
-      className="group spotlight-card relative flex flex-col overflow-hidden rounded-[2rem] border border-border bg-bg-secondary/40 transition-all duration-500 hover:border-accent/40 hover:bg-bg-secondary/60"
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+      className="group relative flex flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-all duration-300"
+      style={{ 
+        ["--accent-color" as string]: project.accentColor,
+      } as React.CSSProperties}
     >
+      {/* Dynamic Hover Border & Shadow */}
+      <div className="absolute inset-0 z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" 
+           style={{ 
+             boxShadow: `0 20px 40px -15px ${project.accentColor}25`,
+             border: `1px solid ${project.accentColor}40` 
+           }} />
+
       {/* Image Container */}
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
         {!imgError ? (
           <Image
             src={project.imageUrl}
             alt={project.title}
             fill
-            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, 50vw"
             unoptimized
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className={"absolute inset-0 bg-gradient-to-br " + gradient}>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex flex-col items-center gap-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110">
-                  <Icon className="h-10 w-10 text-white/80" />
-                </div>
-              </div>
-            </div>
+          <div className="absolute inset-0 flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${project.accentColor}20, ${project.accentColor}05)` }}>
+            <Code2 className="h-12 w-12" style={{ color: project.accentColor }} />
           </div>
         )}
         
-        {/* Decorative Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-80" />
-        
-        {/* Floating Tags (Optional) */}
-        <div className="absolute left-6 top-6 flex gap-2">
-          {project.techStack.slice(0, 2).map((tech) => (
-            <span key={tech} className="rounded-full bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white/70 backdrop-blur-md border border-white/10">
+        {/* Tech Stack Floating Badges */}
+        <div className="absolute left-6 top-6 flex flex-wrap gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          {project.techStack.slice(0, 3).map((tech) => (
+            <span key={tech} className="rounded-lg bg-black/60 px-3 py-1.5 text-[11px] font-bold text-white backdrop-blur-md border border-white/10">
               {tech}
             </span>
           ))}
@@ -158,49 +125,59 @@ function ProjectCard({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-grow flex-col p-8 sm:p-10">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-tight text-white group-hover:text-accent transition-colors duration-300 sm:text-3xl">
-            {project.title}
-          </h3>
-          <div className="flex gap-3">
-             <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-primary/50 text-text-secondary hover:bg-accent hover:text-white transition-all duration-300"
-            >
-              <Github className="h-5 w-5" />
-            </a>
+      <div className="relative z-10 flex flex-grow flex-col p-8">
+        <div className="mb-4 flex items-start justify-between">
+          <div>
+            <h3 className="text-2xl font-bold tracking-tight text-foreground transition-colors" style={{ ["--hover-color" as string]: project.accentColor } as React.CSSProperties}>
+              <span className="group-hover:text-[var(--hover-color)] transition-colors duration-300">
+                {project.title}
+              </span>
+            </h3>
+            <p className="mt-1 text-sm font-medium opacity-80" style={{ color: project.accentColor }}>
+              {project.summary}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
+              >
+                <Github className="h-5 w-5" />
+              </a>
+            )}
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white hover:bg-accent-hover hover:scale-110 transition-all duration-300"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-all hover:scale-110"
+              style={{ backgroundColor: project.accentColor, boxShadow: `0 10px 20px -5px ${project.accentColor}50` }}
             >
               <ExternalLink className="h-5 w-5" />
             </a>
           </div>
         </div>
 
-        <p className="mb-8 text-base leading-relaxed text-text-secondary line-clamp-3">
+        <p className="mb-8 text-base leading-relaxed text-muted-foreground line-clamp-2">
           {project.description}
         </p>
 
-        <div className="mt-auto flex items-center justify-between">
-          <div className="flex flex-wrap gap-2">
-            {project.techStack.map((tech) => (
+        <div className="mt-auto flex items-center justify-between border-t border-border pt-6">
+          <div className="flex flex-wrap gap-3">
+            {project.techStack.slice(0, 4).map((tech) => (
               <span
                 key={tech}
-                className="text-xs font-medium text-text-muted"
+                className="text-xs font-semibold text-muted-foreground/70"
               >
-                #{tech}
+                {tech}
               </span>
             ))}
           </div>
-          <button className="flex items-center gap-2 text-sm font-bold text-accent group/btn hover:text-accent-hover transition-colors">
-            Detail 
-            <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+          <button className="flex items-center gap-1.5 text-sm font-bold transition-all hover:gap-2" style={{ color: project.accentColor }}>
+            자세히 보기
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>

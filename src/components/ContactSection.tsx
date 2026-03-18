@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, Github, Linkedin, Send, CheckCircle } from "lucide-react";
+import { Mail, Phone, Github, Linkedin, Send, CheckCircle, Sparkles, Loader2 } from "lucide-react";
 import { profile } from "@/data/profile";
 import { fadeInUp, staggerContainer, slideInLeft, slideInRight } from "@/lib/animations";
+import emailjs from "@emailjs/browser";
 
 const contactLinks = [
   {
@@ -36,25 +37,37 @@ const contactLinks = [
 ];
 
 export default function ContactSection() {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 실제로는 formspree, emailjs 등 서비스 연동
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormState({ name: "", email: "", message: "" });
-    }, 3000);
+    if (!formRef.current) return;
+
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "your_service_id",
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "your_template_id",
+        formRef.current,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "your_public_key"
+      );
+      
+      setSubmitted(true);
+      formRef.current.reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (error) {
+      console.error("FAILED...", error);
+      alert("메시지 전송에 실패했습니다. 나중에 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="section-padding px-6">
+    <section id="contact" className="section-padding px-6 bg-background">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <motion.div
@@ -62,129 +75,129 @@ export default function ContactSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-16 text-center"
+          className="mb-20 text-center"
         >
-          <motion.p
-            variants={fadeInUp}
-            className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent"
-          >
-            Contact
-          </motion.p>
+          <motion.div variants={fadeInUp} className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+            <Sparkles className="h-4 w-4" />
+            <span>Contact</span>
+          </motion.div>
           <motion.h2
             variants={fadeInUp}
-            className="mb-6 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight sm:text-4xl"
+            className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl"
           >
             프로젝트를 시작해볼까요?
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="mx-auto max-w-2xl text-base leading-relaxed text-text-secondary"
+            className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground"
           >
             아이디어가 있으시다면 편하게 연락주세요.
-            24시간 내에 답변드리겠습니다.
+            최대한 빠르게 답변드리겠습니다.
           </motion.p>
         </motion.div>
 
-        <div className="grid gap-12 lg:grid-cols-5">
-          {/* Contact info */}
+        <div className="grid gap-12 lg:grid-cols-5 items-start">
+          {/* Contact info: Clean Cards */}
           <motion.div
             variants={slideInLeft}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            className="lg:col-span-2"
+            className="lg:col-span-2 space-y-6"
           >
-            <h3 className="mb-6 font-[family-name:var(--font-display)] text-xl font-semibold">
-              연락처
+            <h3 className="text-2xl font-bold tracking-tight text-foreground mb-8">
+              연락처 정보
             </h3>
-            <div className="space-y-4">
+            <div className="grid gap-4">
               {contactLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
-                  className="group flex items-center gap-4 rounded-xl border border-border bg-bg-secondary p-4 transition-all duration-300 hover:border-border-hover hover:bg-bg-tertiary"
+                  className="group flex items-center gap-5 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-all group-hover:bg-accent/20">
-                    <link.icon className="h-4 w-4" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white">
+                    <link.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-text-muted">{link.label}</p>
-                    <p className="text-sm font-medium text-text-primary">{link.value}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mb-0.5">{link.label}</p>
+                    <p className="text-base font-semibold text-foreground">{link.value}</p>
                   </div>
                 </a>
               ))}
             </div>
           </motion.div>
 
-          {/* Contact form */}
+          {/* Contact form: EmailJS integrated */}
           <motion.div
             variants={slideInRight}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            className="lg:col-span-3"
+            className="lg:col-span-3 rounded-[32px] border border-border bg-card p-8 sm:p-12"
           >
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <label htmlFor="name" className="mb-2 block text-sm font-medium text-text-secondary">
-                    이름
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid gap-8 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="user_name" className="text-sm font-bold text-foreground">
+                    성함
                   </label>
                   <input
-                    id="name"
+                    id="user_name"
+                    name="user_name"
                     type="text"
                     required
-                    value={formState.name}
-                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-bg-secondary px-4 py-3 text-sm text-text-primary placeholder-text-muted outline-none transition-all focus:border-accent focus:ring-1 focus:ring-accent/30"
+                    className="w-full rounded-xl border border-border bg-background px-4 py-4 text-base text-foreground placeholder-muted-foreground/40 outline-none transition-all focus:border-primary focus:ring-4 focus:ring-primary/10"
                     placeholder="홍길동"
                   />
                 </div>
-                <div>
-                  <label htmlFor="email" className="mb-2 block text-sm font-medium text-text-secondary">
+                <div className="space-y-2">
+                  <label htmlFor="user_email" className="text-sm font-bold text-foreground">
                     이메일
                   </label>
                   <input
-                    id="email"
+                    id="user_email"
+                    name="user_email"
                     type="email"
                     required
-                    value={formState.email}
-                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-bg-secondary px-4 py-3 text-sm text-text-primary placeholder-text-muted outline-none transition-all focus:border-accent focus:ring-1 focus:ring-accent/30"
+                    className="w-full rounded-xl border border-border bg-background px-4 py-4 text-base text-foreground placeholder-muted-foreground/40 outline-none transition-all focus:border-primary focus:ring-4 focus:ring-primary/10"
                     placeholder="hello@example.com"
                   />
                 </div>
               </div>
-              <div>
-                <label htmlFor="message" className="mb-2 block text-sm font-medium text-text-secondary">
-                  프로젝트 설명
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-sm font-bold text-foreground">
+                  상세 내용
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   required
-                  rows={5}
-                  value={formState.message}
-                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className="w-full resize-none rounded-xl border border-border bg-bg-secondary px-4 py-3 text-sm text-text-primary placeholder-text-muted outline-none transition-all focus:border-accent focus:ring-1 focus:ring-accent/30"
-                  placeholder="프로젝트에 대해 간략히 설명해주세요. 예산, 일정, 기대 기능 등을 포함하면 더 빠른 답변이 가능합니다."
+                  rows={4}
+                  className="w-full resize-none rounded-xl border border-border bg-background px-4 py-4 text-base text-foreground placeholder-muted-foreground/40 outline-none transition-all focus:border-primary focus:ring-4 focus:ring-primary/10"
+                  placeholder="진행하고자 하는 프로젝트에 대해 들려주세요."
                 />
               </div>
               <button
                 type="submit"
-                disabled={submitted}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-accent-hover hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] disabled:opacity-70 sm:w-auto"
+                disabled={isSubmitting || submitted}
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-5 text-lg font-bold text-white transition-all hover:bg-primary/90 hover:scale-[1.02] shadow-xl shadow-primary/20 disabled:opacity-70 sm:w-auto"
               >
-                {submitted ? (
+                {isSubmitting ? (
                   <>
-                    <CheckCircle className="h-4 w-4" />
-                    전송 완료!
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    전송 중...
+                  </>
+                ) : submitted ? (
+                  <>
+                    <CheckCircle className="h-5 w-5" />
+                    메시지가 전송되었습니다
                   </>
                 ) : (
                   <>
-                    <Send className="h-4 w-4" />
-                    메시지 보내기
+                    <Send className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    프로젝트 문의하기
                   </>
                 )}
               </button>

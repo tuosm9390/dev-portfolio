@@ -14,7 +14,7 @@ const iconMap: Record<string, React.ElementType> = {
 
 export default function AboutSection() {
   return (
-    <section id="about" className="section-padding px-6">
+    <section id="about" className="section-padding px-6 bg-background">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <motion.div
@@ -22,29 +22,27 @@ export default function AboutSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-16 text-center"
+          className="mb-20 text-center"
         >
-          <motion.p
-            variants={fadeInUp}
-            className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent"
-          >
-            About
-          </motion.p>
+          <motion.div variants={fadeInUp} className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+            <Sparkles className="h-4 w-4" />
+            <span>About</span>
+          </motion.div>
           <motion.h2
             variants={fadeInUp}
-            className="mb-6 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight sm:text-4xl"
+            className="mb-8 text-4xl font-bold tracking-tight sm:text-5xl"
           >
             왜 저와 함께해야 할까요?
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="mx-auto max-w-2xl text-base leading-relaxed text-text-secondary"
+            className="mx-auto max-w-3xl text-lg leading-relaxed text-muted-foreground"
           >
             {profile.description}
           </motion.p>
         </motion.div>
 
-        {/* Strength cards */}
+        {/* Strength cards: Toss TDS Style */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -58,18 +56,17 @@ export default function AboutSection() {
               <motion.div
                 key={strength.title}
                 variants={fadeInUp}
-                className="group relative rounded-2xl border border-border bg-bg-secondary p-6 transition-all duration-300 hover:border-border-hover hover:bg-bg-tertiary"
+                whileHover={{ y: -5 }}
+                className="group relative rounded-[24px] border border-border bg-card p-8 transition-all duration-300 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-primary/20"
               >
-                {/* Hover glow */}
-                <div className="absolute inset-0 rounded-2xl bg-accent/0 transition-all duration-500 group-hover:bg-accent/[0.02]" />
                 <div className="relative">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-all duration-300 group-hover:bg-accent/20 group-hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]">
-                    <Icon className="h-5 w-5" />
+                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                    <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="mb-2 font-[family-name:var(--font-display)] text-lg font-semibold">
+                  <h3 className="mb-3 text-xl font-bold tracking-tight text-foreground">
                     {strength.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-text-secondary">
+                  <p className="text-base leading-relaxed text-muted-foreground">
                     {strength.description}
                   </p>
                 </div>
