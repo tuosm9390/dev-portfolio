@@ -18,7 +18,7 @@ export default function HeroSection() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mx-auto max-w-5xl text-center"
+        className="relative z-10 mx-auto max-w-8xl text-center"
       >
         {/* Toss-style Badge */}
         <motion.div variants={fadeInUp} className="mb-10 flex justify-center">
@@ -47,9 +47,13 @@ export default function HeroSection() {
         {/* Hero Description: Clean & Readable */}
         <motion.p
           variants={fadeInUp}
-          className="mx-auto mb-16 max-w-2xl text-xl leading-relaxed text-muted-foreground sm:text-2xl"
+          className="mx-auto mb-16 max-w-5xl text-xl leading-relaxed text-muted-foreground sm:text-2xl"
         >
-          {profile.description}
+          {profile.description.map((line, i) => (
+            <span key={i} className="block">
+              {line}
+            </span>
+          ))}
         </motion.p>
 
         {/* Call to Actions: Toss-like Buttons */}
@@ -59,7 +63,9 @@ export default function HeroSection() {
         >
           <button
             onClick={() => {
-              document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+              document
+                .querySelector("#projects")
+                ?.scrollIntoView({ behavior: "smooth" });
             }}
             className="group relative flex items-center gap-2 rounded-[18px] bg-primary px-10 py-5 text-lg font-bold text-white transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-[0_20px_40px_-10px_rgba(0,100,255,0.3)]"
           >
@@ -68,7 +74,9 @@ export default function HeroSection() {
           </button>
           <button
             onClick={() => {
-              document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+              document
+                .querySelector("#contact")
+                ?.scrollIntoView({ behavior: "smooth" });
             }}
             className="group flex items-center gap-2 rounded-[18px] bg-secondary px-10 py-5 text-lg font-bold text-foreground transition-all hover:bg-muted hover:scale-[1.02]"
           >
@@ -89,7 +97,9 @@ export default function HeroSection() {
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="flex flex-col items-center gap-2 text-muted-foreground"
         >
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">Scroll</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">
+            Scroll
+          </span>
           <ChevronDown className="h-5 w-5 opacity-50" />
         </motion.div>
       </motion.div>

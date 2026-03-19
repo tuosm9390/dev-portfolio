@@ -2,9 +2,23 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, Github, Linkedin, Send, CheckCircle, Sparkles, Loader2 } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  Github,
+  Linkedin,
+  Send,
+  CheckCircle,
+  Sparkles,
+  Loader2,
+} from "lucide-react";
 import { profile } from "@/data/profile";
-import { fadeInUp, staggerContainer, slideInLeft, slideInRight } from "@/lib/animations";
+import {
+  fadeInUp,
+  staggerContainer,
+  slideInLeft,
+  slideInRight,
+} from "@/lib/animations";
 import emailjs from "@emailjs/browser";
 
 const contactLinks = [
@@ -52,9 +66,9 @@ export default function ContactSection() {
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "your_service_id",
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "your_template_id",
         formRef.current,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "your_public_key"
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "your_public_key",
       );
-      
+
       setSubmitted(true);
       formRef.current.reset();
       setTimeout(() => setSubmitted(false), 5000);
@@ -77,7 +91,10 @@ export default function ContactSection() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-20 text-center"
         >
-          <motion.div variants={fadeInUp} className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+          <motion.div
+            variants={fadeInUp}
+            className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary"
+          >
             <Sparkles className="h-4 w-4" />
             <span>Contact</span>
           </motion.div>
@@ -91,8 +108,8 @@ export default function ContactSection() {
             variants={fadeInUp}
             className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground"
           >
-            아이디어가 있으시다면 편하게 연락주세요.
-            최대한 빠르게 답변드리겠습니다.
+            아이디어가 있으시다면 편하게 연락주세요. 최대한 빠르게
+            답변드리겠습니다.
           </motion.p>
         </motion.div>
 
@@ -121,8 +138,12 @@ export default function ContactSection() {
                     <link.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mb-0.5">{link.label}</p>
-                    <p className="text-base font-semibold text-foreground">{link.value}</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mb-0.5">
+                      {link.label}
+                    </p>
+                    <p className="text-base font-semibold text-foreground">
+                      {link.value}
+                    </p>
                   </div>
                 </a>
               ))}
@@ -140,7 +161,10 @@ export default function ContactSection() {
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
               <div className="grid gap-8 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="user_name" className="text-sm font-bold text-foreground">
+                  <label
+                    htmlFor="user_name"
+                    className="text-sm font-bold text-foreground"
+                  >
                     성함
                   </label>
                   <input
@@ -153,7 +177,10 @@ export default function ContactSection() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="user_email" className="text-sm font-bold text-foreground">
+                  <label
+                    htmlFor="user_email"
+                    className="text-sm font-bold text-foreground"
+                  >
                     이메일
                   </label>
                   <input
@@ -167,7 +194,10 @@ export default function ContactSection() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-bold text-foreground">
+                <label
+                  htmlFor="message"
+                  className="text-sm font-bold text-foreground"
+                >
                   상세 내용
                 </label>
                 <textarea
