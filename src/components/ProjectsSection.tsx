@@ -16,6 +16,33 @@ import { createUrlWithQuery } from "@/lib/utils";
 import ProjectModal from "./ProjectModal";
 
 /**
+ * Skeleton component for ProjectsSection to be used with Suspense.
+ * Adheres to Constitution Principle I (Toss-Style).
+ */
+export function ProjectsSectionSkeleton() {
+  return (
+    <section className="section-padding px-6 bg-background">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-16 text-left md:text-center animate-pulse">
+          <div className="mb-6 inline-flex h-9 w-32 rounded-full bg-muted mx-auto" />
+          <div className="mb-6 h-12 w-3/4 md:w-1/2 rounded-lg bg-muted mx-auto" />
+          <div className="mx-auto h-20 w-full md:w-2/3 rounded-lg bg-muted" />
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div 
+              key={i} 
+              className="aspect-[16/9] w-full rounded-[24px] bg-card border border-border shadow-[0_20_40px_-15px_rgba(0,0,0,0.05)] animate-pulse"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
  * Toss-style Project Section
  * Focused on: Extreme readability, Soft shadows, and Premium Blue accents.
  */
