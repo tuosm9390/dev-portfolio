@@ -1,9 +1,8 @@
 <!--
 Sync Impact Report:
-- Version change: 1.1.1 → 1.1.2
+- Version change: 1.1.2 → 1.2.0
 - Modified principles: 
-    - Principle IV: MUST/SHALL 기반의 상태 초기화 규정 유지 및 명확화
-    - Principle V: LCP 및 WCAG 준수 기준 유지
+    - 기술적 제약 및 보안 요구사항: Next.js 16 정적 빌드 시 Suspense 경계 설정 의무화 추가 (MUST)
 - Added sections: 없음
 - Templates status: 
     - .specify/templates/plan-template.md (✅ align)
@@ -32,7 +31,7 @@ UI 컴포넌트는 `src/components/ui` 디렉토리에서 원자 단위로 관�
 Next.js의 Image 컴포넌트를 활용하여 LCP(Largest Contentful Paint) 2.5초 이내를 목표로 최적화해야 한다. Radix UI primitives를 적극 도입하여 웹 접근성(WCAG 2.1) AA 등급 준수를 지향하며, 모든 사용자가 스크린 리더 등 보조 공학기기를 통해 불편함 없이 포트폴리오를 탐색할 수 있도록 보장해야 한다.
 
 ## 기술적 제약 및 보안 요구사항
-Next.js 16 (App Router) 및 Tailwind CSS 4.x 환경을 준수한다. 환경 변수는 `.env.local`에서 관리하며, 민감한 API 키(EmailJS 등)가 클라이언트에 노출되지 않도록 서버 측 로직 또는 환경 변수 접두사(`NEXT_PUBLIC_`) 관리를 철저히 해야 한다. 배포 전 반드시 `npm run lint`와 `tsc`를 통과해야 한다.
+Next.js 16 (App Router) 및 Tailwind CSS 4.x 환경을 준수한다. `useSearchParams`와 같은 클라이언트 전용 훅을 사용할 경우, 반드시 `Suspense` 경계로 감싸 정적 빌드 시 프리렌더링 에러를 방지해야 한다. (MUST) 환경 변수는 `.env.local`에서 관리하며, 민감한 API 키(EmailJS 등)가 클라이언트에 노출되지 않도록 서버 측 로직 또는 환경 변수 접두사(`NEXT_PUBLIC_`) 관리를 철저히 해야 한다. 배포 전 반드시 `npm run lint`와 `tsc`를 통과해야 한다.
 
 ## 개발 워크플로우 및 품질 게이트
 모든 기능 구현은 `.specify/templates`의 계획서와 체크리스트를 기반으로 수행한다. 새로운 기능을 추가할 때는 해당 기능의 목적과 아키텍처를 문서화해야 하며, 기존 UI 패턴과의 일관성을 유지하는지 검증하는 단계를 포함해야 한다. 컨텍스트 전환이 발생하는 UI의 경우 상태 초기화 테스트를 필수적으로 수행한다.
@@ -40,4 +39,4 @@ Next.js 16 (App Router) 및 Tailwind CSS 4.x 환경을 준수한다. 환경 변�
 ## Governance
 이 헌장은 프로젝트의 모든 개발 관행보다 우선한다. 헌장의 수정은 명확한 이유와 영향 분석 보고서가 수반되어야 하며, 유의적 버전(Semantic Versioning) 정책에 따라 업데이트된다. 모든 PR 및 코드 리뷰 시 이 헌장의 원칙 준수 여부를 필수적으로 검증해야 한다.
 
-**Version**: 1.1.2 | **Ratified**: 2026-03-18 | **Last Amended**: 2026-03-23
+**Version**: 1.2.0 | **Ratified**: 2026-03-18 | **Last Amended**: 2026-03-23
