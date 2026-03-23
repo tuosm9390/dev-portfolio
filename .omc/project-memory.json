@@ -166,9 +166,123 @@
   },
   "hotPaths": [
     {
+      "path": "src",
+      "accessCount": 12,
+      "lastAccessed": 1774251685921,
+      "type": "directory"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.gstack\\projects\\tuosm9390-dev-portfolio\\tuosm-002-modal-image-as-is-design-20260323-163428.md",
+      "accessCount": 8,
+      "lastAccessed": 1774251832748,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 6,
+      "lastAccessed": 1774251642454,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 5,
+      "lastAccessed": 1774251652041,
+      "type": "directory"
+    },
+    {
+      "path": "src\\components\\ProjectModal.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1774251686154,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ProjectsSection.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774251621351,
+      "type": "file"
+    },
+    {
+      "path": "src\\data\\projects.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774251621757,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\utils.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774251626850,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ContactSection.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774251634255,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ui\\dialog.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774251634729,
+      "type": "file"
+    },
+    {
       "path": "C:\\Users\\tuosm\\.claude\\skills\\gstack\\gstack-upgrade\\SKILL.md",
       "accessCount": 1,
       "lastAccessed": 1774249088607,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\AppData\\Local\\Temp\\gstack-sketch-portfolio.html",
+      "accessCount": 1,
+      "lastAccessed": 1774251168857,
+      "type": "file"
+    },
+    {
+      "path": ".specify\\memory\\constitution.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251357717,
+      "type": "file"
+    },
+    {
+      "path": "package-lock.json",
+      "accessCount": 1,
+      "lastAccessed": 1774251373111,
+      "type": "directory"
+    },
+    {
+      "path": "specs\\002-modal-image-as-is\\spec.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251386584,
+      "type": "file"
+    },
+    {
+      "path": "specs\\002-modal-image-as-is\\plan.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251386838,
+      "type": "file"
+    },
+    {
+      "path": "specs\\002-modal-image-as-is\\tasks.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251388755,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\project_portfolio_strategy.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251982751,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\feedback_dependency_placement.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251990852,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\MEMORY.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251995372,
       "type": "file"
     }
   ],
