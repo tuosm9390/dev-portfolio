@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ExternalLink,
-  Github,
   Code2,
   ArrowRight,
   Sparkles,
@@ -12,13 +12,28 @@ import {
 import Image from "next/image";
 import { projects } from "@/data/projects";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import { cn } from "@/lib/utils";
+import { createUrlWithQuery } from "@/lib/utils";
+import ProjectModal from "./ProjectModal";
 
 /**
  * Toss-style Project Section
  * Focused on: Extreme readability, Soft shadows, and Premium Blue accents.
  */
 export default function ProjectsSection() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  const projectId = searchParams.get("project");
+  const selectedProject = projectId 
+    ? projects.find((p) => p.id === projectId) || null 
+    : null;
+
+  const handleCloseModal = () => {
+    const newUrl = createUrlWithQuery(pathname, searchParams, { project: null });
+    router.push(newUrl, { scroll: false });
+  };
+
   return (
     <section id="projects" className="section-padding px-6 bg-background">
       <div className="mx-auto max-w-6xl">
@@ -64,35 +79,49 @@ export default function ProjectsSection() {
           viewport={{ once: true, margin: "-50px" }}
           className="grid gap-8 md:grid-cols-2 lg:grid-cols-2"
         >
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </motion.div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={handleCloseModal}
+      />
     </section>
   );
 }
 
 function ProjectCard({
   project,
-  index,
 }: {
   project: (typeof projects)[0];
-  index: number;
 }) {
   const [imgError, setImgError] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleOpenDetail = () => {
+    const newUrl = createUrlWithQuery(pathname, searchParams, { project: project.id });
+    router.push(newUrl, { scroll: false });
+  };
 
   return (
     <motion.article
       variants={fadeInUp}
       whileHover={{ y: -8 }}
       transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-      className="group relative flex flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-all duration-300"
+      className="group relative flex flex-col overflow-hidden rounded-[24px] border border-border bg-card transition-all duration-300 cursor-pointer"
       style={
         {
           ["--accent-color" as string]: project.accentColor,
         } as React.CSSProperties
       }
+      onClick={handleOpenDetail}
     >
       {/* Dynamic Hover Border & Shadow */}
       <div
@@ -106,15 +135,17 @@ function ProjectCard({
       {/* Image Container */}
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
         {!imgError ? (
-          <Image
-            src={project.imageUrl}
-            alt={project.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            unoptimized
-            onError={() => setImgError(true)}
-          />
+          <motion.div layoutId={`project-image-${project.id}`} className="relative w-full h-full">
+            <Image
+              src={project.imageUrl}
+              alt={project.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
+              onError={() => setImgError(true)}
+            />
+          </motion.div>
         ) : (
           <div
             className="absolute inset-0 flex items-center justify-center"

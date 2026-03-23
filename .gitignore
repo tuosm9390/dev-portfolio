@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+\
+# misc
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/\
+
+/.agents/
+/.gemini/
+/.omc/
+/.specify/
+/specs/
+/doc/

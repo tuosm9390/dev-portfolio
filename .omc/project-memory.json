@@ -1,0 +1,290 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774249059908,
+  "projectRoot": "D:\\development\\dev-portfolio",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "16.1.6",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.2.3",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.3",
+        "category": "frontend"
+      },
+      {
+        "name": "vitest",
+        "version": "4.1.0",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "src"
+    ],
+    "gitBranches": {
+      "defaultBranch": "master",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "doc": {
+      "path": "doc",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1774249059873,
+      "keyFiles": []
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 5,
+      "lastAccessed": 1774249059874,
+      "keyFiles": [
+        "file.svg",
+        "globe.svg",
+        "next.svg",
+        "vercel.svg",
+        "window.svg"
+      ]
+    },
+    "specs": {
+      "path": "specs",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1774249059884,
+      "keyFiles": []
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 0,
+      "lastAccessed": 1774249059884,
+      "keyFiles": []
+    },
+    "src\\app": {
+      "path": "src\\app",
+      "purpose": "Application code",
+      "fileCount": 6,
+      "lastAccessed": 1774249059885,
+      "keyFiles": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx"
+      ]
+    },
+    "src\\components": {
+      "path": "src\\components",
+      "purpose": "UI components",
+      "fileCount": 7,
+      "lastAccessed": 1774249059886,
+      "keyFiles": [
+        "AboutSection.tsx",
+        "ContactSection.tsx",
+        "Footer.tsx"
+      ]
+    },
+    "src\\data": {
+      "path": "src\\data",
+      "purpose": "Data files",
+      "fileCount": 2,
+      "lastAccessed": 1774249059886,
+      "keyFiles": [
+        "profile.ts",
+        "projects.ts"
+      ]
+    },
+    "src\\lib": {
+      "path": "src\\lib",
+      "purpose": "Library code",
+      "fileCount": 2,
+      "lastAccessed": 1774249059886,
+      "keyFiles": [
+        "animations.ts",
+        "utils.ts"
+      ]
+    },
+    "src\\test": {
+      "path": "src\\test",
+      "purpose": "Test files",
+      "fileCount": 1,
+      "lastAccessed": 1774249059887,
+      "keyFiles": [
+        "setup.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src",
+      "accessCount": 12,
+      "lastAccessed": 1774251685921,
+      "type": "directory"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.gstack\\projects\\tuosm9390-dev-portfolio\\tuosm-002-modal-image-as-is-design-20260323-163428.md",
+      "accessCount": 8,
+      "lastAccessed": 1774251832748,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 6,
+      "lastAccessed": 1774251642454,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 5,
+      "lastAccessed": 1774251652041,
+      "type": "directory"
+    },
+    {
+      "path": "src\\components\\ProjectModal.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1774251686154,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ProjectsSection.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774251621351,
+      "type": "file"
+    },
+    {
+      "path": "src\\data\\projects.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774251621757,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\utils.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774251626850,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ContactSection.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774251634255,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ui\\dialog.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774251634729,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\skills\\gstack\\gstack-upgrade\\SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1774249088607,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\AppData\\Local\\Temp\\gstack-sketch-portfolio.html",
+      "accessCount": 1,
+      "lastAccessed": 1774251168857,
+      "type": "file"
+    },
+    {
+      "path": ".specify\\memory\\constitution.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251357717,
+      "type": "file"
+    },
+    {
+      "path": "package-lock.json",
+      "accessCount": 1,
+      "lastAccessed": 1774251373111,
+      "type": "directory"
+    },
+    {
+      "path": "specs\\002-modal-image-as-is\\spec.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251386584,
+      "type": "file"
+    },
+    {
+      "path": "specs\\002-modal-image-as-is\\plan.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251386838,
+      "type": "file"
+    },
+    {
+      "path": "specs\\002-modal-image-as-is\\tasks.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251388755,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\project_portfolio_strategy.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251982751,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\feedback_dependency_placement.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251990852,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\MEMORY.md",
+      "accessCount": 1,
+      "lastAccessed": 1774251995372,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
