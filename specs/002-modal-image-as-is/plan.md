@@ -17,23 +17,21 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: TypeScript / Next.js 15+ (Constitution 기준 준수)  
+**Primary Dependencies**: Tailwind CSS 4.x, Framer Motion, Radix UI, Lucide React, Zod  
+**Storage**: N/A (중앙 집중식 TypeScript 데이터 관리)  
+**Testing**: Vitest  
+**Target Platform**: Web (Vercel)
+**Project Type**: Web application  
+**Performance Goals**: SC-003: LCP 성능 유지 및 최적화  
+**Constraints**: Constitution Principle I (Toss-style), Principle II (Atomic UI)  
+**Scale/Scope**: Portfolio Project Modal Image Improvement
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [ ] **Principle IV (Contextual Integrity)**: Does this feature involve UI state or context switching? If so, are reset mechanisms planned?
-- [ ] **Principle V (Performance)**: Does this design impact LCP or bundle size? Any heavy dependencies?
-- [ ] **Technical Constraints**: Does this align with Next.js 16 and Tailwind 4.x?
+[Gates determined based on constitution file]
 
 ## Project Structure
 
