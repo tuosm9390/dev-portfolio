@@ -1,6 +1,7 @@
 export const profile = {
   name: "김개발",
   businessName: "DevCraft Studio",
+  siteUrl: "https://devcraft-dev-portfolio.vercel.app",
   title: "풀스택 웹 개발자",
   tagline: "아이디어를 현실로, 코드로 가치를 만듭니다",
   description: [
@@ -34,7 +35,7 @@ export const profile = {
     },
   ],
   contact: {
-    email: "hello@devcraft.studio",
+    email: "devcraft0416@gmail.com",
     phone: "010-9121-8397",
     github: "https://github.com/devcraft",
     linkedin: "https://linkedin.com/in/devcraft",

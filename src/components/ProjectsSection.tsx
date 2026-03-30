@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ExternalLink,
@@ -12,8 +12,6 @@ import {
 import Image from "next/image";
 import { projects } from "@/data/projects";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import { createUrlWithQuery } from "@/lib/utils";
-import ProjectModal from "./ProjectModal";
 
 /**
  * Skeleton component for ProjectsSection to be used with Suspense.
@@ -47,20 +45,6 @@ export function ProjectsSectionSkeleton() {
  * Focused on: Extreme readability, Soft shadows, and Premium Blue accents.
  */
 export default function ProjectsSection() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  
-  const projectId = searchParams.get("project");
-  const selectedProject = projectId 
-    ? projects.find((p) => p.id === projectId) || null 
-    : null;
-
-  const handleCloseModal = () => {
-    const newUrl = createUrlWithQuery(pathname, searchParams, { project: null });
-    router.push(newUrl, { scroll: false });
-  };
-
   return (
     <section id="projects" className="section-padding px-6 bg-background">
       <div className="mx-auto max-w-6xl">
@@ -112,12 +96,6 @@ export default function ProjectsSection() {
         </motion.div>
       </div>
 
-      {/* Project Detail Modal */}
-      <ProjectModal
-        project={selectedProject}
-        isOpen={!!selectedProject}
-        onClose={handleCloseModal}
-      />
     </section>
   );
 }
@@ -129,12 +107,9 @@ function ProjectCard({
 }) {
   const [imgError, setImgError] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const handleOpenDetail = () => {
-    const newUrl = createUrlWithQuery(pathname, searchParams, { project: project.id });
-    router.push(newUrl, { scroll: false });
+    router.push(`/projects/${project.id}`);
   };
 
   return (
