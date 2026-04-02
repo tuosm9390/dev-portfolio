@@ -224,8 +224,8 @@ function ProjectCard({
           </div>
         </div>
 
-        <p className="mb-8 text-base leading-relaxed text-muted-foreground line-clamp-2">
-          {project.description}
+        <p className="mb-8 text-base leading-relaxed text-muted-foreground line-clamp-3">
+          {project.summary}
         </p>
 
         <div className="mt-auto flex items-center justify-between border-t border-border pt-6">

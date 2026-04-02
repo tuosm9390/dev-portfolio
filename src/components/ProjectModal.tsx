@@ -122,18 +122,30 @@ export default function ProjectModal({
               </div>
             </div>
 
-            <div className="prose prose-slate dark:prose-invert max-w-none">
+            <div className="prose prose-neutral dark:prose-invert max-w-none">
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  h1: ({...props}) => <h1 className="text-3xl font-bold mb-4 mt-8" {...props} />,
-                  h2: ({...props}) => <h2 className="text-2xl font-bold mb-3 mt-6" {...props} />,
-                  h3: ({...props}) => <h3 className="text-xl font-bold mb-2 mt-4" {...props} />,
-                  p: ({...props}) => <p className="text-lg leading-relaxed text-muted-foreground mb-4" {...props} />,
-                  ul: ({...props}) => <ul className="list-disc list-inside mb-4 space-y-2" {...props} />,
-                  ol: ({...props}) => <ol className="list-decimal list-inside mb-4 space-y-2" {...props} />,
-                  li: ({...props}) => <li className="text-muted-foreground ml-4" {...props} />,
+                  h1: ({...props}) => <h1 className="text-3xl font-bold mb-6 mt-12 border-b border-border pb-2" {...props} />,
+                  h2: ({...props}) => <h2 className="text-2xl font-bold mb-4 mt-10" {...props} />,
+                  h3: ({...props}) => <h3 className="text-xl font-bold mb-3 mt-8" {...props} />,
+                  p: ({...props}) => <p className="text-lg leading-relaxed text-muted-foreground mb-6" {...props} />,
+                  ul: ({...props}) => <ul className="list-disc list-outside mb-6 space-y-3 pl-6" {...props} />,
+                  ol: ({...props}) => <ol className="list-decimal list-outside mb-6 space-y-3 pl-6" {...props} />,
+                  li: ({...props}) => <li className="text-lg text-muted-foreground" {...props} />,
                   strong: ({...props}) => <strong className="font-bold text-foreground" {...props} />,
+                  code: ({inline, ...props}: {inline?: boolean} & React.HTMLAttributes<HTMLElement>) => 
+                    inline ? (
+                      <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-primary" {...props} />
+                    ) : (
+                      <pre className="overflow-x-auto rounded-xl bg-secondary p-4 my-6">
+                        <code className="font-mono text-sm" {...props} />
+                      </pre>
+                    ),
+                  blockquote: ({...props}) => (
+                    <blockquote className="border-l-4 border-primary bg-primary/5 px-6 py-4 italic rounded-r-lg my-8" {...props} />
+                  ),
+                  hr: () => <hr className="my-12 border-border" />,
                 }}
               >
                 {project.description}
