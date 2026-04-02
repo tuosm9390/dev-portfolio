@@ -152,14 +152,20 @@ export default async function ProjectPage({
                 ol: ({...props}) => <ol className="list-decimal list-outside mb-6 space-y-3 pl-6" {...props} />,
                 li: ({...props}) => <li className="text-lg text-muted-foreground" {...props} />,
                 strong: ({...props}) => <strong className="font-bold text-foreground" {...props} />,
-                code: ({inline, ...props}: {inline?: boolean} & React.HTMLAttributes<HTMLElement>) => 
-                  inline ? (
-                    <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-primary" {...props} />
-                  ) : (
-                    <pre className="overflow-x-auto rounded-xl bg-secondary p-4 my-6">
-                      <code className="font-mono text-sm" {...props} />
-                    </pre>
-                  ),
+                pre: ({...props}) => (
+                  <pre className="overflow-x-auto rounded-xl bg-secondary p-4 my-6" {...props} />
+                ),
+                code: ({className, children, ...props}: any) => {
+                  const isBlock = className?.includes('language-') || String(children).includes('\n');
+                  return (
+                    <code 
+                      className={`${isBlock ? "font-mono text-sm" : "rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-primary"} ${className || ""}`} 
+                      {...props}
+                    >
+                      {children}
+                    </code>
+                  );
+                },
                 blockquote: ({...props}) => (
                   <blockquote className="border-l-4 border-primary bg-primary/5 px-6 py-4 italic rounded-r-lg my-8" {...props} />
                 ),
