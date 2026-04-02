@@ -22,7 +22,8 @@ export const projects: Project[] = [
   {
     id: "persona-style",
     title: "Persona Style AI",
-    summary: "사용자의 사진과 텍스트를 기반으로 전문가 수준의 퍼스널 컬러, 체형, 분위기를 분석하여 최적의 페르소나 스타일 리포트를 제공하는 Full-Stack 플랫폼입니다.",
+    summary:
+      "사용자의 사진과 텍스트를 기반으로 전문가 수준의 퍼스널 컬러, 체형, 분위기를 분석하여 최적의 페르소나 스타일 리포트를 제공하는 Full-Stack 플랫폼입니다.",
     description: `# Persona Style
 
 ## 프로젝트 개요 (Overview)
@@ -64,11 +65,15 @@ persona-style/
 - **AI / LLM**: \`@google/generative-ai\` (Gemini 1.5 Pro)
 - **PDF & Image Generation**: \`satori\`, \`@react-pdf/renderer\`, \`html-to-image\`, \`@resvg/resvg-js\`
 - **Monitroing & Payments**: \`@sentry/nextjs\`, PortOne 결제 시스템
-`, `@react-pdf/renderer`, `html-to-image`, `@resvg/resvg-js`
-- **Monitroing & Payments**: `@sentry/nextjs`, PortOne 결제 시스템
-`, \`@react-pdf/renderer\`, \`html-to-image\`, \`@resvg/resvg-js\`
-- **Monitoring & Payments**: \`@sentry/nextjs\`, PortOne 결제 시스템`,
-    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Gemini API", "Supabase", "Satori"],
+`,
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Gemini API",
+      "Supabase",
+      "Satori",
+    ],
     liveUrl: "https://persona-style.vercel.app",
     imageUrl: "/images/project-persona-style.webp",
     accentColor: "#a855f7",
@@ -76,7 +81,8 @@ persona-style/
   {
     id: "investment-platform",
     title: "Invesight",
-    summary: "금융 에셋 데이터와 RSS 피드를 실시간으로 크롤링하고 AI로 분석하여 직관적인 대시보드와 고성능 차트로 시각화하는 투자 정보 플랫폼입니다.",
+    summary:
+      "금융 에셋 데이터와 RSS 피드를 실시간으로 크롤링하고 AI로 분석하여 직관적인 대시보드와 고성능 차트로 시각화하는 투자 정보 플랫폼입니다.",
     description: `# Investment Platform
 
 ## 프로젝트 개요 (Overview)
@@ -117,68 +123,7 @@ investment-platform/
 - **Data Visualization**: \`lightweight-charts\`, \`recharts\`
 - **AI Processing**: \`@google/generative-ai\` (Gemini)
 - **Styling**: \`clsx\`, \`lucide-react\`
-`, `test-crawler.ts`)를 비동기로 실행하여 최신 데이터를 패치합니다.
-2. **AI 데이터 분석 (Processing)**
-   - `@google/generative-ai` (Gemini API)를 연동하여 단순한 헤드라인 추출을 넘어서, 금융 뉴스의 맥락을 파악하고 투자자 관점의 의미 있는 데이터로 정제/요약합니다.
-3. **데이터 시각화 (Visualization)**
-   - 수집 및 분석된 데이터를 `lightweight-charts`와 `recharts`를 사용하여 대시보드의 캔버스 및 SVG 차트로 렌더링합니다.
-
-## 프로젝트 구조 (Project Structure)
-```text
-investment-platform/
-├── src/
-│   ├── app/                # Next.js 16 App Router 구조
-│   │   ├── api/            # 외부 API 또는 크롤러를 실행하는 서버사이드 엔드포인트
-│   │   └── search/         # 특정 키워드/종목 검색결과 및 차트 대시보드 뷰
-│   └── lib/                # 비즈니스/크롤러 모듈 디렉토리
-├── test-crawler.ts         # 로컬 환경 크롤러 유닛 테스트 스크립트
-├── crawler-log.txt         # 크롤링 에러/성공 상태를 담은 로그 기록
-└── gstack-sketch.html/png  # 초기 퍼블리싱 UI 프로토타입 설계 파일
-```
-
-## 상세 기능 구현 (Technical Implementation)
-- **우회적 크롤링 파이프라인 컴포넌트화**
-  동적으로 변화하는 타겟 사이트(예: 포털 검색)의 HTML 구조에 대응하기 위해 데이터를 패치(`test-rss.ts`, `dump-mobile.ts`)하고 Cheerio 셀렉터를 모듈화하여, 유지보수 비용을 낮추는 스크래핑 아키텍처를 설계했습니다.
-- **성능 중심의 데이터 바인딩**
-  빠른 차트 렌더링을 위해 TradingView의 `lightweight-charts`를 WebGL 캔버스 위에서 구동하여 수많은 시점에서 발생하는 데이터 틱(tick)의 브라우저 리플로우(Reflow)를 최소화했습니다.
-
-## 사용 기술 및 라이브러리 (Tech Stack)
-- **Frontend Core**: Next.js 16.1.6 (App Router), React 19
-- **Data Fetching/Scraping**: `axios`, `cheerio` (HTML DOM Parser)
-- **Data Visualization**: `lightweight-charts`, `recharts`
-- **AI Processing**: `@google/generative-ai` (Gemini)
-- **Styling**: `clsx`, `lucide-react`
-`, \`test-crawler.ts\`)를 비동기로 실행하여 최신 데이터를 캐싱합니다.
-2. **AI 데이터 분석 (Processing)**
-   - \`@google/generative-ai\` (Gemini API)를 연동하여 단순한 텍스트 리스트를 넘어, 금융 뉴스의 맥락을 파악하고 투자자에게 가치 있는 데이터로 정제/요약합니다.  
-3. **데이터 시각화 (Visualization)**
-   - 수집 및 분석된 데이터를 \`lightweight-charts\`와 \`recharts\`를 사용하여 대시보드와 SVG 차트로 렌더링합니다.
-
-## 프로젝트 구조 (Project Structure)
-\`\`\`text
-investment-platform/
-├── src/
-│   ├── app/                # Next.js 16 App Router 구조
-│   │   ├── api/            # 외부 API 및 크롤러를 실행하는 서버사이드 엔드포인트
-│   │   ├── search/         # 특정 자산/종목 검색결과 및 차트 대시보드 뷰
-│   ├── lib/                # 비즈니스/크롤러 모듈 라이브러리
-├── test-crawler.ts         # 로컬 환경 크롤러 기능 검증 스크립트
-├── crawler-log.txt         # 크롤링 성공/실패 상태를 담은 로그 기록
-└── gstack-sketch.html/png  # 초기 와이어프레임 UI 프로토타입 설계 파일
-\`\`\`
-
-## 상세 기술 구현 (Technical Implementation)
-- **유연한 크롤링 파이프라인 컴포넌트화**
-  동적으로 변화하는 타겟 사이트(예: 포털 검색)의 HTML 구조에 대응하기 위해 데이터를 캐시(\`test-rss.ts\`, \`dump-mobile.ts\`)하고 Cheerio 셀렉터를 모듈화하여, 유지보수 비용을 낮추는 스크래핑 아키텍처를 설계했습니다.
-- **성능 중심의 데이터 바인딩**
-  많은 차트 렌더링을 위해 TradingView의 \`lightweight-charts\`를 WebGL 컨텍스트 위에서 구현하여 수천개의 시점에서 발생되는 데이터 틱(tick)의 리드로우(Reflow)를 최소화했습니다.
-
-## 사용 기술 및 라이브러리 (Tech Stack)
-- **Frontend Core**: Next.js 16.1.6 (App Router), React 19
-- **Data Fetching/Scraping**: \`axios\`, \`cheerio\` (HTML DOM Parser)
-- **Data Visualization**: \`lightweight-charts\`, \`recharts\`
-- **AI Processing**: \`@google/generative-ai\` (Gemini)
-- **Styling**: \`clsx\`, \`lucide-react\``,
+`,
     techStack: [
       "Next.js",
       "TypeScript",
@@ -194,7 +139,8 @@ investment-platform/
   {
     id: "Synapso.dev",
     title: "Synapso.dev",
-    summary: "GitHub 커밋 내역을 분석하여 개발자의 의사결정 과정을 유추하고, 전문적인 기술 블로그 포스트를 자동으로 생성해주는 AI 기반 SaaS입니다.",
+    summary:
+      "GitHub 커밋 내역을 분석하여 개발자의 의사결정 과정을 유추하고, 전문적인 기술 블로그 포스트를 자동으로 생성해주는 AI 기반 SaaS입니다.",
     description: `# synapso.dev - AI-Powered Tech Blog Generator
 
 ## 프로젝트 개요 (Overview)
@@ -264,47 +210,15 @@ synapso.dev/
    GitHub Diff에서 토큰을 심하게 잡아먹는 lock 파일과 바이너리 확장자들을 \`EXCLUDED_FILE_PATTERNS\`로 사전에 차단(\`lib/github.ts\`)하여, 컨텍스트 윈도우 한계를 우회하고 불필요한 AI 연산 비용을 최적화했습니다.
 3. **분산 환경을 고려한 작업 관리**
    Serverless 환경의 Request Timeout 한계를 극복하기 위해 \`jobs\` 테이블 기반 비동기 폴링 구조를 구현하여 대용량 커밋 분석 작업 시 시스템 안전성을 확보했습니다.
-`, `-2` 등 카운터를 붙이는 알고리즘을 사용합니다. 포스트 삭제 요청 시 실제 데이터를 삭제하지 않고 `deletedAt` 값을 부여하여(Soft Delete) 휴먼 에러 시 복구할 수 있는 방어 코드가 적용되어 있습니다.
-
-## 사용 기술 및 라이브러리 (Tech Stack)
-
-- **Frontend Core**: Next.js 16.1.6 (App Router), React 19, Tailwind CSS 4
-- **Backend & Database**: Supabase (PostgreSQL), NextAuth v5
-- **AI / LLM**: `@google/generative-ai` (Gemini API 2.5)
-- **Payments**: PortOne SDK, Stripe
-- **Utils**: `zod`(데이터 검증), `octokit`(GitHub 연동), `date-fns`, Upstash Redis (Rate Limiting)
-- **Markdown Tools**: `react-markdown`, `rehype-highlight`, `remark-gfm`
-- **Infra**: Vercel (Hosting, Cron Jobs)
-
-## 주요 구현 특징 (Key Highlights)
-
-1. **AI 환각(Hallucination) 억제를 위한 스키마 강제**
-   자유로운 텍스트 생성이 가진 파싱 불안정성을 해결하기 위해, Gemini API의 `responseSchema`를 활용해 JSON 타입 응답을 보장받음으로써 백엔드 오류를 원천 차단했습니다.
-2. **탄력적인 토큰 워크플로우 최적화**
-   GitHub Diff에서 토큰을 심하게 잡아먹는 lock 파일과 바이너리 확장자들을 `EXCLUDED_FILE_PATTERNS`로 사전에 차단(`lib/github.ts`)하여, 컨텍스트 윈도우 한계를 우회하고 불필요한 AI 연산 비용을 최적화했습니다.
-3. **분산 환경을 고려한 작업 관리**
-   Serverless 환경의 Request Timeout 한계를 극복하기 위해 `jobs` 테이블 기반 비동기 폴링 구조를 구현하여 대용량 커밋 분석 작업 시 시스템 안전성을 확보했습니다.
-`, \`-2\` 등을 카운터를 붙이는 알고리즘을 사용합니다. 포스트 삭제 요청 시 실제 데이터를 삭제하지 않고 \`deletedAt\` 값을 부여하여(Soft Delete) 장애 시 복구할 수 있는 방어 코드가 적용되어 있습니다.
-
-## 사용 기술 및 라이브러리 (Tech Stack)
-
-- **Frontend Core**: Next.js 16.1.6 (App Router), React 19, Tailwind CSS 4
-- **Backend & Database**: Supabase (PostgreSQL), NextAuth v5
-- **AI / LLM**: \`@google/generative-ai\` (Gemini API 2.5)
-- **Payments**: PortOne SDK, Stripe
-- **Utils**: \`zod\`(데이터 검증), \`octokit\`(GitHub 연동), \`date-fns\`, Upstash Redis (Rate Limiting)
-- **Markdown Tools**: \`react-markdown\`, \`rehype-highlight\`, \`remark-gfm\`
-- **Infra**: Vercel (Hosting, Cron Jobs)
-
-## 주요 구현 특징 (Key Highlights)
-
-1. **AI 환각(Hallucination) 억제를 위한 구조적 검증**
-   자유로운 텍스트 생성의 가변성 문제를 해결하기 위해, Gemini API의 \`responseSchema\`를 활용해 JSON 형식의 응답을 보장받음으로써 백엔드 오류를 원천 차단했습니다.
-2. **대규모 토픽 워커플로우 최적화**
-   GitHub Diff에서 토큰을 낭비하기 쉬운 lock 파일과 바이너리 확장자들을 \`EXCLUDED_FILE_PATTERNS\`로 사전에 차단(\`lib/github.ts\`)하여, 핵심 코드 변화에만 집중하고 비용을 최적화했습니다.
-3. **분사 환경을 고려한 작업 관리**
-   Serverless 환경의 Request Timeout 한계를 극복하기 위해 \`jobs\` 테이블 기반 비동기 큐 구조를 구현하여 대용량 커밋 분석 작업 시 시스템 안정성을 확보했습니다.`,
-    techStack: ["Next.js", "TypeScript", "GitHub API", "Gemini API", "Supabase", "Stripe"],
+`,
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "GitHub API",
+      "Gemini API",
+      "Supabase",
+      "Stripe",
+    ],
     liveUrl: "https://synapso.dev",
     githubUrl: "https://github.com/tuosm9390/Synapso.dev",
     imageUrl: "/images/project-synapso.dev.png",
@@ -313,7 +227,8 @@ synapso.dev/
   {
     id: "minions-bid",
     title: "Minions Bid (League Auction Tool)",
-    summary: "리그 오브 레전드 커뮤니티를 위한 초저지연 실시간 멀티플레이어 경매 시스템으로, 독특한 Cyber-Pixel 디자인과 서버 권한 기반 아키텍처를 특징으로 합니다.",
+    summary:
+      "리그 오브 레전드 커뮤니티를 위한 초저지연 실시간 멀티플레이어 경매 시스템으로, 독특한 Cyber-Pixel 디자인과 서버 권한 기반 아키텍처를 특징으로 합니다.",
     description: `# 🎮 Project Description: Minions Bid (League Auction Tool)
 
 ## 📌 Overview
@@ -373,79 +288,15 @@ The UI is built on a custom design system defined in \`DESIGN.md\`:
 - **Scalable Data Management**: Effortlessly handles large player pools through optimized Firebase subscriptions and bulk Excel processing.
 - **Aesthetic Distinction**: A meticulously crafted visual identity that stands out from generic dashboard-style tools.
 - **Zero-Trust Security**: Strict validation at the Server Action layer combined with Firebase Security Rules ensures data integrity.
-`, `BiddingControl`, etc.).
-    - `hooks/`: Custom hooks for real-time synchronization (`useAuctionRealtime`) and UI logic.
-    - `store/`: Client-side state management using **Zustand**.
-- `src/lib/`: Shared infrastructure (Firebase initialization, global utilities).
-- `doc/`: Comprehensive technical documentation covering architecture, logic, and design conventions.
-
-## 🛠️ Technical Implementation
-
-### ⚡ Real-time Bidding & Consistency
-To prevent race conditions during high-speed bidding wars, the system employs a **Server Authority** model. Instead of optimistic UI updates for bids, the UI only reflects a "Leading" status once the server confirms the bid and pushes it back via Firebase. This ensures all participants see the exact same state at all times.
-
-### 🎲 Lottery & Animation System
-The player selection process uses a custom **Lottery Animation** (slot-machine style) built with **Framer Motion**. The synchronization between the animation end and the start of the auction is managed via RTDB signals to ensure all clients start their local timers simultaneously.
-
-### 📱 Responsive Cyber-Pixel UI
-The UI is built on a custom design system defined in `DESIGN.md`:
-- **Fluid Typography**: Uses CSS `clamp()` and custom Tailwind tokens for seamless scaling across devices.
-- **Pixel-Perfect Components**: Custom-built UI elements with heavy borders (`border-4`) and high-contrast OKLCH colors.
-- **Portal-based Modals**: All interactive overlays use React Portals to avoid Z-index and stacking context issues in complex layouts.
-
-## 🚀 Tech Stack
-
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript (Strict Mode)
-- **Database**: 
-    - **Firestore**: Persistent relational-like data.
-    - **Realtime Database**: Ephemeral high-speed state.
-- **State Management**: Zustand
-- **Styling**: Tailwind CSS v4, Framer Motion
-- **Tooling**: Vitest (Unit Testing), Playwright (E2E Testing), ExcelJS
-
-## 🌟 Key Highlights
-
-- **Low-Latency Experience**: Optimized for real-time interaction where 0.1s matters.
-- **Scalable Data Management**: Effortlessly handles large player pools through optimized Firebase subscriptions and bulk Excel processing.
-- **Aesthetic Distinction**: A meticulously crafted visual identity that stands out from generic dashboard-style tools.
-- **Zero-Trust Security**: Strict validation at the Server Action layer combined with Firebase Security Rules ensures data integrity.
-`, \`BiddingControl\` 등).
-    - \`hooks/\`: 실시간 동기화(\`useAuctionRealtime\`) 및 UI 로직을 위한 커스텀 훅.
-    - \`store/\`: **Zustand**를 이용한 클라이언트 상태 관리.
-- \`src/lib/\`: 공유 인프라 (Firebase 초기화, 글로벌 유틸리티).
-- \`doc/\`: 아키텍처, 로직 및 디자인 컨벤션을 다루는 포괄적인 기술 문서.
-
-## 🛠 Technical Implementation
-
-### ⚡ Real-time Bidding & Consistency
-고속 입찰 경쟁 중 레이스 컨디션을 방지하기 위해 시스템은 **Server Authority** 모델을 채택했습니다. 입찰에 대해 낙관적 UI 업데이트를 하는 대신, 서버가 입찰을 확인하고 Firebase를 통해 다시 푸시한 후에만 UI에 "입찰 중" 상태가 반영됩니다. 이를 통해 모든 참가자가 항상 정확히 동일한 상태를 볼 수 있도록 보장합니다.
-
-### 🎲 Lottery & Animation System
-플레이어 선택 프로세스는 **Framer Motion**으로 제작된 커스텀 **추첨 애니메이션(Lottery Animation)**(슬롯머신 스타일)을 사용합니다. 애니메이션 종료와 경매 시작 사이의 동기화는 RTDB 신호를 통해 관리되어 모든 클라이언트가 로컬 타이머를 동시에 시작하도록 합니다.
-
-### 📱 Responsive Cyber-Pixel UI
-UI는 \`DESIGN.md\`에 정의된 커스텀 디자인 시스템을 바탕으로 구축되었습니다.
-- **Fluid Typography**: \`clamp()\` 함수와 커스텀 Tailwind 토큰을 사용하여 기기간 원활한 스케일링을 지원합니다.
-- **Pixel-Perfect Components**: 두꺼운 테두리(\`border-4\`)와 고대비 OKLCH 색상을 사용한 커스텀 UI 요소.
-- **Portal-Based Modals**: 모든 인터랙티브 오버레이는 React Portals를 사용하여 복잡한 레이아웃에서 z-index 및 스태킹 컨텍스트 문제를 방지합니다.
-
-## 🚀 Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript (Strict Mode)
-- **Database**: 
-    - **Firestore**: 영구적인 관계형 데이터 저장.
-    - **Realtime Database**: 휘발성 고속 상태 처리.
-- **State Management**: Zustand
-- **Styling**: Tailwind CSS v4, Framer Motion
-- **Tooling**: Vitest (Unit Testing), Playwright (E2E Testing), ExcelJS
-
-## ✨ Key Highlights
-- **초저지연 경험 (Low-Latency Experience)**: 0.1초가 중요한 실시간 인터랙션에 최적화되었습니다.
-- **확장 가능한 데이터 관리 (Scalable Data Management)**: 최적화된 Firebase 구독 및 대량 엑셀 처리를 통해 대규모 플레이어 풀을 손쉽게 처리합니다.
-- **차별화된 심미성 (Aesthetic Distinction)**: 일반적인 대시보드 스타일의 도구와 차별화되는 세심하게 제작된 시각적 정체성.
-- **제로 트러스트 보안 (Zero-Trust Security)**: Server Action 레이어에서의 엄격한 검증과 Firebase 보안 규칙을 결합하여 데이터 무결성을 보장합니다.`,
-    techStack: ["Next.js", "TypeScript", "Firebase", "Zustand", "Framer Motion", "Tailwind CSS"],
+`,
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "Firebase",
+      "Zustand",
+      "Framer Motion",
+      "Tailwind CSS",
+    ],
     liveUrl: "https://minionsbid.vercel.app",
     githubUrl: "https://github.com/tuosm9390/minionsbid",
     imageUrl: "/images/project-minions-bid.png",
@@ -454,7 +305,8 @@ UI는 \`DESIGN.md\`에 정의된 커스텀 디자인 시스템을 바탕으로 �
   {
     id: "quote-builder",
     title: "스마트 견적서 생성기",
-    summary: "노션 스타일의 JSON 블록 에디터를 통해 기업형 견적서를 실시간으로 작성하고, 클라이언트 사이드에서 고해상도 PDF로 변환 및 관리하는 도구입니다.",
+    summary:
+      "노션 스타일의 JSON 블록 에디터를 통해 기업형 견적서를 실시간으로 작성하고, 클라이언트 사이드에서 고해상도 PDF로 변환 및 관리하는 도구입니다.",
     description: `# Quote Builder
 
 ## 프로젝트 개요 (Overview)
@@ -495,12 +347,7 @@ quote-builder/
 - **Editor & UI**: \`@blocknote/react\`, \`@mantine/core\`, \`radix-ui\`, \`zustand\` (클라이언트 상태)
 - **Database & ORM**: PostgreSQL, Prisma (\`@prisma/client\`, \`@prisma/adapter-pg\`)
 - **PDF Generation**: \`jspdf\`, \`html2canvas\`, \`html-to-image\`
-`, `@mantine/core`, `radix-ui`, `zustand` (클라이언트 상태)
-- **Database & ORM**: PostgreSQL, Prisma (`@prisma/client`, `@prisma/adapter-pg`)
-- **PDF Generation**: `jspdf`, `html2canvas`, `html-to-image`
-`, \`@mantine/core\`, \`radix-ui\`, \`zustand\` (클라이언트 상태)
-- **Database & ORM**: PostgreSQL, Prisma (\`@prisma/client\`, \`@prisma/adapter-pg\`)
-- **PDF Generation**: \`jspdf\`, \`html2canvas\`, \`html-to-image\``,
+`,
     techStack: [
       "Next.js",
       "TypeScript",
@@ -516,7 +363,8 @@ quote-builder/
   {
     id: "self-growth-dashboard",
     title: "Self Growth Dashboard",
-    summary: "학습, 운동, 회고 등 개인의 성장 데이터를 추적하고 시각화하는 올인원 대시보드입니다.",
+    summary:
+      "학습, 운동, 회고 등 개인의 성장 데이터를 추적하고 시각화하는 올인원 대시보드입니다.",
     description: `학습, 운동, 회고 등 개인의 성장 데이터를 추적하고 시각화하는 올인원 대시보드입니다.
 
 Chart.js를 통한 지표 분석과 Supabase 기반의 실시간 데이터 저장을 지원합니다. 사용자 개인의 루틴 관리에 최적화되어 있습니다.`,
@@ -534,7 +382,8 @@ Chart.js를 통한 지표 분석과 Supabase 기반의 실시간 데이터 저�
   {
     id: "sumpyo-flutter-app",
     title: "Sumpyo (숨표)",
-    summary: "사용자의 감정과 주변 환경 컨텍스트를 AI로 분석하여 개인화된 심리 치유 처방을 제공하는 Flutter 기반 모바일 웰니스 애플리케이션입니다.",
+    summary:
+      "사용자의 감정과 주변 환경 컨텍스트를 AI로 분석하여 개인화된 심리 치유 처방을 제공하는 Flutter 기반 모바일 웰니스 애플리케이션입니다.",
     description: `# 마음 약방 (Sumpyo AI)
 
 ## 프로젝트 개요 (Overview)
@@ -588,7 +437,8 @@ sumpyo-flutter-app/
   {
     id: "threads-autoposter",
     title: "Threads Auto-Poster",
-    summary: "트렌드 키워드와 뉴스를 수집하여 AI 페르소나 기반의 스레드 콘텐츠로 변환하고 Meta Threads API를 통해 전 과정을 자동화하는 발행 서비스입니다.",
+    summary:
+      "트렌드 키워드와 뉴스를 수집하여 AI 페르소나 기반의 스레드 콘텐츠로 변환하고 Meta Threads API를 통해 전 과정을 자동화하는 발행 서비스입니다.",
     description: `# 🧵 스레드 자동 게시 도구 (Threads Auto-Poster) - 프로젝트 상세 설명서
 
 이 문서는 \`threads-autoposter\` 프로젝트의 아키텍처, 핵심 로직, 기능 구현 및 기술 스택에 대한 상세 정보를 제공합니다. 상위 프로젝트인 \`dev-portfolio\`에서 이 프로젝트를 참조하거나 전시할 때 활용할 수 있도록 작성되었습니다.
@@ -740,39 +590,14 @@ npm run quality [--n=20]
 ---
 
 이 프로젝트는 최신 AI 기술과 소셜 미디어 생태계를 결합하여 **완전 자동화된 콘텐츠 크리에이션**을 구현한 사례입니다.
-`, `pm2`
-- **컨테이너**: `Dockerfile` 기반 배포 지원
-
----
-
-## 6. 프로젝트의 주요 강점
-
-1. **인간 중심의 콘텐츠**: AI 특유의 기계적인 문체를 제거하고, 구조 이력 인식 + Few-Shot 예시를 통해 매번 다른 리듬과 구조의 글을 생성합니다.
-2. **자기강화 루프**: 서비스 운영 데이터가 쌓일수록 Few-Shot 예시가 자동으로 갱신되어 AI 글 품질이 지속적으로 향상됩니다.
-3. **지능형 중복 방지**: 단순 키워드 매칭을 넘어 Gemini 시맨틱 판단으로 의미적 중복을 제거하면서 다른 앵글의 게시는 허용합니다.
-4. **안전한 인증 관리**: OAuth 2.0 흐름을 자동화하고, 토큰 만료를 감지하여 갱신 알림을 제공합니다.
-5. **검증 시스템(Dry-run)**: 실제 게시 전 생성된 결과물을 확인하고 테스트할 수 있는 검증 모드를 제공합니다.
-6. **높은 확장성**: 서비스 레이어가 분리된 구조로 새로운 데이터 소스나 게시 플랫폼을 추가하기 용이합니다.
-
----
-
-이 프로젝트는 최신 AI 기술과 소셜 미디어 생태계를 결합하여 **완전 자동화된 콘텐츠 크리에이션**을 구현한 사례입니다.
-`, \`pm2\`
-*   **컨테이너**: \`Dockerfile\` 기반의 배포 자동화 지원
-
----
-
-## 6. 프로젝트의 주요 가치
-
-1.  **인간 중심의 콘텐츠**: AI 특유의 기계적인 문서체를 지양하고, "구어체 표현", "적절한 위트", "분석적 관점이 있는 인사이트" 등의 요소를 반영하여 실제 사람이 운영하는 느낌을 줍니다.
-2.  **안전한 인증 관리**: OAuth 2.0 흐름을 자동화하고, 장기 액세스 토큰의 갱신을 자동으로 처리하여 번거로운 작업 없이 안전한 인증 체계를 구축하고 있습니다.
-3.  **검증 시스템(Dry-run)**: 실제 게시 전 생성된 결과물을 확인하고 테스트할 수 있는 검증 모드를 제공하여 안정적인 운영이 가능합니다.
-4.  **높은 확장성**: 서비스 레이어가 분리된 구조로 설계되어 새로운 소스나 게시 플랫폼을 추가하기 매우 용이합니다.
-
----
-
-이 프로젝트는 최신 AI 기술과 소셜 미디어 플랫폼 생태계를 결합하여 **완전 자동화된 콘텐츠 크리에이터**를 구현한 사례입니다.`,
-    techStack: ["Node.js", "TypeScript", "Gemini API", "Meta Threads API", "node-cron"],
+`,
+    techStack: [
+      "Node.js",
+      "TypeScript",
+      "Gemini API",
+      "Meta Threads API",
+      "node-cron",
+    ],
     liveUrl: "https://threads-autoposter.vercel.app",
     githubUrl: "https://github.com/tuosm9390/threads-autoposter",
     imageUrl: "/images/project-threads-autoposter.webp",
@@ -781,7 +606,8 @@ npm run quality [--n=20]
   {
     id: "agent-diary",
     title: "AgentDiary",
-    summary: "AI 에이전트의 터미널 세션을 실시간 모니터링하고 작업 내용을 자동 요약 및 아티팩트로 추출하며 RAG 기반 로그 채팅을 지원하는 대시보드입니다.",
+    summary:
+      "AI 에이전트의 터미널 세션을 실시간 모니터링하고 작업 내용을 자동 요약 및 아티팩트로 추출하며 RAG 기반 로그 채팅을 지원하는 대시보드입니다.",
     description: `# AgentDiary: Real-time AI Agent Monitoring & Diary
 
 **AgentDiary**는 AI 에이전트(예: Gemini CLI, Claude Code)의 터미널 작업 세션을 실시간으로 모니터링하고, 작업 내역을 자동으로 기록 및 요약하여 개발자의 작업 흐름을 체계적으로 관리해주는 데스크탑 애플리케이션입니다.
@@ -862,7 +688,8 @@ agent-diary/
   {
     id: "cafe-book",
     title: "Cafe Book (카페 도감)",
-    summary: "방문한 카페를 지도에 기록하고 나만의 커피 레시피를 공유하는 플랫폼으로, 카카오 지도 API와 Firebase 실시간 동기화를 활용한 GIS 기반 서비스입니다.",
+    summary:
+      "방문한 카페를 지도에 기록하고 나만의 커피 레시피를 공유하는 플랫폼으로, 카카오 지도 API와 Firebase 실시간 동기화를 활용한 GIS 기반 서비스입니다.",
     description: `# Cafe Book (카페 도감)
 
 ## 프로젝트 개요 (Overview)
@@ -934,132 +761,14 @@ cafe-book/
    카카오 지도의 클러스터링/마커 표시 기능과 Firebase의 실시간 데이터 스트리밍을 결합하여, 유저가 바라보는 지도 위치상에 존재하는 카페 데이터를 능동적으로 렌더링하는 UX를 제공합니다.
 3. **Headless 컴포넌트를 활용한 디자인 시스템**
    Tailwind CSS의 유틸리티 클래스와 Radix UI의 동작(Behavior) 스크립트를 결합(예: \`components/ui/\`)하여, 재사용성이 높고 접근성 표준(WAI-ARIA)을 준수하는 모던한 디자인 뼈대를 구축했습니다.
-`, `auth.ts`)**
-   - Firebase Auth를 활용하여 사용자 인증(이메일, 소셜 로그인)을 처리합니다.
-   - 라우팅 단에서 `<ProtectedRoute>` 컴포넌트를 통해 로그인 여부를 검증하고, 미인증 사용자의 접근을 차단합니다.
-2. **지도 기반 카페 탐색 및 조작 (`cafeApi.ts`, `kakaoApi.ts`)**
-   - **지도 렌더링**: `react-kakao-maps-sdk`를 통해 사용자의 현재 위치 또는 선택된 영역의 카페 핀을 렌더링합니다.
-   - **데이터 패칭**: Firestore의 `cafes` 컬렉션에서 카페 메타데이터(좌표 포함)를 가져옵니다. 
-   - **이미지 자동화**: 사용자가 새 카페를 등록할 때 Kakao Search REST API(`searchCafeImages`)를 호출하여 해당 카페의 이미지를 자동으로 수집 및 매핑합니다.
-3. **커피 레시피 공유 및 관리 (`recipeApi.ts`, `types/recipe.ts`)**
-   - 원두 정보, 물 온도, 추출 비율(Ratio) 및 각 단계별 추출 시간(ExtractionStep)을 세밀하게 설정할 수 있는 커스텀 데이터 스키마를 구성했습니다.
-   - 최신순/인기순 조회 등의 데이터를 Firestore Index를 통해 최적화하여 쿼리합니다.
-4. **Mocking 기반 E2E 테스트 파이프라인**
-   - Playwright 기반의 통합 테스트 시, 프로덕션 데이터 오염을 방지하기 위해 API 레이어 단에서 `window.isE2ETest` 플래그를 검사합니다.
-   - 테스트 환경에서는 Firestore 대신 LocalStorage를 활용한 Mock 데이터 저장소(`mock_cafes`, `mock_recipes`)로 요청을 가로채어 빠르고 독립적인 테스트 환경을 구축했습니다.
-
-## 프로젝트 구조 (Project Structure)
-```text
-cafe-book/
-├── src/
-│   ├── api/             # Firebase 및 서드파티(Kakao) API 통신 레이어
-│   │   ├── auth.ts      # 유저 인증 허브
-│   │   ├── cafeApi.ts   # 카페 데이터 CRUD 로직
-│   │   ├── recipeApi.ts # 레시피 데이터 CRUD 로직
-│   │   └── kakaoApi.ts  # Kakao REST API 래퍼
-│   ├── components/      # UI 컴포넌트 세트 (Radix UI 기반)
-│   ├── pages/           # React Router 뷰 단위 컴포넌트
-│   │   ├── MapPage.tsx    # 메인 지도/탐색 뷰
-│   │   └── RecipeDetailPage.tsx # 레시피 상세 설명 뷰
-│   ├── types/           # 전역 TypeScript 타입 선언
-│   │   └── recipe.ts    # 레시피 엔티티 인터페이스
-│   ├── App.tsx          # 최상위 라우팅 및 레이아웃 컨텍스트
-│   └── main.tsx         # 진입점 (Vite 기반)
-├── tests/               # Vitest 기반 단위 테스트
-├── specs/               # Playwright 기반 E2E 테스트 시나리오
-└── firebase.json        # Firebase 배포 및 보안 정책 (Security Rules)
-```
-
-## 상세 기능 구현 (Technical Implementation)
-
-- **커스텀 커피 추출 스키마 구현**
-  커피 레시피를 단순히 텍스트로 저장하는 것이 아니라, `ExtractionStep` 인터페이스를 통해 푸어오버(Pour-over) 등의 세밀한 드립 커피 정보를 등록할 수 있습니다. 각 단계별 물 투입량, 누적량, 소요 시간을 계량화하여 저장하고 클라이언트에 타이머 등 부가 기능을 제공하기 쉬운 구조입니다.
-- **데이터 흐름 위임에 따른 레이어 분리**
-  View 영역(`pages/`)에는 UI 렌더링에만 집중하고, 실제 비즈니스 로직(예: Firestore 쿼리, Timestamp 파싱 등)은 `api/` 디렉토리에 추상화시켜 관리합니다. 이를 통해 Firebase를 다른 데이터베이스로 마이그레이션하거나 테스트 코드 작성 시 의존성을 낮췄습니다.
-- **보안을 고려한 Lazy Migration**
-  레시피 데이터에 `startTime`과 같은 신규 필드가 추가되었을 때, 기존 과거 데이터를 백엔드에서 억지로 일괄 마이그레이션(Batch Update)하지 않고, 클라이언트 `getRecipesByUserId` 패치 시점에서 스키마를 평가하여 기본값을 주입하는 방식(Lazy Migration)을 택해 데이터베이스 트랜잭션 오버헤드를 막고 있습니다.
-
-## 사용 기술 및 라이브러리 (Tech Stack)
-
-- **Frontend Core**: React 18, TypeScript, Vite
-- **Routing**: React Router DOM v7
-- **Styling/UI**: Tailwind CSS 3.4, Radix UI(접근성 높은 Headless UI), Lucide React(아이콘)
-- **Backend / Database**: Firebase v10 (Firestore, Firebase Auth)
-- **Mapping Service**: Kakao Maps API, Kakao SDK (`react-kakao-maps-sdk`)
-- **Testing**: Vitest (Unit Test), Playwright (E2E Test)
-
-## 주요 구현 특징 (Key Highlights)
-
-1. **Smart E2E Test Strategy**
-   Playwright 환경에서 브라우저가 실행될 때 브라우저 윈도우 객체에 테스트 플래그를 심고, API 유틸에서 이를 런타임에 감지하여 `localStorage` 모의 저장소로 전환하는 "Runtime Mocking" 아키텍처를 구현했습니다. 이 전략은 별도의 Mocking 서버를 띄우지 않고도 프론트엔드 기능을 완벽하게 검증할 수 있게 합니다.
-2. **지도와 데이터의 매끄러운 바인딩**
-   카카오 지도의 클러스터링/마커 표시 기능과 Firebase의 실시간 데이터 스트리밍을 결합하여, 유저가 바라보는 지도 위치상에 존재하는 카페 데이터를 능동적으로 렌더링하는 UX를 제공합니다.
-3. **Headless 컴포넌트를 활용한 디자인 시스템**
-   Tailwind CSS의 유틸리티 클래스와 Radix UI의 동작(Behavior) 스크립트를 결합(예: `components/ui/`)하여, 재사용성이 높고 접근성 표준(WAI-ARIA)을 준수하는 모던한 디자인 뼈대를 구축했습니다.
-`, \`auth.ts\`)**
-   - Firebase Auth를 활용하여 사용자 인증(이메일, 소셜 로그인 등)을 처리합니다.
-   - 라우터 단에서 \`<ProtectedRoute>\` 컴포넌트를 통해 로그인 여부를 검증하고, 미인증 사용자의 접근을 차단합니다.
-2. **지도 기반 카페 탐색 및 등록 (\`cafeApi.ts\`, \`kakaoApi.ts\`)**
-   - **지도 렌더링**: \`react-kakao-maps-sdk\`를 통해 사용자의 현재 위치 또는 특정 상태의 영업 중인 카페 핀을 렌더링합니다.
-   - **데이터 캐싱**: Firestore의 \`cafes\` 컬렉션에서 카페 메타데이터(좌표 포함)를 가져옵니다. 
-   - **이미지 자동화**: 사용자가 새 카페를 등록할 때 Kakao Search REST API(\`searchCafeImages\`)를 호출하여 해당 카페의 이미지를 자동으로 수집 및 매칭합니다.
-3. **커피 레시피 공유 및 관리 (\`recipeApi.ts\`, \`types/recipe.ts\`)**
-   - 원두 정보, 물 온도, 추출 비율(Ratio) 및 각 단계별 추출 시간(ExtractionStep)을 세밀하게 설정할 수 있는 커스텀 데이터 스토리지 구조를 구성했습니다.
-   - 최신순/인기순 조회 등의 데이터를 Firestore Index를 통해 최적화하여 쿼리합니다.
-4. **Mocking 기반 E2E 테스트 파이프라인**
-   - Playwright 기반의 통합 테스트 시, 네트워크 상태나 데이터 오염을 방지하기 위해 API 레이어 단계에서 \`window.isE2ETest\` 플래그를 겁니다.
-   - 테스트 환경에서는 Firestore 대신 LocalStorage를 활용한 Mock 데이터 저장소(\`mock_cafes\`, \`mock_recipes\`)로 요청을 가로채고 응답하는 테스트 환경을 구축했습니다.
-
-## 프로젝트 구조 (Project Structure)
-
-\`\`\`text
-cafe-book/
-├── src/
-│   ├── api/             # Firebase 및 서드파티(Kakao) API 통신 레이어
-│   │   ├── auth.ts      # 사용자 인증 핸들러
-│   │   ├── cafeApi.ts   # 카페 데이터 CRUD 로직
-│   │   ├── recipeApi.ts # 레시피 데이터 CRUD 로직
-│   │   └── kakaoApi.ts  # Kakao REST API 래퍼
-│   ├── components/      # UI 컴포넌트 세트 (Radix UI 기반)
-│   ├── pages/           # React Router 기반의 각 페이지 컴포넌트
-│   │   ├── MapPage.tsx    # 메인 지도/도감 뷰
-│   │   └── RecipeDetailPage.tsx # 레시피 상세 설명 뷰
-│   ├── types/           # 전역 TypeScript 정의 설정
-│   │   └── recipe.ts    # 레시피 엔티티 인터페이스
-│   ├── App.tsx          # 최상위 라우팅 및 레이아웃 컴포넌트
-│   └── main.tsx         # 진입점 (Vite 기반)
-├── tests/               # Vitest 기반 단위 테스트
-├── specs/               # Playwright 기반 E2E 테스트 시나리오
-└── firebase.json        # Firebase 배포 및 보안 정책 (Security Rules)
-\`\`\`
-
-## 상세 기술 구현 (Technical Implementation)
-
-- **커피 추출 상태 머신 구현**
-  커피 레시피를 단순한 텍스트로 저장하는 것이 아니라, \`ExtractionStep\` 인터페이스를 통해 푸어오버(Pour-over) 등의 세밀한 단계별 정보를 등록할 수 있습니다. 각 단계별 물 주입량, 비율, 소요 시간을 계산화하여 저장하고 클라이언트에 타임라인 등으로 시각화 기능을 제공하기 위한 구조입니다.
-- **데이터 정합성 유지를 위한 레이어 분리**
-  View 영역(\`pages/\`)은 UI 렌더링에만 집중하고, 실제 비즈니스 로직(예: Firestore 쿼리, Timestamp 파싱 등)은 \`api/\` 디렉토리에 추상화시켜 관리합니다. 이를 통해 Firebase를 다루는 데이터베이스 로직이 바뀌더라도 UI 코드를 수정하지 않고 테스트 코드를 작성 시의 일관성을 유지합니다.
-- **보안을 고려한 Lazy Migration**
-  레시피 데이터에 \`startTime\`과 같은 새로운 필드가 추가되었을 때, 기존 과거 데이터를 백엔드에서 한꺼번에 업데이트(Batch Update)하지 않고, 클라이언트가 \`getRecipesByUserId\` 호출 시점에 상태를 평가하여 기본값을 주입하는 방식(Lazy Migration)을 채택하여 데이터베이스 부하를 최소화하고 데이터 정합성을 유지합니다.
-
-## 사용 기술 및 라이브러리 (Tech Stack)
-
-- **Frontend Core**: React 18, TypeScript, Vite
-- **Routing**: React Router DOM v7
-- **Styling/UI**: Tailwind CSS 3.4, Radix UI(접근성 높은 Headless UI), Lucide React(아이콘)
-- **Backend / Database**: Firebase v10 (Firestore, Firebase Auth)
-- **Mapping Service**: Kakao Maps API, Kakao SDK (\`react-kakao-maps-sdk\`)
-- **Testing**: Vitest (Unit Test), Playwright (E2E Test)
-
-## 주요 구현 특징 (Key Highlights)
-
-1. **Smart E2E Test Strategy**
-   Playwright 환경에서 네트워크 의존성을 제거하기 위해 테스트 플래그를 심고, API 유틸에서 이를 감지하여 localStorage 모의 저장소로 전환하는 "Runtime Mocking" 아키텍처를 구현했습니다. 이 전략은 별도의 Mocking 서버를 띄우지 않고도 프로젝트의 기능을 완벽하게 검증할 수 있게 합니다.
-2. **지도와 데이터의 매끄러운 바인딩**
-   카카오 지도의 클러스터링/마커 표시 기능과 Firebase의 실시간 데이터 스트리밍을 결합하여, 사용자가 바라보는 지도 위치 상태에 존재하는 카페 데이터를 능동적으로 렌더링하는 UX를 제공합니다.
-3. **Headless 컴포넌트를 활용한 디자인 시스템**
-   Tailwind CSS의 유틸리티 클래스와 Radix UI의 동작(Behavior) 스택을 결합하여, 재사용성이 높고 접근성 표준(WAI-ARIA)을 준수하는 모던한 디자인 시스템을 구현했습니다.`,
-    techStack: ["React", "TypeScript", "Firebase", "Kakao Maps API", "Tailwind CSS"],
+`,
+    techStack: [
+      "React",
+      "TypeScript",
+      "Firebase",
+      "Kakao Maps API",
+      "Tailwind CSS",
+    ],
     liveUrl: "https://cafe-book.vercel.app",
     imageUrl: "/images/project-cafe-book.webp",
     accentColor: "#ff9800",

@@ -29,14 +29,14 @@ async function syncDescriptions() {
       if (fs.existsSync(filePath)) {
         let description = fs.readFileSync(filePath, 'utf8');
         
-        // 중요: 마크다운 내의 백틱(`) 문자가 템플릿 리터럴을 깨뜨리지 않도록 이스케이프(\`) 처리합니다.
-        description = description.replace(/`/g, '\\`');
-        
         const escapedId = id.replace('.', '\\.');
-        const regex = new RegExp(`(id:\\s*"${escapedId}",[\\s\\S]*?description:\\s*\`)([\\s\\S]*?)(\`,)`, 'g');
+        const regex = new RegExp(`(id:\\s*"${escapedId}",[\\s\\S]*?description:\\s*\`)([\\s\\S]*?)(\`,\\s*techStack:)`, 'g');
         
         if (regex.test(projectsContent)) {
-          projectsContent = projectsContent.replace(regex, `$1${description}$3`);
+          projectsContent = projectsContent.replace(regex, (match, p1, p2, p3) => {
+            const escapedDesc = description.replace(/\\/g, '\\\\').replace(/`/g, '\\`');
+            return `${p1}${escapedDesc}${p3}`;
+          });
           console.log(`✅ [${id}] 동기화 완료`);
         } else {
           console.warn(`⚠️ [${id}] projects.ts에서 찾을 수 없습니다.`);
