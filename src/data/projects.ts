@@ -768,7 +768,7 @@ cafe-book/
       "Tailwind CSS",
     ],
     liveUrl: "https://cafe-book.vercel.app",
-    imageUrl: "/images/project-cafe-book.webp",
+    imageUrl: "/images/project-cafe-book.png",
     accentColor: "#ff9800",
   },
 ];
