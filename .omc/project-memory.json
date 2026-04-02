@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774249059908,
+  "lastScanned": 1774861191003,
   "projectRoot": "D:\\development\\dev-portfolio",
   "techStack": {
     "languages": [
@@ -82,14 +82,14 @@
       "path": "doc",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774249059873,
+      "lastAccessed": 1774861190963,
       "keyFiles": []
     },
     "public": {
       "path": "public",
       "purpose": "Public files",
       "fileCount": 5,
-      "lastAccessed": 1774249059874,
+      "lastAccessed": 1774861190964,
       "keyFiles": [
         "file.svg",
         "globe.svg",
@@ -102,21 +102,21 @@
       "path": "specs",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774249059884,
+      "lastAccessed": 1774861190978,
       "keyFiles": []
     },
     "src": {
       "path": "src",
       "purpose": "Source code",
       "fileCount": 0,
-      "lastAccessed": 1774249059884,
+      "lastAccessed": 1774861190979,
       "keyFiles": []
     },
     "src\\app": {
       "path": "src\\app",
       "purpose": "Application code",
       "fileCount": 6,
-      "lastAccessed": 1774249059885,
+      "lastAccessed": 1774861190980,
       "keyFiles": [
         "favicon.ico",
         "globals.css",
@@ -127,7 +127,7 @@
       "path": "src\\components",
       "purpose": "UI components",
       "fileCount": 7,
-      "lastAccessed": 1774249059886,
+      "lastAccessed": 1774861190981,
       "keyFiles": [
         "AboutSection.tsx",
         "ContactSection.tsx",
@@ -138,7 +138,7 @@
       "path": "src\\data",
       "purpose": "Data files",
       "fileCount": 2,
-      "lastAccessed": 1774249059886,
+      "lastAccessed": 1774861190981,
       "keyFiles": [
         "profile.ts",
         "projects.ts"
@@ -148,7 +148,7 @@
       "path": "src\\lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1774249059886,
+      "lastAccessed": 1774861190982,
       "keyFiles": [
         "animations.ts",
         "utils.ts"
@@ -158,7 +158,7 @@
       "path": "src\\test",
       "purpose": "Test files",
       "fileCount": 1,
-      "lastAccessed": 1774249059887,
+      "lastAccessed": 1774861190982,
       "keyFiles": [
         "setup.ts"
       ]
@@ -166,123 +166,99 @@
   },
   "hotPaths": [
     {
-      "path": "src",
-      "accessCount": 12,
-      "lastAccessed": 1774251685921,
-      "type": "directory"
-    },
-    {
-      "path": "C:\\Users\\tuosm\\.gstack\\projects\\tuosm9390-dev-portfolio\\tuosm-002-modal-image-as-is-design-20260323-163428.md",
-      "accessCount": 8,
-      "lastAccessed": 1774251832748,
+      "path": "src\\components\\ProjectsSection.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1774862772092,
       "type": "file"
     },
     {
       "path": "package.json",
-      "accessCount": 6,
-      "lastAccessed": 1774251642454,
+      "accessCount": 3,
+      "lastAccessed": 1774862083278,
       "type": "file"
     },
     {
-      "path": "",
-      "accessCount": 5,
-      "lastAccessed": 1774251652041,
-      "type": "directory"
-    },
-    {
-      "path": "src\\components\\ProjectModal.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1774251686154,
-      "type": "file"
-    },
-    {
-      "path": "src\\components\\ProjectsSection.tsx",
+      "path": "src\\data\\profile.ts",
       "accessCount": 2,
-      "lastAccessed": 1774251621351,
+      "lastAccessed": 1774862088850,
       "type": "file"
     },
     {
-      "path": "src\\data\\projects.ts",
+      "path": "src\\app\\robots.ts",
       "accessCount": 2,
-      "lastAccessed": 1774251621757,
+      "lastAccessed": 1774862577271,
       "type": "file"
     },
     {
-      "path": "src\\lib\\utils.ts",
+      "path": "src\\app\\sitemap.ts",
       "accessCount": 2,
-      "lastAccessed": 1774251626850,
+      "lastAccessed": 1774862579528,
       "type": "file"
     },
     {
-      "path": "src\\components\\ContactSection.tsx",
+      "path": "src\\app\\layout.tsx",
       "accessCount": 2,
-      "lastAccessed": 1774251634255,
+      "lastAccessed": 1774862636530,
       "type": "file"
     },
     {
-      "path": "src\\components\\ui\\dialog.tsx",
+      "path": "src\\app\\projects\\[id]\\page.tsx",
       "accessCount": 2,
-      "lastAccessed": 1774251634729,
+      "lastAccessed": 1774862948410,
       "type": "file"
     },
     {
-      "path": "C:\\Users\\tuosm\\.claude\\skills\\gstack\\gstack-upgrade\\SKILL.md",
-      "accessCount": 1,
-      "lastAccessed": 1774249088607,
+      "path": "vitest.config.ts",
+      "accessCount": 2,
+      "lastAccessed": 1774863037050,
       "type": "file"
     },
     {
-      "path": "C:\\Users\\tuosm\\AppData\\Local\\Temp\\gstack-sketch-portfolio.html",
+      "path": "src\\components\\JsonLd.tsx",
       "accessCount": 1,
-      "lastAccessed": 1774251168857,
+      "lastAccessed": 1774862593794,
       "type": "file"
     },
     {
-      "path": ".specify\\memory\\constitution.md",
+      "path": "src\\app\\opengraph-image.tsx",
       "accessCount": 1,
-      "lastAccessed": 1774251357717,
+      "lastAccessed": 1774862656999,
       "type": "file"
     },
     {
-      "path": "package-lock.json",
+      "path": "src\\app\\projects\\[id]\\opengraph-image.tsx",
       "accessCount": 1,
-      "lastAccessed": 1774251373111,
-      "type": "directory"
-    },
-    {
-      "path": "specs\\002-modal-image-as-is\\spec.md",
-      "accessCount": 1,
-      "lastAccessed": 1774251386584,
+      "lastAccessed": 1774862699319,
       "type": "file"
     },
     {
-      "path": "specs\\002-modal-image-as-is\\plan.md",
+      "path": "src\\app\\llms.txt\\route.ts",
       "accessCount": 1,
-      "lastAccessed": 1774251386838,
+      "lastAccessed": 1774862707760,
       "type": "file"
     },
     {
-      "path": "specs\\002-modal-image-as-is\\tasks.md",
+      "path": "src\\app\\__tests__\\page.test.tsx",
       "accessCount": 1,
-      "lastAccessed": 1774251388755,
+      "lastAccessed": 1774862827252,
       "type": "file"
     },
     {
-      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\project_portfolio_strategy.md",
+      "path": "src\\app\\__tests__\\sitemap.test.ts",
       "accessCount": 1,
-      "lastAccessed": 1774251982751,
+      "lastAccessed": 1774862846568,
       "type": "file"
     },
     {
-      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\feedback_dependency_placement.md",
+      "path": "src\\app\\__tests__\\robots.test.ts",
       "accessCount": 1,
-      "lastAccessed": 1774251990852,
+      "lastAccessed": 1774862850061,
       "type": "file"
     },
     {
-      "path": "C:\\Users\\tuosm\\.claude\\projects\\D--development-dev-portfolio\\memory\\MEMORY.md",
+      "path": "src\\app\\projects\\__tests__\\project-page.test.tsx",
       "accessCount": 1,
-      "lastAccessed": 1774251995372,
+      "lastAccessed": 1774862857731,
       "type": "file"
     }
   ],

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk tsc:*)",
+      "Bash(rtk vitest:*)",
+      "Bash(npx vitest:*)",
+      "Bash(rtk next:*)",
+      "Bash(~/.claude/skills/gstack/bin/gstack-review-read 2>/dev/null)",
+      "Bash(npx next:*)",
+      "Bash(rtk git:*)"
+    ]
+  }
+}
