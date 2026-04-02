@@ -27,7 +27,10 @@ async function syncDescriptions() {
 
     for (const [id, filePath] of Object.entries(projectPaths)) {
       if (fs.existsSync(filePath)) {
-        const description = fs.readFileSync(filePath, 'utf8');
+        let description = fs.readFileSync(filePath, 'utf8');
+        
+        // 중요: 마크다운 내의 백틱(`) 문자가 템플릿 리터럴을 깨뜨리지 않도록 이스케이프(\`) 처리합니다.
+        description = description.replace(/`/g, '\\`');
         
         const escapedId = id.replace('.', '\\.');
         const regex = new RegExp(`(id:\\s*"${escapedId}",[\\s\\S]*?description:\\s*\`)([\\s\\S]*?)(\`,)`, 'g');
