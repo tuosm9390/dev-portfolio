@@ -12,10 +12,10 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <AboutSection />
         <Suspense fallback={<ProjectsSectionSkeleton />}>
           <ProjectsSection />
         </Suspense>
+        <AboutSection />
         <ContactSection />
       </main>
       <Footer />

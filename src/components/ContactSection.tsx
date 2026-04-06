@@ -9,15 +9,12 @@ import {
   Linkedin,
   Send,
   CheckCircle,
-  Sparkles,
   Loader2,
 } from "lucide-react";
 import { profile } from "@/data/profile";
 import {
   fadeInUp,
   staggerContainer,
-  slideInLeft,
-  slideInRight,
 } from "@/lib/animations";
 import emailjs from "@emailjs/browser";
 
@@ -81,8 +78,8 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="section-padding px-6 bg-background">
-      <div className="mx-auto max-w-6xl">
+    <section id="contact" className="section-padding px-6 section-light">
+      <div className="mx-auto max-w-[1024px]">
         {/* Section header */}
         <motion.div
           variants={staggerContainer}
@@ -91,57 +88,47 @@ export default function ContactSection() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-20 text-center"
         >
-          <motion.div
-            variants={fadeInUp}
-            className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary"
-          >
-            <Sparkles className="h-4 w-4" />
-            <span>Contact</span>
-          </motion.div>
           <motion.h2
             variants={fadeInUp}
-            className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl"
+            className="mb-6 text-[40px] font-semibold leading-[1.1] tracking-tight sm:text-[56px]"
           >
             프로젝트를 시작해볼까요?
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground"
+            className="mx-auto max-w-[600px] text-[17px] leading-[1.47] tracking-[-0.022em] text-black/60 sm:text-[21px]"
           >
-            아이디어가 있으시다면 편하게 연락주세요. 최대한 빠르게
-            답변드리겠습니다.
+            아이디어가 있으시다면 편하게 연락주세요.
+            최대한 빠르게 답변드리겠습니다.
           </motion.p>
         </motion.div>
 
-        <div className="grid gap-12 lg:grid-cols-5 items-start">
-          {/* Contact info: Clean Cards */}
+        <div className="grid gap-16 lg:grid-cols-2 items-start">
+          {/* Contact info */}
           <motion.div
-            variants={slideInLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="lg:col-span-2 space-y-6"
+            variants={fadeInUp}
+            className="space-y-10"
           >
-            <h3 className="text-2xl font-bold tracking-tight text-foreground mb-8">
+            <h3 className="text-[28px] font-semibold tracking-[0.007em] text-[#1d1d1f]">
               연락처 정보
             </h3>
-            <div className="grid gap-4">
+            <div className="grid gap-6">
               {contactLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
-                  className="group flex items-center gap-5 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+                  className="group flex items-center gap-6"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-black/5 text-black/80 transition-all group-hover:bg-apple-blue group-hover:text-white">
                     <link.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground/60 mb-0.5">
+                    <p className="text-[12px] font-semibold uppercase tracking-wider text-black/40 mb-0.5">
                       {link.label}
                     </p>
-                    <p className="text-base font-semibold text-foreground">
+                    <p className="text-[17px] font-normal text-[#1d1d1f] group-hover:text-apple-blue transition-colors">
                       {link.value}
                     </p>
                   </div>
@@ -150,20 +137,17 @@ export default function ContactSection() {
             </div>
           </motion.div>
 
-          {/* Contact form: EmailJS integrated */}
+          {/* Contact form */}
           <motion.div
-            variants={slideInRight}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="lg:col-span-3 rounded-[32px] border border-border bg-card p-8 sm:p-12"
+            variants={fadeInUp}
+            className="rounded-2xl bg-white apple-shadow p-8 sm:p-10"
           >
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
-              <div className="grid gap-8 sm:grid-cols-2">
+              <div className="space-y-6">
                 <div className="space-y-2">
                   <label
                     htmlFor="user_name"
-                    className="text-sm font-bold text-foreground"
+                    className="text-[14px] font-semibold text-black/60"
                   >
                     성함
                   </label>
@@ -172,14 +156,14 @@ export default function ContactSection() {
                     name="user_name"
                     type="text"
                     required
-                    className="w-full rounded-xl border border-border bg-background px-4 py-4 text-base text-foreground placeholder-muted-foreground/40 outline-none transition-all focus:border-primary focus:ring-4 focus:ring-primary/10"
+                    className="w-full rounded-xl border border-black/10 bg-[#fafafc] px-4 py-3 text-[17px] text-[#1d1d1f] outline-none transition-all focus:border-apple-blue"
                     placeholder="홍길동"
                   />
                 </div>
                 <div className="space-y-2">
                   <label
                     htmlFor="user_email"
-                    className="text-sm font-bold text-foreground"
+                    className="text-[14px] font-semibold text-black/60"
                   >
                     이메일
                   </label>
@@ -188,31 +172,31 @@ export default function ContactSection() {
                     name="user_email"
                     type="email"
                     required
-                    className="w-full rounded-xl border border-border bg-background px-4 py-4 text-base text-foreground placeholder-muted-foreground/40 outline-none transition-all focus:border-primary focus:ring-4 focus:ring-primary/10"
+                    className="w-full rounded-xl border border-black/10 bg-[#fafafc] px-4 py-3 text-[17px] text-[#1d1d1f] outline-none transition-all focus:border-apple-blue"
                     placeholder="hello@example.com"
                   />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="message"
-                  className="text-sm font-bold text-foreground"
-                >
-                  상세 내용
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={4}
-                  className="w-full resize-none rounded-xl border border-border bg-background px-4 py-4 text-base text-foreground placeholder-muted-foreground/40 outline-none transition-all focus:border-primary focus:ring-4 focus:ring-primary/10"
-                  placeholder="진행하고자 하는 프로젝트에 대해 들려주세요."
-                />
+                <div className="space-y-2">
+                  <label
+                    htmlFor="message"
+                    className="text-[14px] font-semibold text-black/60"
+                  >
+                    상세 내용
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={4}
+                    className="w-full resize-none rounded-xl border border-black/10 bg-[#fafafc] px-4 py-3 text-[17px] text-[#1d1d1f] outline-none transition-all focus:border-apple-blue"
+                    placeholder="진행하고자 하는 프로젝트에 대해 들려주세요."
+                  />
+                </div>
               </div>
               <button
                 type="submit"
                 disabled={isSubmitting || submitted}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-5 text-lg font-bold text-white transition-all hover:bg-primary/90 hover:scale-[1.02] shadow-xl shadow-primary/20 disabled:opacity-70 sm:w-auto"
+                className="btn-apple-primary group flex w-full items-center justify-center gap-2 disabled:opacity-70 sm:w-auto"
               >
                 {isSubmitting ? (
                   <>
@@ -226,8 +210,8 @@ export default function ContactSection() {
                   </>
                 ) : (
                   <>
-                    <Send className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    프로젝트 문의하기
+                    <Send className="h-4 w-4" />
+                    보내기
                   </>
                 )}
               </button>

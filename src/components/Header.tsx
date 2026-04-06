@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import { profile } from "@/data/profile";
-import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "소개", href: "#about" },
@@ -13,14 +12,7 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleNavClick = (href: string) => {
     setMobileOpen(false);
@@ -29,53 +21,50 @@ export default function Header() {
   };
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border py-4"
-          : "bg-transparent py-6"
-      )}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
-        {/* Logo */}
+    <header className="nav-glass fixed top-0 left-0 right-0 z-50 h-[48px] flex items-center">
+      <div className="mx-auto flex w-full max-w-[1024px] items-center justify-between px-6">
+        {/* Logo - Apple Style Centered or Left */}
         <a
           href="#"
           onClick={(e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="text-2xl font-bold tracking-tighter text-foreground transition-colors hover:text-primary"
+          className="text-[17px] font-semibold tracking-tight text-white/90 transition-opacity hover:opacity-100"
         >
           {profile.businessName}
         </a>
 
-        {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 md:flex">
+        {/* Desktop Nav - Centered Links */}
+        <nav className="hidden items-center gap-8 md:flex absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => (
             <button
               key={link.href}
               onClick={() => handleNavClick(link.href)}
-              className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              className="text-[12px] font-normal text-white/80 transition-opacity hover:opacity-100"
             >
               {link.label}
             </button>
           ))}
-          <button
-            onClick={() => handleNavClick("#contact")}
-            className="rounded-[12px] bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95"
-          >
-            프로젝트 의뢰
-          </button>
         </nav>
+
+        {/* Icons - Right Side */}
+        <div className="hidden items-center gap-6 md:flex">
+          <button className="text-white/80 transition-opacity hover:opacity-100">
+            <Search size={16} />
+          </button>
+          <button className="text-white/80 transition-opacity hover:opacity-100">
+            <ShoppingBag size={16} />
+          </button>
+        </div>
 
         {/* Mobile Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-foreground md:hidden"
+          className="text-white md:hidden"
           aria-label="메뉴 토글"
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -83,24 +72,24 @@ export default function Header() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute left-0 right-0 top-full border-t border-border bg-background/95 backdrop-blur-xl md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 top-[48px] z-40 bg-black md:hidden"
           >
-            <nav className="flex flex-col gap-1 px-6 py-6">
+            <nav className="flex flex-col gap-0 px-10 pt-10">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="rounded-xl px-4 py-4 text-left text-base font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  className="border-b border-white/10 py-4 text-left text-2xl font-semibold text-white/90 transition-colors hover:text-white"
                 >
                   {link.label}
                 </button>
               ))}
               <button
                 onClick={() => handleNavClick("#contact")}
-                className="mt-4 rounded-xl bg-primary px-4 py-4 text-center text-base font-bold text-white transition-all active:scale-95"
+                className="mt-6 text-left text-2xl font-semibold text-apple-blue"
               >
                 프로젝트 의뢰
               </button>

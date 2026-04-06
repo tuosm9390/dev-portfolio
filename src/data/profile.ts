@@ -37,11 +37,13 @@ export const profile = {
   contact: {
     email: "devcraft0416@gmail.com",
     phone: "010-9121-8397",
-    github: "https://github.com/devcraft",
-    linkedin: "https://linkedin.com/in/devcraft",
+    github: "https://github.com/tuosm9390",
+    linkedin:
+      "https://www.linkedin.com/in/%EC%83%81%EC%B0%AC-%EA%B9%80-83352b267/",
   },
   social: {
-    github: "https://github.com/devcraft",
-    linkedin: "https://linkedin.com/in/devcraft",
+    github: "https://github.com/tuosm9390",
+    linkedin:
+      "https://www.linkedin.com/in/%EC%83%81%EC%B0%AC-%EA%B9%80-83352b267/",
   },
 } as const;

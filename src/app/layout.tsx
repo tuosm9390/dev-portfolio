@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
 import { profile } from "@/data/profile";
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-inter",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -82,8 +81,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${outfit.variable}`}>
+    <html lang="ko" className={`${inter.variable}`}>
       <head>
+        {/* Pretendard is excellent for Korean SF Pro-like feel */}
         <link
           rel="stylesheet"
           as="style"
@@ -91,7 +91,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
         />
       </head>
-      <body>
+      <body className="antialiased">
         <JsonLd />
         {children}
       </body>

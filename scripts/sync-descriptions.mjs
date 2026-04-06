@@ -17,6 +17,7 @@ const projectPaths = {
   'quote-builder': 'D:/development/quote-builder/DESCRIPTION.md',
   'Synapso.dev': 'D:/development/auto-blog/DESCRIPTION.md',
   'cafe-book': 'D:/development/cafe-book/DESCRIPTION.md',
+  'self-growth-dashboard': 'D:/development/self-growth-dashboard/DESCRIPTION.md',
 };
 
 async function syncDescriptions() {
@@ -28,10 +29,10 @@ async function syncDescriptions() {
     for (const [id, filePath] of Object.entries(projectPaths)) {
       if (fs.existsSync(filePath)) {
         let description = fs.readFileSync(filePath, 'utf8');
-        
+
         const escapedId = id.replace('.', '\\.');
         const regex = new RegExp(`(id:\\s*"${escapedId}",[\\s\\S]*?description:\\s*\`)([\\s\\S]*?)(\`,\\s*techStack:)`, 'g');
-        
+
         if (regex.test(projectsContent)) {
           projectsContent = projectsContent.replace(regex, (match, p1, p2, p3) => {
             const escapedDesc = description.replace(/\\/g, '\\\\').replace(/`/g, '\\`');

@@ -354,7 +354,7 @@ quote-builder/
       "jsPDF",
       "Tailwind CSS",
     ],
-    liveUrl: "https://quote-builder.vercel.app",
+    liveUrl: "https://quote-builder-beige.vercel.app/",
     imageUrl: "/images/project-quote-builder.webp",
     accentColor: "#0064ff",
   },
@@ -363,9 +363,76 @@ quote-builder/
     title: "Self Growth Dashboard",
     summary:
       "학습, 운동, 회고 등 개인의 성장 데이터를 추적하고 시각화하는 올인원 대시보드입니다.",
-    description: `학습, 운동, 회고 등 개인의 성장 데이터를 추적하고 시각화하는 올인원 대시보드입니다.
+    description: `# Self-Growth Dashboard
 
-Chart.js를 통한 지표 분석과 Supabase 기반의 실시간 데이터 저장을 지원합니다. 사용자 개인의 루틴 관리에 최적화되어 있습니다.`,
+## 1. 프로젝트 개요 (Overview)
+
+**Self-Growth Dashboard**는 개인의 루틴, 할 일, 일정 및 목표 달성률을 종합적으로 관리하고 시각화하는 데이터 기반 대시보드 웹 애플리케이션입니다. 
+
+본 프로젝트의 가장 큰 특징은 **Notion을 Headless DB로 활용**하면서도 자체적인 인터페이스와 전역 상태 관리를 통해 사용자에게 빠른 인터랙션과 고도화된 데이터 시각화를 제공한다는 점입니다. 이를 통해 Notion의 자유로운 데이터 스키마라는 장점을 취하는 동시에, 제한된 시각화 한계 및 느린 사용성을 극복했습니다.
+
+## 2. 기술 스택 (Tech Stack)
+
+| 분류 | 기술 및 라이브러리 | 적용 목적 |
+| --- | --- | --- |
+| **Framework / Core** | Next.js (16.1.6, App Router), React (19.2.3) | 서버 사이드 렌더링, API 라우트 활용 및 최신 React 기능 도입 |
+| **State Management** | Zustand (5.0.12) | 가볍고 직관적인 전역 상태 관리 및 Slice 패턴을 통한 상태 분리 |
+| **Database / Backend** | @notionhq/client (5.13.0) | Notion API를 활용한 Headless CMS 연동 및 데이터 영속화 보장 |
+| **Styling & UI** | Tailwind CSS v4, clsx, tailwind-merge | Utility-first 스타일링과 동적 클래스 병합 처리 |
+| **Visualization & Animation**| Recharts (3.8.0), Framer Motion (12.37.0) | 대시보드 통계 차트 구현 및 부드러운 UI 전환 애니메이션 처리 |
+| **Validation & Form** | React Hook Form, Zod | 스키마 기반 런타임 데이터 검증 및 안전한 폼 데이터 처리 |
+| **Testing** | Vitest (3.2.4), Testing Library | JSDOM 기반의 단위/통합 테스트 환경 구축 및 무결성 검증 |
+
+## 3. 핵심 아키텍처 및 데이터 파이프라인 (Core Architecture & Data Pipeline)
+
+### 3.1. 계층 분리 아키텍처 (Layered Architecture)
+프론트엔드와 백엔드의 책임을 명확하게 분리하여 확장성과 유지보수성을 극대화하였습니다.
+
+- **Presentation Layer (\`src/app\`, \`src/components\`)**: React 기반의 UI와 서버/클라이언트 라우팅 처리
+- **State Layer (\`src/store\`)**: Zustand를 이용해 서버 데이터를 캐싱하고, UI 상태를 즉시(Optimistic)로 갱신
+- **Service Layer (\`src/services\`)**: 클라이언트에서 호출할 API 인터페이스 및 HTTP 통신 구현체 (e.g. \`JsonRoutineService\`)
+- **API Controller Layer (\`src/app/api\`)**: Next.js Route Handler가 요청을 받아 Zod로 유효성을 검증하고 Repository로 위임
+- **Repository Layer (\`src/repositories\`)**: Notion API와의 실제 통신 및 스키마 매핑 로직 전담 (e.g. \`NotionRoutineRepository\`)
+
+### 3.2. 데이터 흐름 파이프라인 (Data Flow)
+1. **[UI/Store]** 유저 인터랙션으로 Zustand Store의 비동기 액션 호출 (예: 상태 업데이트)
+2. **[Service]** \`Json*Service\`가 Fetch API를 통해 방어적 에러 핸들링과 함께 Next.js API 라우트로 네트워크 요청 전송
+3. **[API Route]** \`/api/*\` 경로에서 요청을 받아 Payload 유효성 검사 (Zod Schema Validation) 수행
+4. **[Repository]** \`Notion*Repository\`가 검증된 데이터를 바탕으로 Notion Database의 블록 및 속성 업데이트 구성 및 실행
+5. **[Response]** 성공 결과가 클라이언트로 반환되고, Zustand Store가 뷰(View)를 트리거하여 화면 렌더링 최신화
+
+## 4. 프로젝트 주요 구조 (Project Structure)
+
+\`\`\`text
+├── src/
+│   ├── app/
+│   │   ├── (dashboard)/        # 대시보드 도메인 라우트 (analytics, calendar, routines, todos 등)
+│   │   ├── api/                # 클라이언트 통신을 받아 Notion에 중계하는 BFF(Backend for Frontend) 엔드포인트
+│   │   └── layout.tsx / page.tsx
+│   ├── components/             # 도메인 중립적 및 재사용 가능한 UI 컴포넌트 목록 모음
+│   ├── data/                   # 초기화 데이터, 모의(Mock) 데이터 및 정적 설정 값
+│   ├── hooks/                  # 공통 비즈니스 로직을 분리한 커스텀 리액트 훅
+│   ├── lib/                    # 유틸리티 함수 모음 (클래스 병합 처리, Zod 스키마 정의 등)
+│   ├── repositories/           # [Backend Layer] Notion API와 직접 소통하고 DTO 매핑을 수행하는 계층
+│   ├── services/               # [Frontend Layer] 프론트엔드가 사용할 API 호출 인터페이스 및 팩토리 패턴
+│   ├── store/                  # Zustand Store (Slice 패턴으로 모듈별 객체 분리 구조 설계)
+│   └── types/                  # 전역으로 공유되는 비즈니스 도메인 엔티티(Entity) 타입 선언
+\`\`\`
+
+## 5. 주요 구현 특징 및 기술적 성과 (Key Highlights)
+
+### 5.1. Slice 패턴을 활용한 스케일러블한 상태 관리
+여러 도메인의 데이터(Routines, Schedules, Todos, Categories, Analytics 등)가 대량으로 혼재하는 대시보드의 특성상, 단일 Store가 비대해지는 문제를 방지하기 위해 **Zustand Slice 패턴**을 적극 도입했습니다. 개별 관심사별로 상태와 비동기 로직을 분리(\`RoutineSlice\`, \`TodoSlice\` 등) 한 후, 루트 스토어(\`useAppStore\`)에 통합하여 유연하고 확장 가능한 데이터 파이프라인을 구축했습니다.
+
+### 5.2. Service Factory 패턴으로 의존성 역전 구현
+유저 인터페이스(UI)가 구체적인 통신 로직에 강하게 종속되는 현상을 막기 위하여 \`ServiceFactory\` 패턴을 적용했습니다. \`IRoutineService\`, \`ITodoService\`와 같은 추상 인터페이스에 연결된 구현체(\`JsonRoutineService\`)를 동적으로 주입하여, 추후 다른 데이터베이스 플랫폼(예: Supabase 등)으로의 마이그레이션 시 프론트 컴포넌트 로직의 변경을 원천적으로 차단했습니다.
+
+### 5.3. Notion DB의 최적화된 Headless 연동
+자주 업데이트 되거나 관리가 필요한 분류, 프로젝트, 스케줄 등을 코드베이스 외부(Notion)에서 편리하게 제어할 수 있습니다. Notion API가 가지는 복잡한 관계 쿼리 및 통계적 연산 한계는 Next.js 내부 로직과 프론트엔드 데이터 조합(Join) 로직으로 완벽하게 보완했습니다. 관리적 편안함과 유접 인터페이스의 자유도를 동시에 확보했습니다.
+
+### 5.4. 마이크레이션 스크립트 기반 데이터 무결성 이관
+레거시 데이터나 로컬의 과거 데이터를 Notion DB 구조로 단숨에 정확하게 이전하기 위해, 독립적으로 구동되는 커스텀 마이그레이션 스크립트(\`migrate-to-notion.js\`, \`migrate-records-only.js\`)를 구축하여 초기 개발 환경 구축과 데이터 무결성 보장을 완수했습니다.
+`,
     techStack: [
       "Next.js",
       "TypeScript",
@@ -455,7 +522,7 @@ sumpyo-flutter-app/
 
 이 서비스는 다음과 같은 6단계 파이프라인으로 작동합니다:
 
-1. **멀티소스 크롤링 (Crawling)**: Hacker News, Reddit, dev.to에서 최근 24시간 내 발행된 테크/AI/개발 콘텐츠를 병렬로 수집합니다.
+1. **멀티소스 크롤링 (Crawling)**: Hacker News, Reddit, dev.to에서 전날 24시간 동안(00:00:00 ~ 23:59:59 UTC) 발행된 테크/AI/개발 콘텐츠를 병렬로 수집합니다.
 2. **AI 트렌드 분석 (Analysis)**: 수집된 기사들을 Gemini에게 전달하여 실제 화제가 되고 있는 토픽을 2~3개 선정합니다.
 3. **중복 토픽 필터링 (Deduplication)**: 최근 7일 내 발행된 게시물과 주제가 겹치는 토픽을 Jaccard 유사도 + Gemini 시맨틱 판단으로 제거합니다.
 4. **AI 콘텐츠 생성 (Generation)**: 선정된 토픽을 Gemini에게 전달합니다. Chain-of-Thought 프롬프팅, Few-Shot 예시, 구조 이력 인식을 통해 매번 다른 리듬과 구조의 글을 생성합니다.
@@ -530,7 +597,7 @@ threads-autoposter/
 ### 4.4. 데이터 수집 엔진 (\`MultiSourceCrawler\`)
 
 - **병렬 수집**: HN, Reddit, dev.to 3개 소스를 \`Promise.allSettled\`로 동시 크롤링
-- **시간 필터**: 최근 24시간 내 발행된 콘텐츠만 수집
+- **시간 필터**: 전날 24시간(00:00:00 ~ 23:59:59 UTC) 내 발행된 콘텐츠만 수집
 - **점수 기반 정렬**: 추천수(score), 댓글수를 기반으로 신뢰도 높은 콘텐츠 우선 선별
 - **부분 실패 허용**: 특정 소스 수집 실패 시에도 나머지 소스 결과로 파이프라인 계속 진행
 
@@ -678,10 +745,11 @@ agent-diary/
 6. **채팅 (RAG)**: 사용자가 채팅을 요청하면 해당 세션의 로그를 검색하여 Gemini의 System Instruction으로 삽입, 맥락에 맞는 답변을 생성합니다.
 `,
     techStack: ["Next.js", "Electron", "SQLite", "Socket.io", "Gemini API"],
-    liveUrl: "https://agent-diary.vercel.app",
+    // liveUrl: "https://agent-diary.vercel.app",
     githubUrl: "https://github.com/tuosm9390/agent-diary",
     imageUrl: "/images/project-agent-diary.webp",
     accentColor: "#3b82f6",
+    liveUrl: "",
   },
   {
     id: "cafe-book",

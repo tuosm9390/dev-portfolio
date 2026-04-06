@@ -1,65 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronDown, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { profile } from "@/data/profile";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 export default function HeroSection() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20 bg-background">
-      {/* Subtle Background Glow */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
-      </div>
-
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20 section-dark">
       {/* Main Content */}
       <motion.div
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mx-auto max-w-8xl text-center"
+        className="relative z-10 mx-auto max-w-[980px] text-center"
       >
-        {/* Toss-style Badge */}
-        <motion.div variants={fadeInUp} className="mb-10 flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2 text-sm font-semibold tracking-wide text-primary">
-            <Sparkles className="h-4 w-4" />
-            Available for New Projects
-          </span>
-        </motion.div>
-
-        {/* Hero Title: Extreme Typography */}
+        {/* Hero Title: Apple Display Style */}
         <motion.h1
           variants={fadeInUp}
-          className="mb-10 text-6xl font-extrabold leading-[1.1] tracking-tight text-foreground sm:text-8xl lg:text-9xl"
+          className="mb-4 text-[48px] font-semibold leading-[1.07] tracking-[-0.015em] text-white sm:text-[80px] lg:text-[120px]"
         >
-          {profile.tagline.split(", ").map((part, i) => (
-            <span key={i} className="block">
-              {i === 0 ? (
-                <span className="text-primary">{part}</span>
-              ) : (
-                <span className="text-foreground">{part}</span>
-              )}
-            </span>
-          ))}
+          {profile.tagline.split(", ")[0]}
         </motion.h1>
+        
+        <motion.h2
+          variants={fadeInUp}
+          className="mb-8 text-[21px] font-normal leading-[1.19] tracking-[0.011em] text-white/90 sm:text-[28px] lg:text-[34px]"
+        >
+          {profile.tagline.split(", ").slice(1).join(", ")}
+        </motion.h2>
 
         {/* Hero Description: Clean & Readable */}
         <motion.p
           variants={fadeInUp}
-          className="mx-auto mb-16 max-w-5xl text-xl leading-relaxed text-muted-foreground sm:text-2xl"
+          className="mx-auto mb-10 max-w-[600px] text-[17px] leading-[1.47] tracking-[-0.022em] text-white/60 sm:text-[19px]"
         >
-          {profile.description.map((line, i) => (
-            <span key={i} className="block">
-              {line}
-            </span>
-          ))}
+          {profile.description.join(" ")}
         </motion.p>
 
-        {/* Call to Actions: Toss-like Buttons */}
+        {/* Call to Actions: Apple Pill Buttons */}
         <motion.div
           variants={fadeInUp}
-          className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="flex flex-col items-center justify-center gap-6 sm:flex-row"
         >
           <button
             onClick={() => {
@@ -67,10 +49,9 @@ export default function HeroSection() {
                 .querySelector("#projects")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="group relative flex items-center gap-2 rounded-[18px] bg-primary px-10 py-5 text-lg font-bold text-white transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-[0_20px_40px_-10px_rgba(0,100,255,0.3)]"
+            className="btn-apple-primary group flex items-center gap-2 rounded-full px-8 py-3 text-[17px] font-normal"
           >
             프로젝트 보기
-            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </button>
           <button
             onClick={() => {
@@ -78,31 +59,18 @@ export default function HeroSection() {
                 .querySelector("#contact")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="group flex items-center gap-2 rounded-[18px] bg-secondary px-10 py-5 text-lg font-bold text-foreground transition-all hover:bg-muted hover:scale-[1.02]"
+            className="group flex items-center gap-1 text-[17px] font-normal text-apple-bright-blue hover:underline"
           >
             문의하기
+            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
           </button>
         </motion.div>
       </motion.div>
 
-      {/* Scroll Down Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2 text-muted-foreground"
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-50">
-            Scroll
-          </span>
-          <ChevronDown className="h-5 w-5 opacity-50" />
-        </motion.div>
-      </motion.div>
+      {/* Decorative Glow - Kept subtle for cinematic feel */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-apple-blue/10 blur-[120px]" />
+      </div>
     </section>
   );
 }
