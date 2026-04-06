@@ -512,149 +512,123 @@ sumpyo-flutter-app/
 
 ## 1. 프로젝트 개요
 
-\`threads-autoposter\`는 매일 최신 테크 트렌드와 뉴스를 수집하여 AI(Google Gemini)를 통해 스레드(Threads) 환경에 최적화된 콘텐츠로 변환하고, Meta Threads API를 사용하여 자동으로 게시하는 **엔드 투 엔드(End-to-End) 자동화 서비스**입니다.
+\`threads-autoposter\`는 매일 최신 테크 트렌드와 뉴스를 수집하여 AI(Google Gemini)를 통해 스레드(Threads) 환경에 최적화된 콘텐츠로 변환하고, Meta Threads API를 결합하여 자동으로 게시하는 **엔드 투 엔드(End-to-End) 자동화 포스팅 서비스**입니다.
 
-단순히 뉴스 링크를 공유하는 것을 넘어, AI가 "친근하고 똑똑한 테크 크리에이터"의 페르소나로 핵심 내용을 요약하고 본문과 댓글이 이어지는 스레드 형태로 풍성한 콘텐츠를 생성하는 것이 핵심입니다.
-
----
-
-## 2. 핵심 파이프라인
-
-이 서비스는 다음과 같은 6단계 파이프라인으로 작동합니다:
-
-1. **멀티소스 크롤링 (Crawling)**: Hacker News, Reddit, dev.to에서 전날 24시간 동안(00:00:00 ~ 23:59:59 UTC) 발행된 테크/AI/개발 콘텐츠를 병렬로 수집합니다.
-2. **AI 트렌드 분석 (Analysis)**: 수집된 기사들을 Gemini에게 전달하여 실제 화제가 되고 있는 토픽을 2~3개 선정합니다.
-3. **중복 토픽 필터링 (Deduplication)**: 최근 7일 내 발행된 게시물과 주제가 겹치는 토픽을 Jaccard 유사도 + Gemini 시맨틱 판단으로 제거합니다.
-4. **AI 콘텐츠 생성 (Generation)**: 선정된 토픽을 Gemini에게 전달합니다. Chain-of-Thought 프롬프팅, Few-Shot 예시, 구조 이력 인식을 통해 매번 다른 리듬과 구조의 글을 생성합니다.
-5. **Threads 자동 게시 (Publishing)**: Meta Threads Graph API를 통해 본문 게시 후, 관련 댓글들을 순차적으로 게시하여 하나의 완성된 스레드를 구축합니다.
-6. **자기강화 학습 (Self-Improvement)**: 파이프라인 완료 후, 댓글 2개 이상인 우수 게시물을 Few-Shot 예시로 자동 승격하여 시간이 지날수록 AI 글 품질이 향상됩니다.
+해외발 테크 뉴스를 단순 번역하는 데서 그치지 않고, AI가 "친근하고 똑똑한 테크 크리에이터"의 페르소나 역할을 수행하면서 핵심 내용을 요약하고 본문과 댓글(Reply Chains)이 이어지는 스레드 특유의 포맷을 활용하여 풍성한 콘텐츠를 생성하는 데 목적을 두고 있습니다. 더 나아가, **감정 온도 분석기(Emotional Analyzer)** 및 모니터링을 위한 **Next.js 대시보드**까지 연계되어 고도의 콘텐츠 퀄리티 관리 파이프라인을 구축했습니다.
 
 ---
 
-## 3. 프로젝트 구조
+## 2. 핵심 파이프라인 (Core Pipeline)
+
+이 서비스는 크게 7단계의 모듈화된 프로세스로 작동합니다:
+
+1. **멀티소스 크롤링 (Multi-source Crawling)**: Hacker News, Reddit, dev.to 등에서 최근 24시간 내에 발행된 테크/AI/개발 관련 최고 인기 글들을 병렬 수집하여 원천 데이터를 확보합니다.
+2. **AI 트렌드 분석 (Trend Analysis)**: 수집된 방대한 아이템들을 Gemini에게 전달하여 지금 당장 화제가 되고 있는 탑 티어 토픽들을 선별합니다.
+3. **중복 토픽 필터링 (Deduplication)**: 이미 최근에 다룬 토픽이 또 포스팅되는 것을 막기 위해 \`Jaccard 유사도 계수(빠른 분별) + Gemini 시맨틱(의미망) 분석\`의 2단계 하이브리드 필터를 적용하여 중복을 차단합니다.
+4. **감정 온도 측정 (Emotional Index)**: 생성할 콘텐츠의 다양성을 확보하기 위해 \`Emotional Analyzer\`로 각 이슈가 가질 감정의 결(usefulness, surprise, laughter 등)을 사전 세팅합니다.
+5. **AI 콘텐츠 생성 및 구조화 (Generation)**: 선별된 토픽을 기반으로 Chain-of-Thought(연쇄 사고) 프롬프팅 및 Few-Shot 예시를 사용해 글을 생성합니다. 단독 게시물 또는 스레드(댓글 체인) 형태가 자율적으로 결정되며 구조 인식 로그(이전 게시물의 길이 및 문체)를 결합해 패턴 반복을 회피합니다.
+6. **Threads 자동 게시 (Publishing)**: Meta Threads Graph API를 호출하여 본문과 댓글들을 연속된 타래(Thread) 형태로 퍼블리싱하고 완료 내역을 로컬 파일/Firebase에 로깅합니다.
+7. **자기강화 학습 루프 (Self-Improvement)**: 댓글이 여러 개 달린 우수 생성물의 경우 그 패턴을 자동으로 \`examples.json\`에 승격(Promotion) 시켜, 파이프라인이 구동될수록 생성 품질이 자체적으로 향상되도록 만듭니다.
+
+---
+
+## 3. 프로젝트 구조 (Project Structure)
 
 \`\`\`text
 threads-autoposter/
 ├── src/
-│   ├── index.ts                    # 앱 진입점 및 CLI 명령어 처리
-│   ├── server.ts                   # 대시보드 및 모니터링용 Express 서버
-│   ├── auth/                       # Meta Threads OAuth 및 토큰 관리
-│   ├── config/                     # 환경 변수, 스케줄, 설정 관리
-│   ├── services/                   # 비즈니스 로직 핵심 서비스
-│   │   ├── multi-source-crawler.ts # 외부 데이터 수집 (HN, Reddit, dev.to)
-│   │   ├── trend-analyzer.ts       # Gemini 기반 트렌드 분석 및 토픽 선정
-│   │   ├── topic-dedup.ts          # 중복 콘텐츠 게시 방지 (2단계 하이브리드)
-│   │   ├── content-generator.ts    # Gemini AI 기반 글쓰기 엔진
-│   │   ├── threads-publisher.ts    # Threads API 연동 및 게시 제어
-│   │   └── scheduler.ts            # node-cron 기반 파이프라인 스케줄 관리
+│   ├── index.ts                    # 메인 진입점, 워커 파이프라인 실행
+│   ├── server.ts                   # 상태 확인을 위한 백엔드 Express 서버 API
+│   ├── auth/                       # Meta Threads OAuth 및 Token Refresh 로직
+│   ├── config/                     # 환경 변수 유효성 검증 및 실행 주기 세팅
+│   ├── services/                   # ★ 핵심 비즈니스 로직
+│   │   ├── multi-source-crawler.ts # (Hacker News, Reddit, dev.to) 수집 엔진
+│   │   ├── trend-analyzer.ts       # 주제 추출 및 정보 통합 처리기
+│   │   ├── topic-dedup.ts          # 중복 콘텐츠 방지용 필터 시스템
+│   │   ├── content-generator.ts    # AI 글쓰기, 포맷팅(A/Chain) 생성 시스템
+│   │   ├── emotional-analyzer.ts   # 텍스트 감정 분석(Anger, Usefulness 등 5분류) 클래스
+│   │   ├── threads-publisher.ts    # Meta API 트랜잭션 및 타임아웃/컨테이너 생성
+│   │   ├── threads-insights.ts     # 작성된 컨텐츠에 대한 인덱싱 및 지표 연동
+│   │   └── scheduler.ts            # node-cron 기반 스케줄러 관리 (포스트 주기 트리거 등)
 │   ├── utils/
-│   │   ├── helpers.ts              # 유틸리티 (문장 경계 절단 등)
-│   │   ├── logger.ts               # Winston 구조화 로거
-│   │   ├── pending-posts-manager.ts # 게시물 상태 관리 + 예시 자동 승격
-│   │   └── alert.ts                # 파이프라인 알림
-│   └── types/                      # TypeScript 인터페이스 정의
+│   │   ├── logger.ts               # Winston 기반 포맷 로깅
+│   │   └── pending-posts-manager.ts# 게시 상태 처리기 (진행, 완료 보관 및 예시 승격)
+├── dashboard/                      # ★ 관리자 대시보드 (Next.js App)
+│   ├── src/app                     # 콘텐츠 통계 및 히스토리 모니터링 페이지
+│   ├── package.json                # 독립적인 UI 종속성 (React, Recharts, TailwindCSS, Firebase)
 ├── data/
-│   ├── examples.json               # Few-Shot 예시 (운영 중 자동 갱신)
-│   ├── pending-posts.json          # 게시물 상태 데이터 (발행 이력 포함)
-│   └── schedules.json              # 스케줄 설정 데이터
+│   ├── examples.json               # Few-Shot 예시 (자동 승격으로 갱신되는 프롬프트 베이스)
+│   └── pending-posts.json          # 스토리지: 게시물 상태 이력 및 메타데이터
 ├── scripts/
-│   ├── get-token.ts                # Threads 토큰 발급 CLI
-│   └── analyze-quality.ts          # 콘텐츠 품질 분석 도구
-└── src/__tests__/                  # Vitest 단위 테스트 (64개)
+│   ├── analyze-quality.ts          # 콘텐츠의 문장형태 및 품질 통계 분석용 CLI 스크립트
+│   └── get-token.ts                # Threads 인증 토큰 수동 발급 스크립트
+└── src/__tests__/                  # Vitest 기반 단위/통합 테스트 슈트
 \`\`\`
 
 ---
 
-## 4. 상세 기능 구현 내역
+## 4. 상세 기능 구현 (Technical Implementation)
 
-### 4.1. AI 콘텐츠 엔진 (\`ContentGenerator\`)
+### 4.1. AI 콘텐츠 창작 엔진과 '자기 강화 프롬프팅'
 
-- **사고의 사슬(Chain-of-Thought) 프롬프팅**: AI에게 '분석 → 앵글 설정 → 포맷 선택 → 작성'의 순서로 사고하게 하여 단순 요약이 아닌 독자적 인사이트를 도출합니다.
-- **예시 기반 학습(Few-Shot Learning)**: \`data/examples.json\`에서 서로 다른 포맷(FORMAT_A, FORMAT_CHAIN)의 예시를 최대 2개 선택하여 톤앤매너를 학습시킵니다.
-- **구조 인식 이력(Structure-Aware History)**: 최근 5개 게시물의 훅 패턴, 포맷 종류, 본문 단락 수, 댓글 개수를 AI에게 전달하여 훅뿐 아니라 글 전체 구조가 반복되는 것을 방지합니다.
-- **가변형 포맷**: 뉴스의 중요도와 복잡도에 따라 '단독 포스트(FORMAT_A)' 또는 '댓글 체인(FORMAT_CHAIN)'을 AI가 스스로 결정합니다.
-- **문장 경계 절단**: 500자 제한 도달 시 문장 중간이 아닌 마지막 완전한 문장 위치에서 절단하여 자연스러운 마무리를 보장합니다.
+AI의 어투가 일관적이면서도 기계적이지 않게 유지되는 핵심 비결입니다:
 
-### 4.2. 자기강화 학습 시스템 (\`promoteExcellentPosts\`)
+- **Chain-of-Thought**: Gemini 모델에게 어떤 관점으로 접근할지(앵글 설정), 어떤 톤을 유지할지 논리적으로 사고를 먼저 수행하게 합니다.
+- **Pattern Avoidance (구조 이력 반영)**: 파일 기반 DB에서 직전 발행된 글들의 스탯(포맷, 길이, 댓글 수, 첫 문구 등)을 불러와 모델에게 전달, "방금 전 게시물과 첫 문장은 다르게 작성할 것" 같은 강한 규칙이 동적으로 제어됩니다.
+- **Auto-Promotion 루프**: 게시 완료 로직 속에서 구조와 반응이 좋은 출력물은 \`examples.json\`으로 등록, 다음 생성 시 Few-Shot 프롬프트의 재료로 사용되어 진화하게 됩니다.
 
-파이프라인 실행 완료 시 자동으로 동작합니다:
+### 4.2. 하이브리드 중복 방지 시스템
 
-- **기준**: 댓글 2개 이상의 발행 완료 게시물
-- **동작**: \`data/examples.json\`에 자동 추가 (cap: 최대 10개)
-- **보호 정책**: cap 초과 시 수동으로 큐레이션한 예시는 보호하고 오래된 자동 승격 항목을 우선 제거
-- **효과**: 운영 기간이 길어질수록 AI 학습 예시의 품질이 실제 발행 데이터 기반으로 향상
+트렌드를 크롤링하다보면 동일한 이슈가 날짜를 달리해 등장합니다. 비용을 아끼면서 확실한 필터링을 수행합니다:
 
-### 4.3. 중복 토픽 필터 (\`TopicDeduplicator\`)
+- **1단계 (문자열 기반 빠른 차단)**: 과거 발행된 아이템들과의 키워드 추출 후 \`Jaccard 유사도\` 검사를 수행합니다. 0.6 이상의 높은 유사도가 도출되면 LLM을 태우지 않고 즉시 Drop합니다.
+- **2단계 (시맨틱 & 컨텍스트 우회)**: 만약 유사도가 모호한 중간수치(0.2 ~ 0.6)일 경우, Gemini 모델로 두 기사의 주요 논점과 앵글을 대조시켜 "동일한 주제이나 관점이 다르다면 포스팅 허가" 판정을 내리는 실패 방지(Fail-Open) 체계를 가집니다.
 
-2단계 하이브리드 방식으로 중복 콘텐츠 게시를 방지합니다:
+### 4.3. 다중 감정 온도 시스템 (Emotional Analyzer)
 
-- **1단계 (빠른 필터)**: Jaccard 유사도 기반 키워드 비교. 유사도 ≥ 0.6이면 즉시 제거 (Gemini 호출 없음)
-- **2단계 (시맨틱 판단)**: 유사도 0.2~0.6 구간의 모호한 케이스는 Gemini가 의미적 중복 여부를 판단
-- **다른 앵글 허용**: 같은 사건이라도 다른 관점(기술 분석 vs 사회적 영향)이면 통과
-- **Fail-Open**: Gemini 호출 실패 시 통과 처리하여 콘텐츠 누락 방지
-- **비교 기간**: 최근 7일 내 발행 이력과 비교
+- 글이 언제나 딱딱한 설명 위주(usefulness)로 흘러가는 것을 방지합니다. 프롬프트에 \`anger\`, \`usefulness\`, \`laughter\`, \`emotion\`, \`surprise\` 의 5원소 온도를 평가하고 할당시켜 콘텐츠의 생명력을 높입니다.
 
-### 4.4. 데이터 수집 엔진 (\`MultiSourceCrawler\`)
+### 4.4. 안전한 Threads 게시 엔진
 
-- **병렬 수집**: HN, Reddit, dev.to 3개 소스를 \`Promise.allSettled\`로 동시 크롤링
-- **시간 필터**: 전날 24시간(00:00:00 ~ 23:59:59 UTC) 내 발행된 콘텐츠만 수집
-- **점수 기반 정렬**: 추천수(score), 댓글수를 기반으로 신뢰도 높은 콘텐츠 우선 선별
-- **부분 실패 허용**: 특정 소스 수집 실패 시에도 나머지 소스 결과로 파이프라인 계속 진행
+- **비동기 미디어 컨테이너링**: Threads의 복잡한 Graph API에 대응하여 본문(Parent)을 발행하고 연속해서 ID를 추적하며 본인 글에 답글을 연속적으로 다는 체인을 관리합니다.
+- API 요구사항에 맞춰 요청과 요청 사이 \`Delay\` 주입 및 비회신 대비 에러 핸들링 로직이 갖추어져 있습니다.
 
-### 4.5. 품질 분석 도구 (\`analyze-quality\`)
+### 4.5. Next.js 통합 대시보드 및 모니터링 체계
 
-\`\`\`bash
-npm run quality [--n=20]
-\`\`\`
-
-최근 N개 발행 게시물에 대해 4가지 지표를 측정합니다:
-
-| 지표 | 기준 |
-|---|---|
-| FORMAT 분포 | A/CHAIN 2가지 이상 사용 |
-| 질문 마무리 비율 | 20% 이하 |
-| REPLY1 첫 문구 반복 | 반복 없음 |
-| 훅(첫 줄) 다양성 | 전체 고유 |
-
-게시물이 **20개 이상** 쌓이면 quality 분석 결과를 생성 프롬프트에 자동 피드백하는 루프 구현 안내가 표시됩니다.
+자동 설정된 스케줄에 따라 퍼블리싱된 게시물 현황을 한눈에 파악할 수 있도록 **Next.js (App Router)** 기반의 웹 대시보드가 \`dashboard/\` 하위에 별도로 구축되어 있습니다:
+- **Firestore DB 실시간 연동**: 봇이 메인 서버에서 로컬 JSON 및 Firebase Firestore에 활동 기록을 이중 적재하면, 대시보드는 Firebase Admin SDK를 통해 직접 데이터를 읽어와 차트(Recharts)와 히스토리로 렌더링합니다.
+- **보안 및 접근 제어**: HTTP Basic Auth 방식을 채택하여 \`.env\`의 \`DASHBOARD_PASSWORD\` 환경 변수를 통해서 누구나 URL에 접근할 수 없도록 최소한의 보안 통제를 유지합니다.
+- **Vercel 최적화 배포**: 모노레포 형태는 아니지만 최상위 레포지토리 내 하위 폴더(Subdirectory)로 분리되어 있어, Vercel의 프론트엔드 호스팅에 즉각적으로 연동 및 배포할 수 있는 아키텍처를 가집니다.
 
 ---
 
-## 5. 사용 기술 및 라이브러리
+## 5. 사용 기술 및 라이브러리 (Tech Stack)
 
-### 핵심 스택
+### **Core Backend & Data Source**
 
-- **언어**: TypeScript (Strict Mode)
-- **런타임**: Node.js
-- **패키지 관리**: npm
+- **언어 & 런타임**: TypeScript, Node.js (\`tsx\`)
+- **AI/LLM**: Google GenAI (\`@google/genai\`)
+- **데이터 가져오기**: \`axios\`, Hacking News / Reddit / dev.to API
+- **테스트 및 코드 품질**: \`vitest\`
 
-### 통합 서비스
+### **Services & Utilities**
 
-- **AI**: \`@google/genai\` (Google Gemini)
-- **통신/크롤링**: \`axios\`
+- **소셜 연결망 연동**: Meta Graph API (Threads)
 - **스케줄링**: \`node-cron\`
 - **로깅**: \`winston\`
 
-### 개발 및 운영
+### **Dashboard Web UI**
 
-- **테스트**: \`vitest\` (64개 단위 테스트)
-- **실행 환경**: \`tsx\`, \`pm2\`
-- **컨테이너**: \`Dockerfile\` 기반 배포 지원
-
----
-
-## 6. 프로젝트의 주요 강점
-
-1. **인간 중심의 콘텐츠**: AI 특유의 기계적인 문체를 제거하고, 구조 이력 인식 + Few-Shot 예시를 통해 매번 다른 리듬과 구조의 글을 생성합니다.
-2. **자기강화 루프**: 서비스 운영 데이터가 쌓일수록 Few-Shot 예시가 자동으로 갱신되어 AI 글 품질이 지속적으로 향상됩니다.
-3. **지능형 중복 방지**: 단순 키워드 매칭을 넘어 Gemini 시맨틱 판단으로 의미적 중복을 제거하면서 다른 앵글의 게시는 허용합니다.
-4. **안전한 인증 관리**: OAuth 2.0 흐름을 자동화하고, 토큰 만료를 감지하여 갱신 알림을 제공합니다.
-5. **검증 시스템(Dry-run)**: 실제 게시 전 생성된 결과물을 확인하고 테스트할 수 있는 검증 모드를 제공합니다.
-6. **높은 확장성**: 서비스 레이어가 분리된 구조로 새로운 데이터 소스나 게시 플랫폼을 추가하기 용이합니다.
+- **프론트엔드**: React, Next.js (App Router), Tailwind CSS v4
+- **서버리스/통신**: Firebase Admin, Recharts (데이터 시각화)
 
 ---
 
-이 프로젝트는 최신 AI 기술과 소셜 미디어 생태계를 결합하여 **완전 자동화된 콘텐츠 크리에이션**을 구현한 사례입니다.
+## 6. 주요 구현 특징 (Key Highlights)
+
+- **강력한 Fault-Tolerance(내결함성)**: 프롬프트 실패, 멀티 소스 크롤링 중 일부 실패, Graph API 연결 지연 속에서도 시스템이 강제 종료되지 않도록 개별 에러 바운더리와 폴백(Fallback) 방식을 채택했습니다.
+- **데이터 주도적 모니터링**: 자동 포스팅에 그치지 않고, \`quality analyzer\`와 자체 \`dashboard\` 앱을 두어 발송 퀄리티 통계를 역으로 점검하는 수준에 도달했습니다.
+- **높은 확장성을 고려한 디자인 패턴**: \`Crawler\`, \`Trend Analyzer\`, \`Publisher\`, \`Emotional Analyzer\` 등 책임이 단일화되어, 만약 X(구 트위터)나 Bluesky를 추가하기 원한다면 \`Publisher\` 인터페이스만 새롭게 상속하여 꽂아 넣을 수 있는 구조적 미덕을 갖추고 있습니다.
 `,
     techStack: [
       "Node.js",
