@@ -231,154 +231,154 @@ synapso.dev/
       "리그 오브 레전드 커뮤니티를 위한 초저지연 실시간 멀티플레이어 경매 시스템으로, 독특한 Cyber-Pixel 디자인과 서버 권한 기반 아키텍처를 특징으로 합니다.",
     description: `# Minions Bid
 
-## Overview
+## 프로젝트 개요
 
-Minions Bid is a League of Legends community operations tool that combines three workflows in one product:
+Minions Bid는 리그 오브 레전드 커뮤니티 운영을 위한 도구로, 하나의 제품 안에 다음 세 가지 흐름을 통합한 프로젝트입니다.
 
-1. Real-time player auction room creation and live bidding
-2. League schedule creation and match-day result management
-3. Hall of fame archiving for completed seasons and winning teams
+1. 실시간 선수 경매방 생성 및 라이브 입찰
+2. 리그 일정 생성 및 경기 결과 관리
+3. 시즌 종료 후 우승팀 명예의 전당 아카이빙
 
-The project is built as a Next.js App Router application and uses Firebase as its backend platform. The auction experience is optimized for low-latency synchronization between organizer, team leaders, and spectators, while the schedule and archive features extend the product from a one-off draft tool into a season management system.
+이 프로젝트는 Next.js App Router 기반으로 구축되어 있으며, 백엔드 플랫폼으로 Firebase를 사용합니다. 경매 기능은 주최자, 팀장, 관전자 사이의 저지연 실시간 동기화에 초점을 맞추고 있고, 일정 관리와 아카이브 기능은 단발성 드래프트 도구를 시즌 운영 시스템으로 확장하는 역할을 합니다.
 
-The UI intentionally avoids generic dashboard styling. The product uses a retro arcade-inspired "Cyber-Pixel" visual system with thick borders, CRT overlays, pixel iconography, and animated modal-heavy interactions.
+UI 역시 일반적인 대시보드 스타일을 그대로 따르지 않습니다. 두꺼운 테두리, CRT 오버레이, 픽셀 아이콘, 모달 중심 인터랙션을 조합한 레트로 아케이드 감성의 "Cyber-Pixel" 비주얼 시스템을 채택하고 있습니다.
 
-## Product Scope
+## 제품 범위
 
-### 1. Auction workflow
+### 1. 경매 워크플로우
 
-- Create a room with team count, members per team, and total points
-- Register captains and players manually or via Excel upload
-- Generate organizer, leader, and viewer access links
-- Run a live auction with draw, timer, bidding, awarding, and re-auction support
-- Persist completed room outcomes as \`auction_archives\`
+- 팀 수, 팀당 인원, 총 포인트를 기준으로 경매방 생성
+- 팀장과 선수 정보를 수동 입력 또는 Excel 업로드로 등록
+- 주최자, 팀장, 관전자 전용 입장 링크 생성
+- 추첨, 타이머, 입찰, 낙찰, 재경매를 포함한 실시간 경매 진행
+- 완료된 경매 결과를 \`auction_archives\`에 영구 저장
 
-### 2. League schedule workflow
+### 2. 리그 일정 워크플로우
 
-- Create named schedules linked to a prior auction or league name
-- Build match-day timelines by date
-- Assign team-vs-team fixtures and kickoff times
-- Record winners and notes for each match
-- Complete the schedule by selecting a champion team
+- 기존 경매 또는 리그 이름과 연결된 일정 생성
+- 날짜별 매치 타임라인 구성
+- 팀 간 대진과 경기 시간을 배정
+- 경기별 승자와 메모 기록
+- 최종 우승팀을 선택해 일정 종료 처리
 
-### 3. Hall of fame workflow
+### 3. 명예의 전당 워크플로우
 
-- View previously registered championship entries
-- Register winners from archived auctions
-- Auto-register winners when a linked league schedule is completed
+- 등록된 우승 기록 조회
+- 경매 아카이브를 기반으로 우승팀 수동 등록
+- 연결된 리그 일정 종료 시 우승팀 자동 등록
 
-## Architecture
+## 아키텍처
 
-### Application shell
+### 애플리케이션 구조
 
-- Framework: Next.js 16 App Router
-- Rendering model: server-rendered route entry points with client-heavy feature shells
-- State model: Zustand for client-side auction state, Firebase subscriptions for backend-driven updates
+- 프레임워크: Next.js 16 App Router
+- 렌더링 방식: 서버에서 진입 라우트를 렌더링하고, 기능 중심 UI는 클라이언트 컴포넌트로 구성
+- 상태 관리: 클라이언트 경매 상태는 Zustand, 백엔드 동기화는 Firebase 구독 기반으로 처리
 
-### Backend model
+### 백엔드 모델
 
-The codebase follows a server-authoritative model for all critical writes.
+이 코드베이스는 중요한 쓰기 작업 전반에서 서버 권한 중심(server-authoritative) 모델을 따릅니다.
 
-- Read and sync:
-  - Firestore \`onSnapshot\` subscriptions stream room, team, player, bid, and message state into the client store
-  - Firebase Realtime Database is used for presence and lightweight broadcast signals
-- Mutate:
-  - Next.js Server Actions call Firebase Admin SDK code
-  - Validation and authority checks happen on the server before state changes are committed
+- 읽기 및 동기화:
+  - Firestore \`onSnapshot\` 구독으로 방, 팀, 선수, 입찰, 메시지 상태를 클라이언트 스토어에 실시간 반영
+  - Firebase Realtime Database는 presence와 경량 broadcast signal 용도로 사용
+- 변경 작업:
+  - Next.js Server Actions가 Firebase Admin SDK 코드를 호출
+  - 실제 상태 변경 전 권한과 데이터 유효성을 서버에서 검증
 
-This is not a "fat client" auction app. The client renders live state, but business-critical transitions such as room creation, bid placement, player awarding, match result registration, and archive persistence are controlled on the server.
+즉, 이 프로젝트는 클라이언트가 모든 상태를 직접 주도하는 구조가 아닙니다. 클라이언트는 실시간 상태를 렌더링하지만, 방 생성, 입찰, 낙찰 처리, 경기 결과 등록, 아카이브 저장처럼 중요한 전환은 서버가 통제합니다.
 
-## Core Data Flow
+## 핵심 데이터 흐름
 
-### Room creation
+### 방 생성
 
-The room creation flow is driven by [\`src/components/CreateRoomModal.tsx\`](D:/development/league-auction/src/components/CreateRoomModal.tsx) and [\`src/features/auction/hooks/useCreateRoom.ts\`](D:/development/league-auction/src/features/auction/hooks/useCreateRoom.ts).
+방 생성 흐름은 [\`src/components/CreateRoomModal.tsx\`](D:/development/league-auction/src/components/CreateRoomModal.tsx)와 [\`src/features/auction/hooks/useCreateRoom.ts\`](D:/development/league-auction/src/features/auction/hooks/useCreateRoom.ts)가 담당합니다.
 
-Key behavior:
+주요 동작은 다음과 같습니다.
 
-- Multi-step modal collects base settings, captain data, and player pool data
-- Excel upload is parsed in-browser using \`xlsx\`
-- Existing active rooms are checked from local storage plus Firestore
-- Schedule options are loaded so a room can be linked to a league timeline
-- Final room creation is delegated to the server action in [\`src/features/auction/api/roomActions.ts\`](D:/development/league-auction/src/features/auction/api/roomActions.ts)
+- 여러 단계의 모달에서 기본 설정, 팀장 정보, 선수 풀 정보를 순차적으로 수집
+- \`xlsx\`를 사용해 브라우저에서 Excel 업로드 파싱
+- 로컬 스토리지와 Firestore를 함께 조회해 기존 활성 방 여부 확인
+- 일정 연결을 위해 스케줄 옵션을 함께 로드
+- 최종 방 생성은 [\`src/features/auction/api/roomActions.ts\`](D:/development/league-auction/src/features/auction/api/roomActions.ts)의 서버 액션으로 위임
 
-On creation, the server writes:
+생성 시 서버는 다음 데이터를 기록합니다.
 
-- a \`rooms/{roomId}\` document
-- a \`teams\` subcollection with per-leader tokens
-- a \`players\` subcollection initialized with \`WAITING\` status
-- organizer/viewer tokens for later link-based authentication
+- \`rooms/{roomId}\` 문서
+- 팀장별 토큰을 포함하는 \`teams\` 서브컬렉션
+- \`WAITING\` 상태로 초기화된 \`players\` 서브컬렉션
+- 이후 링크 인증에 사용할 organizer/viewer 토큰
 
-### Link-based role authentication
+### 링크 기반 역할 인증
 
-The product does not expose a generic user account system. Instead, room access is granted with role-specific tokens.
+이 제품은 일반적인 계정 시스템을 제공하지 않습니다. 대신 역할별 토큰을 통해 방 접근 권한을 부여합니다.
 
-[\`src/app/api/room-auth/route.ts\`](D:/development/league-auction/src/app/api/room-auth/route.ts):
+[\`src/app/api/room-auth/route.ts\`](D:/development/league-auction/src/app/api/room-auth/route.ts)는 다음을 수행합니다.
 
-- accepts \`roomId\`, \`role\`, \`token\`, and optional \`teamId\`
-- validates organizer/viewer tokens against the room document
-- validates leader tokens against the selected team document
-- writes an \`httpOnly\` cookie scoped to \`/room/{roomId}\`
-- redirects into the room page with normalized role context
+- \`roomId\`, \`role\`, \`token\`, 선택적 \`teamId\`를 입력으로 받음
+- organizer/viewer 토큰을 room 문서 기준으로 검증
+- leader 토큰을 선택된 team 문서 기준으로 검증
+- \`/room/{roomId}\` 범위의 \`httpOnly\` 쿠키를 기록
+- 정규화된 role 컨텍스트와 함께 실제 방 페이지로 리다이렉트
 
-This keeps room access simple for community operations while still enforcing server-side entry checks.
+이 방식은 커뮤니티 운영 도구에 맞게 접근 절차를 단순화하면서도, 서버 검증을 유지하는 구조입니다.
 
-### Auction synchronization
+### 경매 동기화
 
-The real-time auction screen is centered in [\`src/app/room/[id]/RoomClient.tsx\`](D:/development/league-auction/src/app/room/[id]/RoomClient.tsx).
+실시간 경매 화면의 중심은 [\`src/app/room/[id]/RoomClient.tsx\`](D:/development/league-auction/src/app/room/[id]/RoomClient.tsx)입니다.
 
-Its live state comes from:
+여기서 사용하는 실시간 상태는 다음 파일들에서 공급됩니다.
 
 - [\`src/features/auction/hooks/useAuctionRealtime.ts\`](D:/development/league-auction/src/features/auction/hooks/useAuctionRealtime.ts)
 - [\`src/features/auction/hooks/usePresence.ts\`](D:/development/league-auction/src/features/auction/hooks/usePresence.ts)
 - [\`src/features/auction/store/useAuctionStore.ts\`](D:/development/league-auction/src/features/auction/store/useAuctionStore.ts)
 
-The design pattern is:
+구조적으로는 다음과 같습니다.
 
-- Firestore snapshots hydrate and continuously update the Zustand store
-- RTDB presence tracks which leaders and organizers are currently connected
-- RTDB signal paths are used for low-friction one-off events like closing the lottery animation
-- UI derives actionable state such as:
-  - all leaders connected
-  - current player in auction
-  - current highest bid
-  - timer expiry
-  - whether a team is already full
+- Firestore snapshot이 Zustand 스토어를 초기화하고 지속적으로 갱신
+- RTDB presence로 현재 접속 중인 팀장과 주최자를 추적
+- RTDB signal path는 추첨 애니메이션 종료 같은 단발성 이벤트 전달에 사용
+- UI는 이 상태를 기반으로 다음과 같은 파생 조건을 계산
+  - 모든 팀장 접속 여부
+  - 현재 경매 중인 선수
+  - 현재 최고 입찰가
+  - 타이머 만료 여부
+  - 팀 정원 충족 여부
 
-### Auction mutation pipeline
+### 경매 변경 파이프라인
 
-Critical auction logic lives in [\`src/features/auction/api/auctionFlowActions.ts\`](D:/development/league-auction/src/features/auction/api/auctionFlowActions.ts).
+핵심 경매 로직은 [\`src/features/auction/api/auctionFlowActions.ts\`](D:/development/league-auction/src/features/auction/api/auctionFlowActions.ts)에 구현되어 있습니다.
 
-Important operations:
+주요 작업은 다음과 같습니다.
 
-- \`drawNextPlayer\`: randomly promotes one \`WAITING\` player to \`IN_AUCTION\`
-- \`startAuction\`: starts the timer with a server timestamp
-- \`pauseAuction\` / \`resumeAuction\`: handles interruption from disconnected leaders
-- \`placeBid\`: validates integer bids, 10-point increments, max cap, team balance, duplicate leadership, team capacity, and anti-sniping timer extensions
-- \`awardPlayer\`: finalizes winner assignment inside a Firestore transaction
-- \`draftPlayer\`: manually signs an unsold or waiting player at zero cost
-- \`restartAuctionWithUnsold\`: converts all \`UNSOLD\` players back to \`WAITING\`
+- \`drawNextPlayer\`: \`WAITING\` 상태 선수 한 명을 무작위로 \`IN_AUCTION\`으로 전환
+- \`startAuction\`: 서버 기준 타이머 시작
+- \`pauseAuction\` / \`resumeAuction\`: 팀장 연결 끊김에 따른 경매 중단 및 재개 처리
+- \`placeBid\`: 정수 금액, 10포인트 단위, 최대 금액, 팀 잔액, 중복 선두 입찰, 팀 정원, 타이머 연장 조건 검증
+- \`awardPlayer\`: Firestore transaction 안에서 낙찰 상태 확정
+- \`draftPlayer\`: 유찰 또는 대기 선수를 0포인트로 수동 영입
+- \`restartAuctionWithUnsold\`: 모든 \`UNSOLD\` 선수를 다시 \`WAITING\`으로 전환
 
-The important engineering choice here is consistency over optimistic illusion. Bid state is not trusted from the client alone; it is accepted, validated, persisted, and then reflected back to every participant through Firebase subscriptions.
+여기서 중요한 설계 선택은 "빠른 착시"보다 "정합성"을 우선했다는 점입니다. 입찰 상태는 클라이언트에서 바로 확정하지 않고, 서버에서 검증과 저장을 마친 뒤 Firebase 구독을 통해 전체 참가자에게 동일하게 반영됩니다.
 
-### Archive persistence
+### 아카이브 저장
 
-When an auction is completed, [\`saveAuctionArchive\`](D:/development/league-auction/src/features/auction/api/roomActions.ts) writes a normalized snapshot into \`auction_archives\`.
+경매가 완료되면 [\`saveAuctionArchive\`](D:/development/league-auction/src/features/auction/api/roomActions.ts)가 결과 스냅샷을 \`auction_archives\`에 저장합니다.
 
-The archive stores:
+이 아카이브에는 다음 정보가 포함됩니다.
 
-- room metadata
-- linked schedule metadata
-- final team snapshots
-- per-player sold prices and positions
+- 방 메타데이터
+- 연결된 일정 메타데이터
+- 최종 팀 스냅샷
+- 선수별 낙찰가와 포지션 정보
 
-This archive then becomes an input source for league scheduling and hall-of-fame registration.
+이후 이 데이터는 리그 일정 생성과 명예의 전당 등록의 입력 소스로 재사용됩니다.
 
-## League Schedule System
+## 리그 일정 시스템
 
-The league scheduling feature is implemented as a standalone domain rather than a thin add-on page.
+리그 일정 기능은 단순 보조 페이지가 아니라 독립된 도메인으로 구현되어 있습니다.
 
-Primary files:
+주요 파일은 다음과 같습니다.
 
 - [\`src/components/LeagueScheduleManager.tsx\`](D:/development/league-auction/src/components/LeagueScheduleManager.tsx)
 - [\`src/features/schedules/api/scheduleActions.ts\`](D:/development/league-auction/src/features/schedules/api/scheduleActions.ts)
@@ -386,73 +386,73 @@ Primary files:
 - [\`src/components/ScheduleMatchDayEditor.tsx\`](D:/development/league-auction/src/components/ScheduleMatchDayEditor.tsx)
 - [\`src/components/ScheduleRosterPanel.tsx\`](D:/development/league-auction/src/components/ScheduleRosterPanel.tsx)
 
-Core responsibilities:
+핵심 책임은 다음과 같습니다.
 
-- create schedule records in \`league_schedules\`
-- manage \`match_days\` subcollections keyed by date
-- transform archived room or auction roster data into reusable schedule roster teams
-- compute "next matches" from incomplete fixtures
-- validate and save match results
-- complete a schedule and promote the champion into the hall of fame
+- \`league_schedules\`에 일정 레코드 생성
+- 날짜 키 기반의 \`match_days\` 서브컬렉션 관리
+- 방 또는 경매 아카이브 데이터를 일정용 로스터 팀 구조로 변환
+- 미완료 경기 기준으로 "다음 경기" 계산
+- 경기 결과 검증 및 저장
+- 일정 종료와 함께 우승팀을 명예의 전당에 반영
 
-One of the stronger pieces of this feature is roster recovery. The schedule layer can reconstruct teams from:
+이 기능에서 특히 중요한 부분은 로스터 복원입니다. 일정 레이어는 다음 데이터 원본을 이용해 팀 정보를 재구성할 수 있습니다.
 
-- currently stored \`rooms\`
-- historical \`auction_archives\`
-- existing hall-of-fame exclusions to prevent duplicate usage
+- 현재 저장된 \`rooms\`
+- 과거 \`auction_archives\`
+- 중복 사용을 막기 위한 hall-of-fame 제외 목록
 
-That lets the scheduling workflow remain useful even after the original live auction room is gone.
+덕분에 원래의 실시간 경매방이 사라진 이후에도 일정 관리 기능은 계속 유효하게 동작할 수 있습니다.
 
-## Hall of Fame System
+## 명예의 전당 시스템
 
-The hall-of-fame feature is implemented in [\`src/features/hall-of-fame/api/hallOfFameActions.ts\`](D:/development/league-auction/src/features/hall-of-fame/api/hallOfFameActions.ts) and exposed through the App Router page at [\`src/app/hall-of-fame/page.tsx\`](D:/development/league-auction/src/app/hall-of-fame/page.tsx).
+명예의 전당 기능은 [\`src/features/hall-of-fame/api/hallOfFameActions.ts\`](D:/development/league-auction/src/features/hall-of-fame/api/hallOfFameActions.ts)에 구현되어 있고, App Router 진입 페이지는 [\`src/app/hall-of-fame/page.tsx\`](D:/development/league-auction/src/app/hall-of-fame/page.tsx)입니다.
 
-It supports:
+지원하는 기능은 다음과 같습니다.
 
-- listing hall-of-fame entries
-- listing available archives that are not already registered
-- protected registration and deletion using an admin code
-- automatic insertion when a league schedule is completed
+- 명예의 전당 엔트리 목록 조회
+- 아직 등록되지 않은 아카이브 목록 조회
+- 관리자 코드 기반 수동 등록 및 삭제
+- 리그 일정 종료 시 우승팀 자동 삽입
 
-This ties together the auction and schedule domains into a durable community record instead of leaving the application as an ephemeral live-event tool.
+이 구조 덕분에 경매와 일정 도메인이 단순한 이벤트 처리에서 끝나지 않고, 장기적으로 축적되는 커뮤니티 기록으로 이어집니다.
 
-## Project Structure
+## 프로젝트 구조
 
 \`\`\`text
 src/
   app/
-    api/room-auth/            Token validation and cookie bootstrap
-    hall-of-fame/             Hall of fame pages and client shell
-    league-schedule/          League schedule route
-    room/[id]/                Live auction room route
-    page.tsx                  Home / launcher experience
+    api/room-auth/            토큰 검증 및 쿠키 부트스트랩
+    hall-of-fame/             명예의 전당 페이지와 클라이언트 셸
+    league-schedule/          리그 일정 라우트
+    room/[id]/                실시간 경매방 라우트
+    page.tsx                  홈 / 런처 화면
   components/
-    create-room/              Multi-step room creation flow
-    ui/                       Shared presentational primitives
-    LeagueScheduleManager.tsx Schedule management shell
+    create-room/              다단계 방 생성 플로우
+    ui/                       공용 프리미티브 컴포넌트
+    LeagueScheduleManager.tsx 일정 관리 셸
   content/
-    updateFeed.ts             Home ticker / update feed content
+    updateFeed.ts             홈 화면 티커 / 업데이트 피드
   features/
     auction/
-      api/                    Server actions for room, chat, and auction flow
-      components/             Auction-specific UI
-      hooks/                  Firebase sync and room control hooks
-      store/                  Zustand auction state
-      utils/                  Room generation and display helpers
+      api/                    방, 채팅, 경매 흐름용 서버 액션
+      components/             경매 전용 UI
+      hooks/                  Firebase 동기화 및 방 제어 훅
+      store/                  Zustand 경매 상태
+      utils/                  방 생성 및 표시용 유틸리티
     hall-of-fame/
-      api/                    Archive and winner registration logic
-      components/             Hall of fame cards and modal UI
+      api/                    아카이브 및 우승팀 등록 로직
+      components/             명예의 전당 카드 및 모달 UI
     schedules/
-      api/                    Schedule CRUD and timeline logic
-      types.ts                Shared schedule domain types
+      api/                    일정 CRUD 및 타임라인 로직
+      types.ts                공용 일정 도메인 타입
   lib/
-    firebase.ts               Client Firebase bootstrap
-    firebaseAdmin.ts          Admin SDK bootstrap and lazy Firestore proxy
+    firebase.ts               클라이언트 Firebase 초기화
+    firebaseAdmin.ts          Admin SDK 초기화와 lazy Firestore proxy
 \`\`\`
 
-## Tech Stack
+## 기술 스택
 
-### Frontend
+### 프론트엔드
 
 - Next.js 16.1.6
 - React 19.2.3
@@ -462,64 +462,64 @@ src/
 - Lucide React
 - Zustand
 
-### Backend and data
+### 백엔드 및 데이터
 
 - Firebase Firestore
 - Firebase Realtime Database
 - Firebase Admin SDK
 
-### Tooling and testing
+### 툴링 및 테스트
 
 - ESLint 9
 - Vitest
 - Testing Library
 - Playwright
-- \`xlsx\` for spreadsheet import
+- \`xlsx\` 기반 스프레드시트 업로드 파싱
 
-## Key Implementation Decisions
+## 주요 구현 결정
 
-### 1. Server actions over direct client writes
+### 1. 클라이언트 직접 쓰기 대신 서버 액션 사용
 
-Critical mutations are intentionally centralized in server actions. This reduces trust in the browser, keeps domain rules in one place, and makes race-sensitive auction transitions safer.
+중요한 변경 작업을 서버 액션에 집중시켜 브라우저 신뢰도를 낮추고, 도메인 규칙을 한 곳에 모으며, 경합이 발생할 수 있는 경매 전환을 더 안전하게 처리합니다.
 
-### 2. Firestore plus RTDB instead of one database for everything
+### 2. 하나의 데이터베이스가 아니라 Firestore와 RTDB를 역할 분리해 사용
 
-The project uses each Firebase product for a different job:
+이 프로젝트는 Firebase의 두 저장소를 용도에 맞게 분리해서 사용합니다.
 
-- Firestore for durable, queryable, structured domain state
-- RTDB for connection presence and lightweight signal broadcasts
+- Firestore: 구조화되고 조회 가능한 영속 도메인 상태
+- RTDB: 연결 상태 추적과 경량 signal broadcast
 
-That split is pragmatic and visible in the code.
+이 분리는 단순한 이론이 아니라 실제 코드 구조에 그대로 드러나는 실용적 선택입니다.
 
-### 3. Tokenized room access instead of full user accounts
+### 3. 전체 계정 시스템 대신 토큰 기반 방 접근
 
-For a temporary event-driven product like a community draft room, link-based role entry is simpler than building full authentication flows. The implementation still preserves server validation and httpOnly cookies.
+커뮤니티 이벤트성 도구라는 특성상, 링크 기반 역할 입장은 완전한 인증 시스템보다 훨씬 단순합니다. 동시에 구현은 서버 검증과 \`httpOnly\` 쿠키를 유지해 최소한의 보안 통제를 확보합니다.
 
-### 4. Archive-first extension of the product lifecycle
+### 4. 경매 완료 이후를 고려한 아카이브 중심 확장
 
-The system does not stop at "auction done." By normalizing completed room data into archives, the codebase enables downstream scheduling and season history features without requiring the original live room to stay active.
+이 시스템은 "경매가 끝나면 종료"되지 않습니다. 완료된 방 데이터를 아카이브로 정규화해 저장함으로써, 이후 일정 관리와 시즌 기록 기능으로 자연스럽게 연결됩니다.
 
-### 5. Feature-oriented organization
+### 5. 기능 단위 중심의 저장소 구성
 
-The repository is largely organized by domain:
+저장소는 다음과 같이 도메인 중심으로 정리되어 있습니다.
 
 - \`auction\`
 - \`schedules\`
 - \`hall-of-fame\`
 
-That keeps server actions, hooks, components, and types close to the business workflow they belong to.
+덕분에 서버 액션, 훅, 컴포넌트, 타입이 각 비즈니스 흐름 가까이에 배치되어 있습니다.
 
-## Why This Project Is Technically Interesting
+## 이 프로젝트가 기술적으로 흥미로운 이유
 
-- It solves a genuinely stateful multi-user interaction problem rather than a static CRUD dashboard
-- It uses role-based deep links and scoped cookies to simplify event access without losing server-side control
-- It balances real-time UX with transactional safety in bidding and awarding logic
-- It extends the live event into scheduling and long-term archival workflows
-- It maintains a distinct visual identity instead of defaulting to commodity SaaS UI conventions
+- 정적인 CRUD 대시보드가 아니라, 다수 사용자가 동시에 참여하는 상태 중심 상호작용 문제를 다룹니다.
+- 역할 기반 딥링크와 범위 제한 쿠키를 사용해 접근 절차를 단순화하면서도 서버 통제를 유지합니다.
+- 실시간 UX와 낙찰 처리의 정합성을 동시에 고려한 입찰 구조를 가집니다.
+- 라이브 이벤트를 일정 관리와 장기 아카이브 흐름으로 확장합니다.
+- 흔한 SaaS UI가 아니라 제품 정체성이 분명한 시각 언어를 유지합니다.
 
-## Reference Files
+## 참고 파일
 
-For deeper technical context, these files are the most useful entry points:
+기술 맥락을 빠르게 파악하기 좋은 핵심 진입 파일은 다음과 같습니다.
 
 - [\`package.json\`](D:/development/league-auction/package.json)
 - [\`README.md\`](D:/development/league-auction/README.md)
@@ -749,131 +749,323 @@ sumpyo-flutter-app/
     title: "Threads Auto-Poster",
     summary:
       "트렌드 키워드와 뉴스를 수집하여 AI 페르소나 기반의 스레드 콘텐츠로 변환하고 Meta Threads API를 통해 전 과정을 자동화하는 발행 서비스입니다.",
-    description: `# 🧵 스레드 자동 게시 도구 (Threads Auto-Poster) - 프로젝트 상세 설명서
+    description: `# Threads Auto-Poster
 
-이 문서는 \`threads-autoposter\` 프로젝트의 아키텍처, 핵심 로직, 기능 구현 및 기술 스택에 대한 상세 정보를 제공합니다. 상위 프로젝트인 \`dev-portfolio\`에서 이 프로젝트를 참조하거나 전시할 때 활용할 수 있도록 작성되었습니다.
+## 개요
 
----
+\`threads-autoposter\`는 매일 개발 및 AI 관련 이슈를 수집하고, 이를 Threads용 게시물로 생성한 뒤 자동 발행하고, 이후 수집한 성과 데이터를 다음 생성 과정에 다시 반영하는 TypeScript 기반 자동화 시스템입니다.
 
-## 1. 프로젝트 개요
+현재 저장소는 성격이 다른 두 애플리케이션을 함께 포함합니다.
 
-\`threads-autoposter\`는 매일 최신 테크 트렌드와 뉴스를 수집하여 AI(Google Gemini)를 통해 스레드(Threads) 환경에 최적화된 콘텐츠로 변환하고, Meta Threads API를 결합하여 자동으로 게시하는 **엔드 투 엔드(End-to-End) 자동화 포스팅 서비스**입니다.
+1. 루트 디렉터리의 Node.js 워커 및 운영 제어 영역
+2. \`dashboard/\` 하위의 별도 Next.js 분석 대시보드
 
-해외발 테크 뉴스를 단순 번역하는 데서 그치지 않고, AI가 "친근하고 똑똑한 테크 크리에이터"의 페르소나 역할을 수행하면서 핵심 내용을 요약하고 본문과 댓글(Reply Chains)이 이어지는 스레드 특유의 포맷을 활용하여 풍성한 콘텐츠를 생성하는 데 목적을 두고 있습니다. 더 나아가, **감정 온도 분석기(Emotional Analyzer)** 및 모니터링을 위한 **Next.js 대시보드**까지 연계되어 고도의 콘텐츠 퀄리티 관리 파이프라인을 구축했습니다.
+실질적인 핵심은 루트 워커입니다. 이 워커는 외부 소스를 크롤링하고, Gemini로 핵심 트렌드를 선별하고, 최근 발행 이력과 비교해 중복을 걸러내고, 한국어 또는 영어 Threads 글을 생성하고, 승인된 글을 발행하며, 이후 인사이트를 수집하고, 성과가 좋은 게시물을 few-shot 예시로 승격시켜 다음 생성 품질을 높입니다.
 
----
+## 제품 범위
 
-## 2. 핵심 파이프라인 (Core Pipeline)
+이 프로젝트는 단순히 스케줄에 맞춰 LLM 결과를 올리는 봇이 아닙니다. 하나의 콘텐츠 파이프라인 안에 다음 역할이 함께 묶여 있습니다.
 
-이 서비스는 크게 7단계의 모듈화된 프로세스로 작동합니다:
+- 여러 개발자 커뮤니티에서 트렌드 수집
+- 단순 키워드 규칙이 아닌 AI 기반 주제 선별
+- 최근 발행 이력 기준 중복 억제
+- 프롬프트 메모리, 톤 제약, 성과 피드백이 들어간 스레드 생성
+- Threads 댓글 체인을 포함한 자동 게시
+- 스케줄, 토픽, 보류 게시물, 성과 지표를 다루는 운영 대시보드
+- 글쓰기 패턴과 포맷 다양성을 점검하는 품질 분석
 
-1. **멀티소스 크롤링 (Multi-source Crawling)**: Hacker News, Reddit, dev.to 등에서 최근 24시간 내에 발행된 테크/AI/개발 관련 최고 인기 글들을 병렬 수집하여 원천 데이터를 확보합니다.
-2. **AI 트렌드 분석 (Trend Analysis)**: 수집된 방대한 아이템들을 Gemini에게 전달하여 지금 당장 화제가 되고 있는 탑 티어 토픽들을 선별합니다.
-3. **중복 토픽 필터링 (Deduplication)**: 이미 최근에 다룬 토픽이 또 포스팅되는 것을 막기 위해 \`Jaccard 유사도 계수(빠른 분별) + Gemini 시맨틱(의미망) 분석\`의 2단계 하이브리드 필터를 적용하여 중복을 차단합니다.
-4. **감정 온도 측정 (Emotional Index)**: 생성할 콘텐츠의 다양성을 확보하기 위해 \`Emotional Analyzer\`로 각 이슈가 가질 감정의 결(usefulness, surprise, laughter 등)을 사전 세팅합니다.
-5. **AI 콘텐츠 생성 및 구조화 (Generation)**: 선별된 토픽을 기반으로 Chain-of-Thought(연쇄 사고) 프롬프팅 및 Few-Shot 예시를 사용해 글을 생성합니다. 단독 게시물 또는 스레드(댓글 체인) 형태가 자율적으로 결정되며 구조 인식 로그(이전 게시물의 길이 및 문체)를 결합해 패턴 반복을 회피합니다.
-6. **Threads 자동 게시 (Publishing)**: Meta Threads Graph API를 호출하여 본문과 댓글들을 연속된 타래(Thread) 형태로 퍼블리싱하고 완료 내역을 로컬 파일/Firebase에 로깅합니다.
-7. **자기강화 학습 루프 (Self-Improvement)**: 댓글이 여러 개 달린 우수 생성물의 경우 그 패턴을 자동으로 \`examples.json\`에 승격(Promotion) 시켜, 파이프라인이 구동될수록 생성 품질이 자체적으로 향상되도록 만듭니다.
+즉, 이 저장소는 단발성 포스팅 스크립트보다는 자율형 콘텐츠 운영 시스템에 가깝습니다.
 
----
+## 아키텍처
 
-## 3. 프로젝트 구조 (Project Structure)
+### 1. 워커 런타임
+
+루트 워커는 [\`src/index.ts\`](/D:/development/threads-autoposter/src/index.ts)에서 시작됩니다. 이 엔트리포인트는 환경변수 기반 설정을 로드하고, 현재 실행 상태를 출력하며, \`--now\` 및 \`--dry-run\` 플래그를 처리하고, 일반 실행 시에는 스케줄러 싱글턴을 시작합니다.
+
+핵심 오케스트레이터는 [\`src/services/scheduler.ts\`](/D:/development/threads-autoposter/src/services/scheduler.ts)에 있습니다. 이 스케줄러는 다음 책임을 가집니다.
+
+- 사용자 정의 스케줄 또는 discovery mode 스케줄 관리
+- 일 단위 스케줄 새로고침
+- 일간 및 주간 품질 분석 작업 실행
+- 지연 수집 방식의 Threads 인사이트 작업 실행
+- 전체 콘텐츠 파이프라인 실행
+
+### 2. 데이터 및 상태 모델
+
+이 프로젝트는 두 가지 저장 계층을 함께 사용합니다.
+
+- Firestore: 운영 시점의 기본 데이터베이스
+- \`data/\` 디렉터리의 로컬 JSON 파일: 초기값, 일부 설정, 폴백 저장소
+
+Firestore가 실질적인 기준 저장소인 영역은 다음과 같습니다.
+
+- 보류 및 발행 게시물
+- few-shot 예시
+- 스케줄 설정
+- 토큰 메타데이터
+- 품질 분석 리포트
+
+반면 로컬 파일도 여전히 운영상 의미가 있습니다.
+
+- [\`data/topics.json\`](/D:/development/threads-autoposter/data/topics.json): 토픽, 제외 키워드, 신뢰 소스 설정
+- [\`data/examples.json\`](/D:/development/threads-autoposter/data/examples.json): few-shot 예시의 시드 또는 백업
+- [\`data/schedules.json\`](/D:/development/threads-autoposter/data/schedules.json): 스케줄 상태의 폴백 또는 초기 부트스트랩 데이터
+- Docker 진입 시 비어 있는 \`/app/data\` 볼륨에 기본 파일 복사
+
+이 구조는 의도적입니다. 운영 이력과 가변 상태는 Firestore에 두고, 초기 구성과 부트스트랩 데이터는 파일로 유지해 로컬 개발과 마이그레이션 비용을 낮추고 있습니다.
+
+### 3. 운영 인터페이스
+
+운영자가 쓰는 UI는 현재 두 개로 나뉘어 있습니다.
+
+루트 애플리케이션은 [\`src/server.ts\`](/D:/development/threads-autoposter/src/server.ts)에서 Express 서버를 띄우고, [\`public/app.js\`](/D:/development/threads-autoposter/public/app.js) 기반의 정적 대시보드를 제공합니다. 이 레거시 제어면은 다음 기능을 담당합니다.
+
+- 토픽 관리
+- 제외 키워드 관리
+- 신뢰 소스 관리
+- 스케줄러 시작, 정지, 즉시 실행
+- 동적 스케줄 추가 및 삭제
+- 보류 게시물 수정, 승인, 즉시 발행, 삭제
+- 로그 조회
+
+반면 \`dashboard/\`는 별도의 Next.js 16 분석 대시보드입니다. 이 앱은 Firestore에서 발행 게시물을 직접 읽어와 스레드 목록과 일별 참여도 차트를 렌더링하고, 수동 인사이트 갱신도 제공합니다. 인증은 [\`dashboard/src/proxy.ts\`](/D:/development/threads-autoposter/dashboard/src/proxy.ts)와 [\`dashboard/src/app/actions/auth.ts\`](/D:/development/threads-autoposter/dashboard/src/app/actions/auth.ts)에서 구현된 쿠키 기반 비밀번호 게이트를 사용합니다.
+
+## 핵심 데이터 흐름
+
+전체 흐름을 이해하는 가장 좋은 진입점은 [\`src/services/scheduler.ts\`](/D:/development/threads-autoposter/src/services/scheduler.ts)의 파이프라인 실행 순서입니다.
+
+### 1. 토큰 검증
+
+실제 게시 전에 워커는 [\`src/auth/threads-auth.ts\`](/D:/development/threads-autoposter/src/auth/threads-auth.ts)를 통해 Threads 액세스 토큰을 검증합니다. 검증에 실패하면 토큰 갱신을 시도합니다. 또한 설정된 \`THREADS_USER_ID\`가 토큰 소유자와 다를 경우 이를 자동으로 바로잡습니다.
+
+### 2. 멀티소스 수집
+
+[\`src/services/multi-source-crawler.ts\`](/D:/development/threads-autoposter/src/services/multi-source-crawler.ts)는 전날 기준 콘텐츠를 다음 소스에서 수집합니다.
+
+- Hacker News 상위 스토리
+- 여러 Reddit 서브레딧
+- dev.to 인기 글
+
+구현상 \`Promise.allSettled\`를 사용하므로, 특정 소스 하나가 실패해도 전체 수집이 중단되지 않습니다. 이후 \`topics.json\`에 등록된 trusted source가 있으면 해당 기사 본문을 추가로 가져와 Gemini로 전문 용어와 핵심 주장을 추출하고, 점수 보정까지 수행합니다.
+
+### 3. 트렌드 합성
+
+[\`src/services/trend-analyzer.ts\`](/D:/development/threads-autoposter/src/services/trend-analyzer.ts)는 수집한 기사 목록을 압축된 형태로 Gemini에 전달하고, 2~3개의 구체적인 트렌드 토픽을 JSON 형식으로 반환받습니다. 이후 이를 내부 표준 구조인 \`ResearchedTopic\`으로 변환합니다.
+
+여기서 중요한 점은 주제 묶음이 규칙 기반 클러스터링 코드가 아니라 모델 기반 의미 해석에 의해 결정된다는 것입니다.
+
+### 4. 중복 억제
+
+[\`src/services/topic-dedup.ts\`](/D:/development/threads-autoposter/src/services/topic-dedup.ts)는 새 후보 토픽을 최근 발행 이력과 비교합니다.
+
+중복 판정은 2단계로 구성됩니다.
+
+- 저비용 Jaccard 스타일 토큰 유사도 검사
+- 애매한 경우에만 수행하는 Gemini 의미 중복 검사
+
+의미 검사 자체가 실패하면 파이프라인은 차단보다 진행을 택합니다. 즉, 여기서는 fail-open 성향이 분명합니다.
+
+### 5. 콘텐츠 생성
+
+[\`src/services/content-generator.ts\`](/D:/development/threads-autoposter/src/services/content-generator.ts)는 시스템 전체에서 가장 많은 제품 의사결정이 응집된 계층입니다.
+
+이 서비스는 다음 요소를 합쳐 긴 프롬프트를 구성합니다.
+
+- 고정된 크리에이터 페르소나
+- chain-of-thought 스타일의 작성 절차
+- 강제된 스레드 구조
+- 감정 톤 전략
+- Firestore 또는 \`data/examples.json\`에서 읽은 few-shot 예시
+- 최근 게시 이력
+- 최근 결과물의 품질 경고
+- 과거 성과에서 추출한 프롬프트 피드백
+
+생성 결과는 본문과 댓글 체인뿐 아니라 감정 분석용 JSON 블록도 포함합니다. 생성기는 감정 조합이 약하면 재시도하며, 최종적으로 \`mainPost\`와 replies 형태로 파싱합니다.
+
+### 6. 보류 게시물 저장
+
+생성된 게시물은 [\`src/utils/pending-posts-manager.ts\`](/D:/development/threads-autoposter/src/utils/pending-posts-manager.ts)를 통해 Firestore의 \`pending-posts\` 컬렉션에 저장됩니다.
+
+구현상 중요한 사실이 하나 있습니다. \`addPendingPost\`는 현재 새 게시물을 기본적으로 \`approved: true\` 상태로 저장합니다. 즉, 승인 API와 수정 API는 존재하지만, 기본 파이프라인은 생성 직후 자동 승인되고 같은 실행 흐름에서 곧바로 발행 가능한 상태가 됩니다.
+
+### 7. 발행
+
+[\`src/services/threads-publisher.ts\`](/D:/development/threads-autoposter/src/services/threads-publisher.ts)는 Threads 실제 발행을 담당합니다.
+
+이 서비스는 다음 순서로 동작합니다.
+
+- Threads Graph API로 미디어 컨테이너 생성
+- 컨테이너 처리 대기
+- 본문 게시
+- \`reply_to_id\`를 이용한 댓글 체인 순차 게시
+- 게시 단계별 재시도 처리
+- 실제 발행 없이 출력만 하는 dry-run 지원
+
+특히 컨테이너 게시 전 30초 대기와 댓글 간 5초 대기 같은 Threads API 특화 제약이 코드에 직접 반영되어 있습니다.
+
+### 8. 발행 후 피드백 루프
+
+발행이 끝나면 스케줄러는 permalink를 조회하고 Threads id를 기록합니다. 이후 [\`src/services/performance-tracker.ts\`](/D:/development/threads-autoposter/src/services/performance-tracker.ts)가 두 시점에서 참여 데이터를 수집합니다.
+
+- 발행 후 약 22시간 시점
+- 발행 후 약 6.5일 시점
+
+이 데이터는 두 용도로 사용됩니다.
+
+- 대시보드 분석 화면의 지표 렌더링
+- 다음 생성 프롬프트에서 어떤 포맷과 훅이 잘 먹히는지에 대한 피드백 제공
+
+### 9. 품질 분석과 예시 승격
+
+[\`src/utils/quality-analyzer.ts\`](/D:/development/threads-autoposter/src/utils/quality-analyzer.ts)는 최근 게시물을 기준으로 출력 일관성을 점검합니다. 현재 확인하는 항목은 다음과 같습니다.
+
+- 포맷 다양성
+- 질문형 마무리 비율
+- 첫 댓글 시작 문구 반복 여부
+- 첫 줄 훅 다양성
+
+또한 [\`src/utils/pending-posts-manager.ts\`](/D:/development/threads-autoposter/src/utils/pending-posts-manager.ts)의 \`promoteExcellentPosts()\`는 성과가 일정 기준을 넘는 게시물을 \`few-shot-examples\` 컬렉션으로 승격합니다. 별도의 학습 시스템 없이도 콘텐츠 생성 품질을 점진적으로 조정하는 방식입니다.
+
+## 주요 기능 영역
+
+### 트렌드 수집 및 정렬
+
+이 프로젝트의 크롤러는 단순히 RSS나 API를 긁는 수준이 아닙니다. 여러 소스를 공통 \`CollectedArticle\` 구조로 정규화하고, 점수와 댓글 수를 포함한 메타데이터를 유지하고, trusted source에 대해서는 추가 LLM 기반 문맥 추출을 수행한 뒤, 그 결과를 정렬해 다음 단계로 넘깁니다.
+
+### 프롬프트 엔지니어링이 곧 제품 로직
+
+이 시스템의 차별점 상당수는 모델 래퍼가 아니라 프롬프트 설계 안에 있습니다. 콘텐츠 생성기는 다음과 같은 제품 의사결정을 담고 있습니다.
+
+- 목소리와 페르소나
+- 구조적 변주
+- 감정 분포
+- 반복 회피
+- 링크 사용 방식
+- Threads 포맷팅 규칙
+
+즉, 여기서는 프롬프트가 단순 부속물이 아니라 핵심 비즈니스 로직입니다.
+
+### 운영자가 개입 가능한 주제 경계
+
+[\`src/config/topics.ts\`](/D:/development/threads-autoposter/src/config/topics.ts)는 운영자가 자동 수집 영역을 편집할 수 있게 해줍니다. 조정 가능한 축은 다음과 같습니다.
+
+- 대상 토픽
+- 제외 키워드
+- 신뢰 소스
+
+이 덕분에 시스템은 완전 자동 수집기라기보다 편집 방향을 지정할 수 있는 자동화 파이프라인이 됩니다.
+
+### 이중 대시보드 구조
+
+현재 저장소에는 운영 목적이 다른 두 UI가 공존합니다.
+
+- 루트 Express + 정적 대시보드: 제어 중심
+- 별도 Next.js 대시보드: 조회와 분석 중심
+
+이 분리는 저장소가 단일 관리 화면에서 점차 역할 분리된 운영 도구로 이동하는 중이라는 신호로 읽을 수 있습니다.
+
+## 프로젝트 구조
 
 \`\`\`text
 threads-autoposter/
 ├── src/
-│   ├── index.ts                    # 메인 진입점, 워커 파이프라인 실행
-│   ├── server.ts                   # 상태 확인을 위한 백엔드 Express 서버 API
-│   ├── auth/                       # Meta Threads OAuth 및 Token Refresh 로직
-│   ├── config/                     # 환경 변수 유효성 검증 및 실행 주기 세팅
-│   ├── services/                   # ★ 핵심 비즈니스 로직
-│   │   ├── multi-source-crawler.ts # (Hacker News, Reddit, dev.to) 수집 엔진
-│   │   ├── trend-analyzer.ts       # 주제 추출 및 정보 통합 처리기
-│   │   ├── topic-dedup.ts          # 중복 콘텐츠 방지용 필터 시스템
-│   │   ├── content-generator.ts    # AI 글쓰기, 포맷팅(A/Chain) 생성 시스템
-│   │   ├── emotional-analyzer.ts   # 텍스트 감정 분석(Anger, Usefulness 등 5분류) 클래스
-│   │   ├── threads-publisher.ts    # Meta API 트랜잭션 및 타임아웃/컨테이너 생성
-│   │   ├── threads-insights.ts     # 작성된 컨텐츠에 대한 인덱싱 및 지표 연동
-│   │   └── scheduler.ts            # node-cron 기반 스케줄러 관리 (포스트 주기 트리거 등)
+│   ├── index.ts                    # 워커 엔트리포인트 및 CLI 플래그 처리
+│   ├── server.ts                   # 레거시 제어 대시보드용 Express 서버
+│   ├── api/routes.ts               # 스케줄, 토픽, 보류 게시물 API
+│   ├── auth/threads-auth.ts        # Threads 토큰 검증 및 갱신
+│   ├── config/
+│   │   ├── index.ts                # 환경변수 기반 런타임 설정
+│   │   ├── schedules.ts            # 스케줄 저장 및 discovery mode 로직
+│   │   └── topics.ts               # 토픽, 제외 키워드, 신뢰 소스 설정
+│   ├── services/
+│   │   ├── multi-source-crawler.ts
+│   │   ├── trend-analyzer.ts
+│   │   ├── topic-dedup.ts
+│   │   ├── content-generator.ts
+│   │   ├── emotional-analyzer.ts
+│   │   ├── threads-publisher.ts
+│   │   ├── threads-insights.ts
+│   │   └── performance-tracker.ts
 │   ├── utils/
-│   │   ├── logger.ts               # Winston 기반 포맷 로깅
-│   │   └── pending-posts-manager.ts# 게시 상태 처리기 (진행, 완료 보관 및 예시 승격)
-├── dashboard/                      # ★ 관리자 대시보드 (Next.js App)
-│   ├── src/app                     # 콘텐츠 통계 및 히스토리 모니터링 페이지
-│   ├── package.json                # 독립적인 UI 종속성 (React, Recharts, TailwindCSS, Firebase)
-├── data/
-│   ├── examples.json               # Few-Shot 예시 (자동 승격으로 갱신되는 프롬프트 베이스)
-│   └── pending-posts.json          # 스토리지: 게시물 상태 이력 및 메타데이터
-├── scripts/
-│   ├── analyze-quality.ts          # 콘텐츠의 문장형태 및 품질 통계 분석용 CLI 스크립트
-│   └── get-token.ts                # Threads 인증 토큰 수동 발급 스크립트
-└── src/__tests__/                  # Vitest 기반 단위/통합 테스트 슈트
+│   │   ├── firebase.ts
+│   │   ├── pending-posts-manager.ts
+│   │   ├── quality-analyzer.ts
+│   │   ├── gemini-fallback.ts
+│   │   ├── env-updater.ts
+│   │   ├── logger.ts
+│   │   └── helpers.ts
+│   └── __tests__/                  # 핵심 파이프라인 대상 Vitest 테스트
+├── public/                         # Express가 서빙하는 레거시 브라우저 대시보드
+├── data/                           # 시드 데이터 및 로컬 폴백 파일
+├── scripts/                        # 운영용 스크립트 및 마이그레이션 스크립트
+├── dashboard/                      # 별도 Next.js 분석 대시보드
+└── Dockerfile                      # 워커 컨테이너 빌드 설정
 \`\`\`
 
----
+## 기술 스택
 
-## 4. 상세 기능 구현 (Technical Implementation)
+### 루트 워커
 
-### 4.1. AI 콘텐츠 창작 엔진과 '자기 강화 프롬프팅'
+- Node.js 20
+- TypeScript
+- \`node-cron\`
+- \`axios\`
+- \`@google/genai\`
+- \`firebase-admin\`
+- \`winston\`
+- \`vitest\`
 
-AI의 어투가 일관적이면서도 기계적이지 않게 유지되는 핵심 비결입니다:
+### 대시보드 앱
 
-- **Chain-of-Thought**: Gemini 모델에게 어떤 관점으로 접근할지(앵글 설정), 어떤 톤을 유지할지 논리적으로 사고를 먼저 수행하게 합니다.
-- **Pattern Avoidance (구조 이력 반영)**: 파일 기반 DB에서 직전 발행된 글들의 스탯(포맷, 길이, 댓글 수, 첫 문구 등)을 불러와 모델에게 전달, "방금 전 게시물과 첫 문장은 다르게 작성할 것" 같은 강한 규칙이 동적으로 제어됩니다.
-- **Auto-Promotion 루프**: 게시 완료 로직 속에서 구조와 반응이 좋은 출력물은 \`examples.json\`으로 등록, 다음 생성 시 Few-Shot 프롬프트의 재료로 사용되어 진화하게 됩니다.
+- Next.js 16 App Router
+- React 19
+- Tailwind CSS v4
+- Recharts
+- Firebase Admin SDK
 
-### 4.2. 하이브리드 중복 방지 시스템
+### 외부 연동 시스템
 
-트렌드를 크롤링하다보면 동일한 이슈가 날짜를 달리해 등장합니다. 비용을 아끼면서 확실한 필터링을 수행합니다:
+- Threads Graph API
+- Hacker News API
+- Reddit JSON 엔드포인트
+- dev.to API
+- Firestore
 
-- **1단계 (문자열 기반 빠른 차단)**: 과거 발행된 아이템들과의 키워드 추출 후 \`Jaccard 유사도\` 검사를 수행합니다. 0.6 이상의 높은 유사도가 도출되면 LLM을 태우지 않고 즉시 Drop합니다.
-- **2단계 (시맨틱 & 컨텍스트 우회)**: 만약 유사도가 모호한 중간수치(0.2 ~ 0.6)일 경우, Gemini 모델로 두 기사의 주요 논점과 앵글을 대조시켜 "동일한 주제이나 관점이 다르다면 포스팅 허가" 판정을 내리는 실패 방지(Fail-Open) 체계를 가집니다.
+## 주요 구현 결정
 
-### 4.3. 다중 감정 온도 시스템 (Emotional Analyzer)
+### Firestore 중심 운영, 파일 기반 부트스트랩 유지
 
-- 글이 언제나 딱딱한 설명 위주(usefulness)로 흘러가는 것을 방지합니다. 프롬프트에 \`anger\`, \`usefulness\`, \`laughter\`, \`emotion\`, \`surprise\` 의 5원소 온도를 평가하고 할당시켜 콘텐츠의 생명력을 높입니다.
+코드베이스는 분명 로컬 JSON 중심 초기 버전에서 Firestore 기반 서비스로 진화한 상태입니다. 하지만 기존 파일 모델을 완전히 제거하지 않고 초기값과 폴백 용도로 남겨 두었습니다. 이 선택은 로컬 개발과 마이그레이션 비용을 낮추는 데 유리합니다.
 
-### 4.4. 안전한 Threads 게시 엔진
+### 모든 LLM 호출에 모델 폴백 적용
 
-- **비동기 미디어 컨테이너링**: Threads의 복잡한 Graph API에 대응하여 본문(Parent)을 발행하고 연속해서 ID를 추적하며 본인 글에 답글을 연속적으로 다는 체인을 관리합니다.
-- API 요구사항에 맞춰 요청과 요청 사이 \`Delay\` 주입 및 비회신 대비 에러 핸들링 로직이 갖추어져 있습니다.
+[\`src/utils/gemini-fallback.ts\`](/D:/development/threads-autoposter/src/utils/gemini-fallback.ts)는 Gemini 모델 목록을 순서대로 받아, 쿼터 초과나 호출 실패 시 다음 모델로 즉시 넘어갑니다. 자동화 워크로드에서는 이런 작은 안정성 계층이 실제 운영 품질에 직접 영향을 줍니다.
 
-### 4.5. Next.js 통합 대시보드 및 모니터링 체계
+### 품질과 성과가 다시 생성으로 되돌아가는 구조
 
-자동 설정된 스케줄에 따라 퍼블리싱된 게시물 현황을 한눈에 파악할 수 있도록 **Next.js (App Router)** 기반의 웹 대시보드가 \`dashboard/\` 하위에 별도로 구축되어 있습니다:
-- **Firestore DB 실시간 연동**: 봇이 메인 서버에서 로컬 JSON 및 Firebase Firestore에 활동 기록을 이중 적재하면, 대시보드는 Firebase Admin SDK를 통해 직접 데이터를 읽어와 차트(Recharts)와 히스토리로 렌더링합니다.
-- **보안 및 접근 제어**: HTTP Basic Auth 방식을 채택하여 \`.env\`의 \`DASHBOARD_PASSWORD\` 환경 변수를 통해서 누구나 URL에 접근할 수 없도록 최소한의 보안 통제를 유지합니다.
-- **Vercel 최적화 배포**: 모노레포 형태는 아니지만 최상위 레포지토리 내 하위 폴더(Subdirectory)로 분리되어 있어, Vercel의 프론트엔드 호스팅에 즉각적으로 연동 및 배포할 수 있는 아키텍처를 가집니다.
+이 프로젝트는 "글 생성"과 "사후 분석"을 분리된 부수 기능으로 두지 않습니다. 최근 출력물의 품질 경고와 성과 인사이트가 다음 생성 프롬프트에 직접 주입됩니다. 별도 학습 인프라 없이도 적응형 생성 시스템처럼 동작하게 만드는 설계입니다.
 
----
+### 발행 이력이 상태로 남는 구조
 
-## 5. 사용 기술 및 라이브러리 (Tech Stack)
+생성된 게시물은 발행 전에 저장되고, 발행 후에는 Threads id와 permalink가 기록되며, 나중에는 engagement 스냅샷도 같은 객체에 축적됩니다. 따라서 한 게시물의 생애주기를 생성부터 성과 수집까지 추적할 수 있습니다.
 
-### **Core Backend & Data Source**
+### 두 개의 대시보드는 서로 다른 운영 역할을 반영
 
-- **언어 & 런타임**: TypeScript, Node.js (\`tsx\`)
-- **AI/LLM**: Google GenAI (\`@google/genai\`)
-- **데이터 가져오기**: \`axios\`, Hacking News / Reddit / dev.to API
-- **테스트 및 코드 품질**: \`vitest\`
+레거시 대시보드는 제어면이고, Next.js 대시보드는 분석면입니다. 둘이 공존하면서 다소 중복 개념이 생기긴 했지만, 역할 자체는 분리되어 있어 현재 상태를 혼란이라기보다 이행 단계로 보는 편이 정확합니다.
 
-### **Services & Utilities**
+## 왜 이 프로젝트가 기술적으로 흥미로운가
 
-- **소셜 연결망 연동**: Meta Graph API (Threads)
-- **스케줄링**: \`node-cron\`
-- **로깅**: \`winston\`
+이 저장소가 흥미로운 이유는 프레임워크 자체보다 제품 동작 복잡도가 높기 때문입니다.
 
-### **Dashboard Web UI**
+핵심 난점은 다음에 있습니다.
 
-- **프론트엔드**: React, Next.js (App Router), Tailwind CSS v4
-- **서버리스/통신**: Firebase Admin, Recharts (데이터 시각화)
+- 노이즈가 많은 외부 소스를 안정적인 콘텐츠 파이프라인으로 바꾸는 일
+- LLM을 기사 보강, 주제 선별, 중복 판정, 글쓰기, 감정 분석 등 여러 역할에 쓰는 일
+- 시간이 지나도 반복적인 출력으로 무너지지 않도록 상태를 유지하는 일
+- 생성 품질과 실제 반응 데이터를 다음 프롬프트로 되먹이는 일
+- 자동 실행과 인간 운영 제어를 함께 지원하는 일
 
----
-
-## 6. 주요 구현 특징 (Key Highlights)
-
-- **강력한 Fault-Tolerance(내결함성)**: 프롬프트 실패, 멀티 소스 크롤링 중 일부 실패, Graph API 연결 지연 속에서도 시스템이 강제 종료되지 않도록 개별 에러 바운더리와 폴백(Fallback) 방식을 채택했습니다.
-- **데이터 주도적 모니터링**: 자동 포스팅에 그치지 않고, \`quality analyzer\`와 자체 \`dashboard\` 앱을 두어 발송 퀄리티 통계를 역으로 점검하는 수준에 도달했습니다.
-- **높은 확장성을 고려한 디자인 패턴**: \`Crawler\`, \`Trend Analyzer\`, \`Publisher\`, \`Emotional Analyzer\` 등 책임이 단일화되어, 만약 X(구 트위터)나 Bluesky를 추가하기 원한다면 \`Publisher\` 인터페이스만 새롭게 상속하여 꽂아 넣을 수 있는 구조적 미덕을 갖추고 있습니다.
+결과적으로 이 프로젝트는 LLM 기반 자율 워크플로가 실제 운영 단계로 가면서 어떤 요소를 필요로 하는지 잘 보여주는 예시입니다. 저장소 안에는 이미 마이그레이션, 폴백, 지연형 지표 수집, 운영자 도구, 피드백 기반 프롬프트 개선 같은 현실적인 문제들이 모두 드러나 있습니다.
 `,
     techStack: [
       "Node.js",
