@@ -1074,7 +1074,7 @@ threads-autoposter/
       "Meta Threads API",
       "node-cron",
     ],
-    liveUrl: "https://threads-autoposter.vercel.app",
+    liveUrl: "https://threads-autoposter-one.vercel.app",
     githubUrl: "https://github.com/tuosm9390/threads-autoposter",
     imageUrl: "/images/project-threads-autoposter.webp",
     accentColor: "#000000",
