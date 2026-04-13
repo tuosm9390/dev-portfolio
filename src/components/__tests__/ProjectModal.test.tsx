@@ -1,28 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import ProjectModal from '../ProjectModal';
 import { projects } from '@/data/projects';
-import { describe, it, expect, vi } from 'vitest';
-import React from 'react';
-
-// mock next/navigation
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-  }),
-  useSearchParams: () => new URLSearchParams(),
-  usePathname: () => '/',
-}));
-
-// mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: { children: React.ReactNode }) => <div {...props}>{children}</div>,
-    article: ({ children, ...props }: { children: React.ReactNode }) => <article {...props}>{children}</article>,
-    h2: ({ children, ...props }: { children: React.ReactNode }) => <h2 {...props}>{children}</h2>,
-    p: ({ children, ...props }: { children: React.ReactNode }) => <p {...props}>{children}</p>,
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-}));
+import { describe, it, expect } from 'vitest';
 
 describe('ProjectModal', () => {
   const mockProject = projects[0];

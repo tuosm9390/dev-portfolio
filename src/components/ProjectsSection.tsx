@@ -1,34 +1,41 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import {
-  ExternalLink,
-  Code2,
-  ArrowRight,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ExternalLink, Orbit, Star } from "lucide-react";
 import Image from "next/image";
 import { projects } from "@/data/projects";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
+
+const KNOWN_PROJECT_IMAGES = new Set([
+  "/images/project-cafe-book.png",
+  "/images/project-minions-bid.png",
+  "/images/project-synapso.dev.png",
+]);
+
+const projectLayouts = [
+  "lg:col-span-7",
+  "lg:col-span-5 lg:translate-y-14",
+  "lg:col-span-5 lg:-translate-y-6",
+  "lg:col-span-7 lg:translate-y-10",
+  "lg:col-span-6 lg:-translate-y-4",
+  "lg:col-span-6 lg:translate-y-12",
+];
 
 /**
  * Skeleton component for ProjectsSection
  */
 export function ProjectsSectionSkeleton() {
   return (
-    <section className="section-padding px-6 section-light">
-      <div className="mx-auto max-w-[1024px]">
-        <div className="mb-16 text-center animate-pulse">
-          <div className="mb-6 h-12 w-3/4 md:w-1/2 rounded-lg bg-black/5 mx-auto" />
-          <div className="mx-auto h-20 w-full md:w-2/3 rounded-lg bg-black/5" />
+    <section className="px-4 py-20 md:px-6">
+      <div className="section-shell">
+        <div className="mb-16 animate-pulse">
+          <div className="mb-5 h-4 w-32 rounded-full bg-white/10" />
+          <div className="mb-4 h-16 w-full max-w-xl rounded-[1.5rem] bg-white/10" />
+          <div className="h-24 w-full max-w-2xl rounded-[1.5rem] bg-white/8" />
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          {[1, 2, 3, 4].map((i) => (
-            <div 
-              key={i} 
-              className="aspect-square w-full rounded-xl bg-black/5 animate-pulse"
+        <div className="grid gap-6 lg:grid-cols-12">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={index}
+              className="panel h-[24rem] rounded-[2rem] bg-white/5 animate-pulse lg:col-span-6"
             />
           ))}
         </div>
@@ -37,120 +44,194 @@ export function ProjectsSectionSkeleton() {
   );
 }
 
-/**
- * Apple-style Project Section
- */
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="section-padding px-6 section-light">
-      <div className="mx-auto max-w-[1024px]">
-        {/* Section header */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-20 text-center"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            className="mb-6 text-[40px] font-semibold leading-[1.1] tracking-tight sm:text-[56px]"
-          >
-            선별된 프로젝트
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mx-auto max-w-[600px] text-[17px] leading-[1.47] tracking-[-0.022em] text-black/60 sm:text-[21px]"
-          >
-            복잡한 문제를 단순하고 우아한 솔루션으로 풀어낸 작업들입니다.
-            각 프로젝트는 성능, 디자인, 사용자 경험의 완벽한 조화를 목표로 합니다.
-          </motion.p>
-        </motion.div>
+    <section
+      id="projects"
+      className="px-4 py-20 md:px-6"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1400px" }}
+    >
+      <div className="section-shell">
+        <div className="mb-16 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <span className="eyebrow">selected work</span>
+            <h2 className="section-title mt-6 max-w-none text-white sm:max-w-[14ch] lg:max-w-[12ch]">
+              결과물로 말하는 프로젝트들.
+            </h2>
+            <div className="mt-6 hidden items-center gap-3 lg:flex">
+              <span className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-[0.72rem] uppercase tracking-[0.18em] text-white/44">
+                archive / {projects.length.toString().padStart(2, "0")}
+              </span>
+              <span className="text-sm text-white/40">
+                서로 다른 맥락에서 살아남은 작업만 남겼습니다.
+              </span>
+            </div>
+          </div>
 
-        {/* Projects grid */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-12 md:grid-cols-2"
-        >
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+          <div className="space-y-5 lg:pt-3">
+            <p className="body-copy">
+              단순히 예쁜 카드 모음이 아니라, 문제를 어떤 구조로 파고들었는지까지
+              보이도록 정리했습니다. 제품의 결, 기술적 의도, 그리고 실제 구현 밀도를
+              함께 읽을 수 있어야 포트폴리오가 제대로 작동한다고 생각합니다.
+            </p>
+            <div className="flex flex-wrap gap-3 text-sm text-white/62">
+              <span className="surface-chip">
+                <Orbit className="h-4 w-4" />
+                AI · SaaS · 실시간 시스템
+              </span>
+              <span className="surface-chip">
+                <Star className="h-4 w-4" />
+                제품 구조 + 구현 디테일 동시 공개
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-y-10">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              index={index}
+              project={project}
+              className={projectLayouts[index % projectLayouts.length]}
+              emphasis={index % 2 === 0}
+            />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
 function ProjectCard({
+  index,
   project,
+  className,
+  emphasis,
 }: {
+  index: number;
   project: (typeof projects)[0];
+  className: string;
+  emphasis: boolean;
 }) {
-  const [imgError, setImgError] = useState(false);
-  const router = useRouter();
-
-  const handleOpenDetail = () => {
-    router.push(`/projects/${project.id}`);
-  };
+  const hasProjectImage = KNOWN_PROJECT_IMAGES.has(project.imageUrl);
 
   return (
-    <motion.article
-      variants={fadeInUp}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-      className="group relative flex flex-col overflow-hidden bg-white apple-shadow rounded-xl transition-all duration-300 cursor-pointer h-full"
-      onClick={handleOpenDetail}
-    >
-      {/* Image Container */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f5f5f7]">
-        {!imgError ? (
-          <motion.div layoutId={`project-image-${project.id}`} className="relative w-full h-full">
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              unoptimized
-              onError={() => setImgError(true)}
-            />
-          </motion.div>
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/5">
-            <Code2 className="h-12 w-12 text-black/20" />
+    <article className={`group ${className}`}>
+      <div
+        className={`panel relative h-full rounded-[2rem] p-5 transition-transform duration-300 ease-out group-hover:-translate-y-1.5 md:p-6 ${emphasis ? "lg:min-h-[38rem]" : "lg:min-h-[34rem]"}`}
+        style={{
+          boxShadow: `0 14px 34px ${project.accentColor}12, 0 10px 20px rgba(3, 6, 18, 0.18)`,
+        }}
+      >
+        <div className="relative flex h-full flex-col">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-[28rem]">
+              <p className="text-xs uppercase tracking-[0.2em] text-white/38">
+                {String(index + 1).padStart(2, "0")} / {project.techStack.slice(0, 2).join(" / ")}
+              </p>
+              <h3 className="mt-3 text-[2rem] font-semibold leading-[0.98] tracking-[-0.05em] text-white md:text-[2.4rem]">
+                {project.title}
+              </h3>
+              <p className="mt-4 max-w-[42ch] text-sm leading-7 text-white/66 md:text-[0.98rem]">
+                {project.summary}
+              </p>
+            </div>
+
+            <span className="surface-chip border-white/10 bg-black/18 text-white/72">
+              {project.techStack[0]}
+            </span>
           </div>
-        )}
-      </div>
 
-      {/* Content */}
-      <div className="flex flex-grow flex-col p-8 text-center">
-        <h3 className="text-[24px] font-semibold leading-[1.14] tracking-[0.011em] text-[#1d1d1f] mb-2">
-          {project.title}
-        </h3>
-        <p className="text-[17px] leading-[1.47] tracking-[-0.022em] text-black/60 mb-6 line-clamp-2">
-          {project.summary}
-        </p>
+          <Link
+            href={`/projects/${project.id}`}
+            prefetch={false}
+            className={`relative mt-8 overflow-hidden rounded-[1.7rem] border border-white/8 bg-black/18 text-left ${emphasis ? "min-h-[17rem] md:min-h-[19rem]" : "min-h-[15rem] md:min-h-[16.5rem]"}`}
+          >
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/8 to-transparent" />
+            {hasProjectImage ? (
+              <div className="absolute left-5 top-5 z-10 rounded-full border border-white/10 bg-black/24 px-3 py-1 text-[0.72rem] uppercase tracking-[0.18em] text-white/56">
+                open case
+              </div>
+            ) : null}
+            {hasProjectImage ? (
+              <Image
+                src={project.imageUrl}
+                alt={project.title}
+                fill
+                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                sizes="(max-width: 767px) 92vw, (max-width: 1279px) 86vw, 42vw"
+                quality={index < 2 ? 60 : 56}
+                loading="lazy"
+                fetchPriority="low"
+                decoding="async"
+              />
+            ) : (
+              <div
+                className="flex h-full flex-col justify-between p-5"
+                style={{
+                  background: `radial-gradient(circle at top left, ${project.accentColor}30, transparent 35%), linear-gradient(180deg, rgba(9,12,24,0.86), rgba(5,7,16,0.96))`,
+                }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="surface-chip border-white/10 bg-white/5 text-white/58">
+                    no preview asset
+                  </span>
+                  <span className="text-xs uppercase tracking-[0.18em] text-white/34">
+                    {project.id}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/34">
+                    fallback preview
+                  </p>
+                  <h4 className="mt-3 max-w-[10ch] text-[1.6rem] font-semibold leading-[1] tracking-[-0.05em] text-white">
+                    {project.title}
+                  </h4>
+                  <p className="mt-3 line-clamp-3 max-w-[32ch] text-sm leading-6 text-white/56">
+                    {project.summary}
+                  </p>
+                </div>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#080b17] via-transparent to-transparent" />
+          </Link>
 
-        <div className="mt-auto flex items-center justify-center gap-6">
-          <button
-            className="text-[17px] font-normal text-apple-link-blue hover:underline flex items-center gap-1"
-          >
-            자세히 보기 <ArrowRight size={16} />
-          </button>
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="text-[17px] font-normal text-apple-link-blue hover:underline flex items-center gap-1"
-          >
-            방문하기 <ExternalLink size={16} />
-          </a>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {project.techStack.slice(0, 5).map((tech) => (
+              <span
+                key={tech}
+                className="rounded-full border border-white/8 bg-white/4 px-3 py-1 text-xs text-white/58"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-auto flex flex-wrap items-center gap-4 pt-8">
+            <Link
+              href={`/projects/${project.id}`}
+              prefetch={false}
+              className="inline-flex items-center gap-2 text-sm font-medium text-white/86"
+            >
+              케이스 읽기
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+
+            {project.liveUrl ? (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-white/58 hover:text-white"
+              >
+                방문하기
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            ) : null}
+          </div>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

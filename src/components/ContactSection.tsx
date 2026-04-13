@@ -1,22 +1,6 @@
-"use client";
-
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import {
-  Mail,
-  Phone,
-  Github,
-  Linkedin,
-  Send,
-  CheckCircle,
-  Loader2,
-} from "lucide-react";
+import { Mail, Phone, Github, Linkedin, Orbit } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 import { profile } from "@/data/profile";
-import {
-  fadeInUp,
-  staggerContainer,
-} from "@/lib/animations";
-import emailjs from "@emailjs/browser";
 
 const contactLinks = [
   {
@@ -34,189 +18,86 @@ const contactLinks = [
   {
     icon: Github,
     label: "GitHub",
-    value: "GitHub 프로필",
+    value: "github.com/tuosm9390",
     href: profile.contact.github,
     external: true,
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "LinkedIn 프로필",
+    value: "프로필 보기",
     href: profile.contact.linkedin,
     external: true,
   },
 ];
 
 export default function ContactSection() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formRef.current) return;
-
-    setIsSubmitting(true);
-
-    try {
-      await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "your_service_id",
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "your_template_id",
-        formRef.current,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "your_public_key",
-      );
-
-      setSubmitted(true);
-      formRef.current.reset();
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error("FAILED...", error);
-      alert("메시지 전송에 실패했습니다. 나중에 다시 시도해주세요.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <section id="contact" className="section-padding px-6 section-light">
-      <div className="mx-auto max-w-[1024px]">
-        {/* Section header */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-20 text-center"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            className="mb-6 text-[40px] font-semibold leading-[1.1] tracking-tight sm:text-[56px]"
-          >
-            프로젝트를 시작해볼까요?
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="mx-auto max-w-[600px] text-[17px] leading-[1.47] tracking-[-0.022em] text-black/60 sm:text-[21px]"
-          >
-            아이디어가 있으시다면 편하게 연락주세요.
-            최대한 빠르게 답변드리겠습니다.
-          </motion.p>
-        </motion.div>
+    <section id="contact" className="px-4 py-20 md:px-6">
+      <div className="section-shell">
+        <div className="panel-strong overflow-hidden rounded-[2.2rem] p-6 md:p-8 lg:p-10">
+          <div className="absolute right-[-6rem] top-[-5rem] h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(128,149,255,0.3),transparent_70%)] blur-2xl" />
+          <div className="absolute bottom-[-7rem] left-[-5rem] h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(89,214,255,0.18),transparent_70%)] blur-2xl" />
 
-        <div className="grid gap-16 lg:grid-cols-2 items-start">
-          {/* Contact info */}
-          <motion.div
-            variants={fadeInUp}
-            className="space-y-10"
-          >
-            <h3 className="text-[28px] font-semibold tracking-[0.007em] text-[#1d1d1f]">
-              연락처 정보
-            </h3>
-            <div className="grid gap-6">
-              {contactLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                  className="group flex items-center gap-6"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-black/5 text-black/80 transition-all group-hover:bg-apple-blue group-hover:text-white">
-                    <link.icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-[12px] font-semibold uppercase tracking-wider text-black/40 mb-0.5">
-                      {link.label}
-                    </p>
-                    <p className="text-[17px] font-normal text-[#1d1d1f] group-hover:text-apple-blue transition-colors">
-                      {link.value}
-                    </p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </motion.div>
+          <div className="relative grid gap-10 lg:grid-cols-[0.88fr_1.12fr]">
+            <div className="max-w-[32rem]">
+              <span className="eyebrow">contact vector</span>
+              <h2 className="section-title mt-6 max-w-[10ch] text-white">
+                함께 만들고 싶은 것이 있다면 바로 연결해 주세요.
+              </h2>
+              <p className="body-copy mt-7">
+                포트폴리오를 보는 것으로 끝나지 않게, 실제 대화로 이어질 수 있는
+                접점을 열어두었습니다. 아이디어가 아직 흐릿해도 괜찮고, 이미 구체적인
+                요구사항이 있어도 좋습니다.
+              </p>
 
-          {/* Contact form */}
-          <motion.div
-            variants={fadeInUp}
-            className="rounded-2xl bg-white apple-shadow p-8 sm:p-10"
-          >
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="user_name"
-                    className="text-[14px] font-semibold text-black/60"
-                  >
-                    성함
-                  </label>
-                  <input
-                    id="user_name"
-                    name="user_name"
-                    type="text"
-                    required
-                    className="w-full rounded-xl border border-black/10 bg-[#fafafc] px-4 py-3 text-[17px] text-[#1d1d1f] outline-none transition-all focus:border-apple-blue"
-                    placeholder="홍길동"
-                  />
+              <div className="mt-7 flex flex-wrap gap-3">
+                <span className="surface-chip border-white/10 bg-white/[0.05] text-white/64">
+                  initial call
+                </span>
+                <span className="surface-chip border-white/10 bg-white/[0.05] text-white/64">
+                  async review
+                </span>
+                <span className="surface-chip border-white/10 bg-white/[0.05] text-white/64">
+                  freelance inquiry
+                </span>
+              </div>
+
+              <div className="mt-10">
+                <div className="flex items-center gap-2 text-sm text-white/60">
+                  <Orbit className="h-4 w-4" />
+                  어떤 맥락에서든 편하게 시작할 수 있습니다.
                 </div>
-                <div className="space-y-2">
-                  <label
-                    htmlFor="user_email"
-                    className="text-[14px] font-semibold text-black/60"
-                  >
-                    이메일
-                  </label>
-                  <input
-                    id="user_email"
-                    name="user_email"
-                    type="email"
-                    required
-                    className="w-full rounded-xl border border-black/10 bg-[#fafafc] px-4 py-3 text-[17px] text-[#1d1d1f] outline-none transition-all focus:border-apple-blue"
-                    placeholder="hello@example.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label
-                    htmlFor="message"
-                    className="text-[14px] font-semibold text-black/60"
-                  >
-                    상세 내용
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    rows={4}
-                    className="w-full resize-none rounded-xl border border-black/10 bg-[#fafafc] px-4 py-3 text-[17px] text-[#1d1d1f] outline-none transition-all focus:border-apple-blue"
-                    placeholder="진행하고자 하는 프로젝트에 대해 들려주세요."
-                  />
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {contactLinks.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      className="rounded-[1.3rem] border border-white/8 bg-white/[0.03] px-4 py-4 text-white/76 hover:border-white/14 hover:bg-white/[0.05] hover:text-white"
+                    >
+                      <span className="flex h-11 w-11 items-center justify-center rounded-[0.95rem] border border-white/10 bg-white/6 text-white">
+                        <link.icon className="h-4 w-4" />
+                      </span>
+                      <span className="mt-1 min-w-0">
+                        <span className="block text-xs uppercase tracking-[0.18em] text-white/34">
+                          {link.label}
+                        </span>
+                        <span className="mt-1 block truncate text-sm text-white/78">
+                          {link.value}
+                        </span>
+                      </span>
+                    </a>
+                  ))}
                 </div>
               </div>
-              <button
-                type="submit"
-                disabled={isSubmitting || submitted}
-                className="btn-apple-primary group flex w-full items-center justify-center gap-2 disabled:opacity-70 sm:w-auto"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    전송 중...
-                  </>
-                ) : submitted ? (
-                  <>
-                    <CheckCircle className="h-5 w-5" />
-                    메시지가 전송되었습니다
-                  </>
-                ) : (
-                  <>
-                    <Send className="h-4 w-4" />
-                    보내기
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
+            </div>
+
+            <div>
+              <ContactForm />
+            </div>
+          </div>
         </div>
       </div>
     </section>

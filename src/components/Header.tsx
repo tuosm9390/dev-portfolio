@@ -1,102 +1,125 @@
-"use client";
-
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { profile } from "@/data/profile";
 
 const navLinks = [
-  { label: "소개", href: "#about" },
   { label: "프로젝트", href: "#projects" },
-  { label: "연락하기", href: "#contact" },
+  { label: "작업 방식", href: "#about" },
+  { label: "연락", href: "#contact" },
 ];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleNavClick = (href: string) => {
-    setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <header className="nav-glass fixed top-0 left-0 right-0 z-50 h-[48px] flex items-center">
-      <div className="mx-auto flex w-full max-w-[1024px] items-center justify-between px-6">
-        {/* Logo - Apple Style Centered or Left */}
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="text-[17px] font-semibold tracking-tight text-white/90 transition-opacity hover:opacity-100"
-        >
-          {profile.businessName}
-        </a>
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6">
+      <div className="section-shell">
+        <div className="md:hidden">
+          <input id="mobile-nav-toggle" type="checkbox" className="peer sr-only" />
+          <div className="floating-nav flex items-center justify-between rounded-[1.35rem] px-4 py-3 md:px-5">
+            <Link href="#page-top" scroll className="group flex min-w-0 items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[1rem] bg-white/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
+                <span className="h-4 w-4 rounded-[0.45rem] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.95),rgba(122,146,255,0.95)_40%,rgba(60,79,170,0.95))]" />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold tracking-[0.14em] text-white/86 uppercase">
+                  {profile.businessName}
+                </p>
+                <p className="truncate text-xs text-white/48">
+                  몰입해서 끝까지 파고드는 개발자
+                </p>
+              </div>
+            </Link>
 
-        {/* Desktop Nav - Centered Links */}
-        <nav className="hidden items-center gap-8 md:flex absolute left-1/2 -translate-x-1/2">
-          {navLinks.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => handleNavClick(link.href)}
-              className="text-[12px] font-normal text-white/80 transition-opacity hover:opacity-100"
-            >
-              {link.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* Icons - Right Side */}
-        <div className="hidden items-center gap-6 md:flex">
-          <button className="text-white/80 transition-opacity hover:opacity-100">
-            <Search size={16} />
-          </button>
-          <button className="text-white/80 transition-opacity hover:opacity-100">
-            <ShoppingBag size={16} />
-          </button>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-white md:hidden"
-          aria-label="메뉴 토글"
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
-
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 top-[48px] z-40 bg-black md:hidden"
-          >
-            <nav className="flex flex-col gap-0 px-10 pt-10">
+            <nav className="hidden items-center gap-6 lg:flex">
               {navLinks.map((link) => (
-                <button
+                <Link
                   key={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className="border-b border-white/10 py-4 text-left text-2xl font-semibold text-white/90 transition-colors hover:text-white"
+                  href={link.href}
+                  className="whitespace-nowrap text-sm text-white/62 hover:text-white"
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
-              <button
-                onClick={() => handleNavClick("#contact")}
-                className="mt-6 text-left text-2xl font-semibold text-apple-blue"
-              >
-                프로젝트 의뢰
-              </button>
             </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            <div className="hidden items-center gap-3 md:flex">
+              <span className="surface-chip border-white/10 bg-white/4 text-white/62">
+                채용 · 레퍼런스 · 외주
+              </span>
+              <Link href="#contact" className="secondary-button whitespace-nowrap px-4 py-2 text-sm leading-none">
+                대화 열기
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <label
+              htmlFor="mobile-nav-toggle"
+              className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
+            >
+              <Menu className="h-5 w-5 peer-checked:hidden" />
+              <X className="hidden h-5 w-5 peer-checked:block" />
+            </label>
+          </div>
+
+          <div className="panel mt-3 hidden overflow-hidden rounded-[1.6rem] p-4 peer-checked:block">
+            <div className="mb-4 rounded-[1.2rem] border border-white/8 bg-white/4 p-4">
+              <p className="text-sm font-semibold text-white/82">{profile.name}</p>
+              <p className="mt-1 text-sm text-white/56">
+                채용 검토, 작업물 확인, 외주 탐색 모두를 위한 포트폴리오
+              </p>
+            </div>
+
+            <nav className="flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-[1rem] border border-white/6 bg-white/3 px-4 py-3 text-left text-base text-white/82"
+                >
+                  {link.label}
+                </Link>
+                ))}
+              </nav>
+          </div>
+        </div>
+
+        <div className="floating-nav hidden items-center justify-between rounded-[1.35rem] px-4 py-3 md:px-5 md:flex">
+          <Link href="#page-top" scroll className="group flex min-w-0 items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[1rem] bg-white/8 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]">
+              <span className="h-4 w-4 rounded-[0.45rem] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.95),rgba(122,146,255,0.95)_40%,rgba(60,79,170,0.95))]" />
+            </span>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-[0.14em] text-white/86 uppercase">
+                {profile.businessName}
+              </p>
+              <p className="truncate text-xs text-white/48">
+                몰입해서 끝까지 파고드는 개발자
+              </p>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-6 lg:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="whitespace-nowrap text-sm text-white/62 hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <span className="surface-chip border-white/10 bg-white/4 text-white/62">
+              채용 · 레퍼런스 · 외주
+            </span>
+            <Link href="#contact" className="secondary-button whitespace-nowrap px-4 py-2 text-sm leading-none">
+              대화 열기
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

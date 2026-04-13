@@ -24,47 +24,322 @@ export const projects: Project[] = [
     title: "Persona Style AI",
     summary:
       "사용자의 사진과 텍스트를 기반으로 전문가 수준의 퍼스널 컬러, 체형, 분위기를 분석하여 최적의 페르소나 스타일 리포트를 제공하는 Full-Stack 플랫폼입니다.",
-    description: `# Persona Style
+    description: `# PersonaStyle — AI 퍼스널 스타일 & 컬러 분석 서비스
 
 ## 프로젝트 개요 (Overview)
-**Persona Style**은 사용자의 사진, 텍스트 등의 입력을 기반으로 전문가 수준의 심리, 패션, 뷰티 분석을 제공하고 최적의 "페르소나"를 도출하는 플랫폼입니다.
-Gemini 1.5 Pro 모델을 활용해 개인화된 스타일/심리 분석을 수행하고, 도출된 디자인 리포트를 PDF나 고퀄리티 이미지 매체로 내보내어 SNS를 통한 바이럴 엔진 구동, 타 유저와의 "페르소나 매칭"까지 기능하는 Full-Stack 애플리케이션입니다.
+
+PersonaStyle은 **Google Gemini AI**를 핵심 엔진으로 활용하는 퍼스널 컬러 및 스타일 분석 서비스다. 사진 한 장 혹은 텍스트 자기소개만으로 AI가 퍼스널 컬러 시즌, 체형, 얼굴형을 분석하고, 패션·뷰티·라이프스타일 전반에 걸친 구체적인 스타일링 가이드를 제공한다.
+
+단순한 분석을 넘어 **바이럴 공유 카드 생성**, **페르소나 궁합 매칭**, **실시간 트렌드 집계**, **프리미엄 PDF 리포트**까지 갖춘 완결된 SaaS 프로덕트다.
+
+| 항목 | 내용 |
+|------|------|
+| 프레임워크 | Next.js 16.1.6 (App Router) + React 19 |
+| 언어 | TypeScript (strict) |
+| AI | Google Gemini 1.5 Flash / Pro |
+| 백엔드/DB | Supabase (PostgreSQL + pgvector + RLS) |
+| 인증 | Supabase Auth (Magic Link, Social Login) |
+| 결제 | Portone (iamport) |
+| 모니터링 | Sentry (서버/엣지/클라이언트 전계층) |
+| 배포 | Vercel |
+
+---
 
 ## 핵심 파이프라인 (Core Pipeline)
-1. **분석 기록 및 벡터 임베딩 (Analysis & Embedding)**
-   - 다양한 Input(사진/텍스트 등)에 대해 분석 결과(summary, fashion, visual_profile 등)를 JSON 형태로 도출해 \`analysis_history\`에 저장합니다.
-   - 이때 각 분석 결과는 Gemini Embedding 모델을 통해 \`VECTOR(1536)\` 차원으로 변환 및 저장되어 향후 "사용자 간 매칭"과 유사도 분석에 활용됩니다.
-2. **바이럴 엔드포인트 및 바이럴 매칭 엔진 (Viral Matching)**
-   - 렌더링 속도가 빠른 \`satori\`와 \`@resvg/resvg-js\`를 서버 사이드에서 활용하여 모바일 공유에 최적화된 9:16 카드 이미지를 즉시 생성해 반환합니다.
-   - Supabase PostGIS/Vector 확장의 Cosine Similarity(\`1 - (v1 <=> v2)\`) RPC를 활용해 페르소나 매칭 점수를 빠르고 정확하게 도출합니다(\`persona_matches\`).
-3. **프리미엄 심층 보고서 (Premium Export)**
-   - PortOne SDK로 결제 시스템을 통합하여(\`payment_transactions\`), 결제 성공/콜백 시 \`premium_reports\` 레코드를 활성화합니다.
-   - React-PDF와 HTML-to-Image를 하이브리드로 사용하여 클라이언트/서버에서 고해상도 A4 분량의 PDF 리포트(Deep Analysis)를 제공합니다.
 
-## 프로젝트 구조 (Project Structure)
-\`\`\`text
-persona-style/
-├── src/
-│   ├── app/                # UI 라우트 컴포넌트 
-│   │   └── api/            # Viral(share, match, trend) 및 Premium API
-│   ├── components/         # Radix UI, Framer Motion 기반 애니메이션 UI
-│   └── lib/                # Supabase SSR, Sentry 로깅 등 공통 모듈
-├── supabase_schema.sql         # 분석 결과, 벡터 임베딩, 임포트 DB 스키마
-└── sentry.*.config.ts          # 클라이언트/서버/엣지 환경 모니터링
+\`\`\`
+[사용자 입력]
+    │
+    ├─ 사진 업로드 → 클라이언트에서 압축 (1024px, quality 0.7)
+    └─ 텍스트 입력 → 그대로 전달
+           │
+           ▼
+[POST /api/analyze]
+    │  1. Zod 스키마 검증 (analyzeRequestSchema)
+    │  2. 입력 모드 판별 (photo / text / combined)
+    │  3. AnalysisService.performAnalysis() 실행
+    │       ├─ buildPrompt() → 모드별 프롬프트 조립
+    │       ├─ FALLBACK_MODELS 순회 (Pro → Flash → Flash-8B)
+    │       │     ├─ 성공 → JSON 파싱 + Zod VisualProfile 검증
+    │       │     ├─ RATE_LIMIT → 재시도 대기 후 retry
+    │       │     ├─ DAILY_QUOTA_EXHAUSTED → 다음 모델로 전환
+    │       │     └─ SPENDING_CAP / INVALID_KEY → 즉시 중단 & 에러 throw
+    │       └─ 범주화된 GeminiErrorInfo 반환 (7가지 에러 유형)
+    │
+    ▼
+[클라이언트 수신]
+    │  1. saveAnalysisToHistory() 실행
+    │       ├─ Supabase 세션 있음 → DB INSERT (analysis_history)
+    │       └─ 세션 없음 → LocalStorage fallback (최대 20개)
+    │  2. AnalysisResultDisplay 렌더링
+    │
+    ▼
+[공유 / 확장]
+    ├─ GET /api/share/[id]      → Satori + Resvg로 1080×1920 PNG 생성
+    ├─ POST /api/match          → pgvector 코사인 유사도 + Gemini 궁합 텍스트
+    ├─ GET /api/trend           → persona_stats 테이블 실시간 조회
+    └─ POST /api/premium/analyze → Gemini 1.5 Pro 심층 분석 + PDF 생성
 \`\`\`
 
+---
+
+## 프로젝트 구조 (Project Structure)
+
+\`\`\`
+src/
+├── app/                          # Next.js App Router (페이지 + API)
+│   ├── api/
+│   │   ├── analyze/              # 메인 분석 API
+│   │   ├── share/[id]/           # 공유 카드 이미지 생성 API
+│   │   ├── match/                # 페르소나 매칭 API
+│   │   ├── trend/                # 트렌드 통계 API
+│   │   ├── premium/
+│   │   │   ├── analyze/          # 프리미엄 심층 분석 API
+│   │   │   └── pdf/[id]/         # PDF 리포트 다운로드 API
+│   │   └── payment/verify/       # 결제 검증 API (Portone)
+│   ├── analyze/
+│   │   ├── page.tsx              # 분석 입력 페이지 (Client Component)
+│   │   └── [id]/page.tsx         # 공유 가능한 분석 결과 페이지 (SSR + 동적 OG)
+│   ├── history/                  # 분석 히스토리
+│   ├── match/                    # 페르소나 매칭
+│   ├── trend/                    # 트렌드 페이지
+│   ├── premium/[id]/             # 프리미엄 리포트
+│   ├── checkout/                 # 결제 체크아웃
+│   └── login/                    # 로그인 (Magic Link + Social)
+│
+├── features/                     # 기능 기반 아키텍처
+│   ├── analyze/
+│   │   ├── components/           # UploadForm, TextInput, AnalysisResult
+│   │   └── services/
+│   │       └── analysisService.ts  # 핵심 분석 서비스 (폴백 로직 포함)
+│   ├── home/                     # HeroSection, FeaturesSection
+│   ├── shared/
+│   │   ├── components/           # ShareImage (Satori용 React 컴포넌트)
+│   │   ├── hooks/
+│   │   └── types/
+│   ├── match/                    # 매칭 UI
+│   └── premium/
+│       └── components/
+│           └── PDFTemplate.tsx   # @react-pdf/renderer 기반 PDF 템플릿
+│
+├── lib/                          # 공유 유틸리티 및 서비스 레이어
+│   ├── gemini.ts                 # Gemini 클라이언트 + 에러 분류기 (7종)
+│   ├── prompts.ts                # 모드별 프롬프트 팩토리 (image/text/combined/premium)
+│   ├── validation.ts             # Zod 스키마 (요청 + VisualProfile)
+│   ├── history.ts                # 하이브리드 히스토리 (Supabase + LocalStorage)
+│   ├── matching.ts               # 벡터 유사도 + Gemini 궁합 텍스트
+│   ├── payment.ts                # Portone 결제 트랜잭션 관리
+│   ├── pdf.tsx                   # React PDF 스트림/버퍼 생성
+│   ├── trend.ts                  # 페르소나 통계 RPC 호출
+│   ├── logger.ts                 # Sentry 연동 구조화 로거
+│   └── supabase/                 # 서버/클라이언트 Supabase 클라이언트
+│
+├── types/
+│   ├── types.ts                  # AnalysisResult, VisualAnalysisProfile 등 핵심 타입
+│   └── viral.ts                  # PersonaDesignConfig, PERSONA_DESIGN_TOKENS
+│
+├── contexts/
+│   ├── AuthContext.tsx           # Supabase 세션 전역 관리
+│   └── LanguageContext.tsx       # ko / en 다국어 전환
+│
+└── middleware.ts                 # Supabase SSR 세션 갱신 (Edge Runtime)
+\`\`\`
+
+---
+
 ## 상세 기능 구현 (Technical Implementation)
-- **Supabase RLS 및 익명화 통계 아키텍처**
-  민감할 수 있는 개인 분석 리포트의 보안을 강화하고자 엄격한 Row Level Security(RLS)를 적용했습니다. 트렌드 통계를 생성할 때(\`refresh_persona_stats\` RPC) \`user_id\`를 완전히 배제한 채 Aggregation Only 전략으로 테이블을 재삽입하여 보안과 성능을 모두 챙겼습니다.
-- **고도화된 Report Export Engine**
-  Next.js Edge Runtime과 \`Satori\`를 결합하여 오픈그래프/바이럴 공유용 이미지는 Edge 레이어에서 수십 ms 안에 생성합니다. 복잡한 분석 도표가 들어간 A4 PDF 페이퍼워크 생성 단계는 Node 런타임의 \`@react-pdf/renderer\`로 워크로드를 분리하여 병목을 최소화했습니다.
+
+### 1. 멀티모달 AI 분석 엔진
+
+**핵심 문제**: Gemini API 할당량 초과 및 일시적 제한 발생 시 서비스 중단 방지
+
+**해결 방법**: \`AnalysisService\`에 3단계 폴백 시스템 구현
+
+\`\`\`typescript
+// 모델 우선순위: Pro → Flash → Flash-8B
+const FALLBACK_MODELS = [PREMIUM_MODEL_NAME, DEFAULT_MODEL, "gemini-1.5-flash-8b"];
+
+for (const modelName of FALLBACK_MODELS) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try { /* ... */ }
+    catch (err) {
+      const errorInfo = categorizeGeminiError(err); // 7가지 에러 유형 분류
+      if (errorInfo.type === "DAILY_QUOTA_EXHAUSTED") break; // 다음 모델로
+      if (errorInfo.type === "RATE_LIMIT") await sleep(retryDelay); // 재시도
+      if (errorInfo.type === "SPENDING_CAP_EXHAUSTED") throw; // 즉시 중단
+    }
+  }
+}
+\`\`\`
+
+**입력 모드 3가지** — 모드에 따라 프롬프트가 다르게 조립된다:
+- \`photo\`: 사진만 → \`ADVANCED_VISUAL_ANALYSIS_INSTRUCTION\` + Fitzpatrick Scale 기반 피부톤 정규화
+- \`text\`: 텍스트만 → 성격/상황 기반 추론 프롬프트
+- \`combined\`: 사진 + 텍스트 → 시각 분석과 자기소개를 교차 분석하는 통합 프롬프트
+
+**응답 스키마**: AI 응답을 Zod \`visualAnalysisSchema\`로 검증. 얼굴형(6종), 체형(6종), Fitzpatrick 피부톤(6단계) 등 열거형 값으로 정규화.
+
+---
+
+### 2. 서버사이드 공유 카드 생성
+
+**기술**: Satori (JSX → SVG) + @resvg/resvg-js (SVG → PNG)
+
+분석 결과의 \`persona_type\`에 따라 \`PERSONA_DESIGN_TOKENS\`에서 고유한 배경색, 패턴 유형, 액센트 컬러를 결정한다. 최종 이미지는 **1080×1920 (9:16)** PNG로 생성되어 소셜 미디어 공유에 최적화된다.
+
+\`\`\`typescript
+// 폰트는 최초 요청 시 한 번만 로드하여 메모리 캐싱
+let fontCache: ArrayBuffer | null = null;
+
+const svg = await satori(<ShareCard data={...} />, {
+  width: 1080, height: 1920,
+  fonts: [{ name: 'Noto Sans KR', data: fontCache!, weight: 400 }],
+});
+const png = new Resvg(svg).render().asPng();
+\`\`\`
+
+생성된 이미지는 \`Cache-Control: public, max-age=31536000, immutable\`로 CDN 영구 캐싱된다. 이미지 접근 시 \`share_count\`도 원자적으로 증가한다.
+
+분석 결과 페이지(\`/analyze/[id]\`)는 **동적 OG 메타태그**를 서버에서 생성하여 SNS 공유 시 분석 결과 카드가 자동으로 미리보기에 표시된다.
+
+---
+
+### 3. 벡터 기반 페르소나 궁합 매칭
+
+**기술 스택**: pgvector (PostgreSQL 확장) + Gemini Embedding (1536차원)
+
+Supabase에 \`vector(1536)\` 컬럼을 갖는 \`analysis_history\` 테이블에 각 분석의 임베딩이 저장된다. 궁합 계산은 PostgreSQL RPC 함수를 통해 서버에서 수행된다.
+
+\`\`\`sql
+-- 코사인 유사도 계산 (pgvector 코사인 거리 연산자)
+RETURN 1 - (v1 <=> v2);
+\`\`\`
+
+매칭 결과는 단순 점수를 넘어, Gemini가 두 페르소나 유형과 점수를 바탕으로 **한국어 궁합 리포트 텍스트**를 생성한다. 보안상 \`source_id\`의 소유권을 서버에서 검증한 후에만 매칭이 실행된다.
+
+---
+
+### 4. 프리미엄 분석 + PDF 리포트
+
+**접근 제어**: 프리미엄 분석 API는 \`payment_transactions\` 테이블의 \`status = 'paid'\` 레코드를 서버에서 직접 확인한다. 클라이언트에서 넘어오는 어떤 값도 신뢰하지 않는 Zero-Trust 접근 방식.
+
+**분석 수준**: 기본 분석이 \`gemini-1.5-flash\`를 사용한다면, 프리미엄은 \`gemini-1.5-pro\`를 사용하며 프롬프트도 전혀 다르다. 컬러 심리학, 퍼스널 브랜드 전략, 비즈니스/소셜/캐주얼 시나리오별 파워 드레싱 가이드, 1년 액션 플랜까지 생성된다.
+
+**PDF 생성**: \`@react-pdf/renderer\`의 \`renderToBuffer()\`로 \`PDFTemplate\` React 컴포넌트를 서버에서 직접 PDF 바이너리로 변환한다.
+
+---
+
+### 5. 하이브리드 데이터 지속성
+
+로그인 여부에 상관없이 서비스가 동작하도록 이중 저장 전략을 구현했다.
+
+| 조건 | 저장소 | 특징 |
+|------|--------|------|
+| 로그인 + Supabase 설정 됨 | Supabase DB | UUID로 영구 공유 가능, 크로스 디바이스 동기화 |
+| 비로그인 | LocalStorage | 최대 20개, 브라우저 내 임시 저장 |
+
+\`saveAnalysisToHistory()\`는 Supabase 저장 실패 시 자동으로 LocalStorage로 폴백하며, 반환값으로 사용 가능한 ID를 항상 제공한다.
+
+---
+
+### 6. 보안 및 관측 가능성
+
+**Row Level Security (RLS)**: 모든 테이블에 RLS를 활성화. 각 정책은 \`auth.uid() = user_id\` 조건으로 소유권을 강제한다. 프리미엄 리포트는 결제 완료 레코드가 존재하는 경우에만 SELECT를 허용하는 복합 정책을 적용했다.
+
+**트렌드 집계의 익명성**: \`refresh_persona_stats()\` RPC는 \`user_id\`를 전혀 참조하지 않고 순수 집계(COUNT, RATIO)만 수행하여 개인 식별 정보가 통계에 노출되지 않는다.
+
+**Sentry 전계층 연동**: \`sentry.client.config.ts\`, \`sentry.server.config.ts\`, \`sentry.edge.config.ts\`로 각 런타임별 설정을 분리. \`logger.error()\`는 항상 Sentry에 예외를 캡처하고, \`logger.warn()\`은 경고 레벨 이벤트를 전송한다.
+
+**입력 검증**: 모든 API 라우트는 Zod 스키마 검증을 통과한 후에만 비즈니스 로직을 실행한다.
+
+---
+
+## 데이터베이스 스키마 (Database Schema)
+
+\`\`\`
+analysis_history
+├── id (UUID, PK)
+├── user_id (FK → auth.users)
+├── input_type (photo | text | combined)
+├── summary, analysis, fashion, beauty, action_items (JSONB)
+├── visual_profile (JSONB) — Fitzpatrick, 체형, 얼굴형 등 정규화 데이터
+├── embedding (VECTOR(1536)) — pgvector 코사인 유사도용
+├── persona_type, core_keywords
+├── is_public, share_count
+└── RLS: 소유자만 SELECT / INSERT / DELETE
+
+persona_matches
+├── source_id, target_id (FK → analysis_history)
+├── score (0~100, 코사인 유사도 기반)
+└── analysis_text (Gemini 생성 궁합 텍스트)
+
+persona_stats
+├── persona_type (UNIQUE)
+├── count, ratio
+└── refresh_persona_stats() RPC로 익명 집계 갱신
+
+premium_reports
+├── analysis_id (FK → analysis_history)
+├── deep_analysis_json (JSONB)
+├── payment_id (FK → payment_transactions)
+└── RLS: 결제 완료(status='paid') 시에만 접근 허용
+
+payment_transactions
+├── merchant_uid (UNIQUE)
+├── imp_uid (Portone 결제 고유 ID)
+├── status ENUM (ready | paid | cancelled | failed)
+└── RLS: 소유자만 조회 / 수정 가능
+\`\`\`
+
+---
 
 ## 사용 기술 및 라이브러리 (Tech Stack)
-- **Frontend Core**: Next.js 16, React 19, Tailwind CSS v4, Framer Motion
-- **Backend / Database**: Supabase SSR (\`pgvector\` 확장 포함), Zod
-- **AI / LLM**: \`@google/generative-ai\` (Gemini 1.5 Pro)
-- **PDF & Image Generation**: \`satori\`, \`@react-pdf/renderer\`, \`html-to-image\`, \`@resvg/resvg-js\`
-- **Monitroing & Payments**: \`@sentry/nextjs\`, PortOne 결제 시스템
+
+### Frontend
+| 분류 | 라이브러리 | 용도 |
+|------|-----------|------|
+| 프레임워크 | Next.js 16 (App Router) | SSR, 동적 메타태그, API Routes |
+| UI | React 19, Tailwind CSS v4 | 컴포넌트, 스타일링 |
+| 애니메이션 | Framer Motion | 페이지 전환, 로딩 UX |
+| 아이콘 | Lucide React | 아이콘 시스템 |
+| 토스트 | Sonner | 비침습적 알림 |
+| 폰트 | Montserrat + Cormorant (Google Fonts) | 디스플레이 + 바디 타이포그래피 |
+
+### Backend & AI
+| 분류 | 라이브러리 | 용도 |
+|------|-----------|------|
+| AI | @google/generative-ai | Gemini 1.5 Flash / Pro 멀티모달 추론 |
+| 데이터베이스 | @supabase/supabase-js + @supabase/ssr | PostgreSQL + pgvector + Auth + Storage |
+| 서버 이미지 생성 | satori + @resvg/resvg-js | JSX → SVG → PNG 서버사이드 렌더링 |
+| PDF | @react-pdf/renderer | 서버사이드 A4 PDF 생성 |
+| 검증 | zod v4 | API 입력 및 AI 응답 스키마 검증 |
+| 결제 | Portone (iamport) | 신용카드, 카카오페이 등 국내 결제 |
+
+### 관측 가능성 & 품질
+| 분류 | 라이브러리 | 용도 |
+|------|-----------|------|
+| 에러 추적 | @sentry/nextjs | 클라이언트/서버/엣지 전계층 에러 모니터링 |
+| 단위 테스트 | Vitest + @testing-library/react | 컴포넌트 및 서비스 테스트 |
+| E2E 테스트 | Playwright | 브라우저 통합 테스트 |
+| 린터 | ESLint (Next.js config) | 코드 품질 |
+
+---
+
+## 주요 구현 특징 (Key Highlights)
+
+1. **Graceful AI Degradation**: 단일 모델 의존 없이 3개 Gemini 모델을 체인으로 연결. 에러 유형(할당량 초과 / 레이트 리밋 / 결제 한도 초과)에 따라 재시도·모델전환·즉시중단을 구분하여 서비스 가용성을 극대화했다.
+
+2. **서버사이드 이미지 파이프라인**: 공유 카드 이미지를 클라이언트가 아닌 서버에서 생성(Satori + Resvg)함으로써 일관된 렌더링 품질을 보장하고, CDN 영구 캐싱으로 이후 요청의 비용을 0으로 만들었다.
+
+3. **Privacy-First 벡터 DB 설계**: pgvector 기반 유사도 검색을 PostgreSQL RPC 레이어에 캡슐화하여 클라이언트에 벡터 데이터가 노출되지 않는다. 트렌드 통계는 순수 집계만 수행하여 역추적이 불가능하다.
+
+4. **Zero-Trust 결제 검증**: 프리미엄 기능 접근 시 클라이언트의 어떤 값도 신뢰하지 않고, 서버에서 직접 \`payment_transactions\` 테이블의 \`status = 'paid'\`를 검증한다. DB 수준의 복합 RLS 정책으로 이중 보호를 구현했다.
+
+5. **하이브리드 스토리지 패턴**: 로그인 없이도 서비스 핵심 기능이 동작하도록 Supabase ↔ LocalStorage 이중 저장 전략을 구현. 로그인 후에는 자동으로 클라우드 동기화된다.
+
+6. **동적 OG 이미지 연계**: \`/analyze/[id]\` 페이지는 서버에서 분석 데이터를 조회하여 \`generateMetadata()\`로 동적 OG 태그를 생성하고, \`og:image\`를 공유 카드 API(\`/api/share/[id]\`)와 연결한다. SNS 공유 시 분석 결과 카드가 자동 미리보기로 표시된다.
+
+7. **Fitzpatrick Scale 기반 시각 분석**: 단순한 "밝은/어두운 피부"가 아닌 의학적으로 표준화된 Fitzpatrick Scale(Type I~VI)을 적용하여 피부톤을 정규화한다. AI 응답을 Zod 열거형 스키마로 검증함으로써 데이터 정합성을 보장한다.
 `,
     techStack: [
       "Next.js",
@@ -141,75 +416,273 @@ investment-platform/
     title: "Synapso.dev",
     summary:
       "GitHub 커밋 내역을 분석하여 개발자의 의사결정 과정을 유추하고, 전문적인 기술 블로그 포스트를 자동으로 생성해주는 AI 기반 SaaS입니다.",
-    description: `# synapso.dev - AI-Powered Tech Blog Generator
+    description: `# synapso.dev — AI-Powered Tech Blog Generator
 
 ## 프로젝트 개요 (Overview)
-**synapso.dev**는 개발자가 작성한 GitHub 커밋 내역을 Google Gemini AI가 분석하여, 단편적인 변경사항의 나열이 아닌 **전문적인 시니어 엔지니어 관점의 기술 블로그 포스트로 자동 생성**해주는 멀티유저 SaaS 플랫폼입니다.
-단순한 코드 요약을 넘어, 커밋에 담긴 코드 패턴과 구조 변경을 바탕으로 "요구사항 → 기획/설계 → 개발"이라는 개발자의 의사결정 과정(Reverse Spec Recovery)을 역추론하여 완성도 높은 마크다운 문서를 즉시 발행합니다.
+
+**synapso.dev**는 개발자의 GitHub 커밋 히스토리를 Google Gemini AI가 분석하여 **전문적인 시니어 엔지니어 관점의 기술 블로그 포스트를 자동 생성**하는 멀티유저 SaaS 플랫폼입니다.
+
+단순한 변경사항 나열을 넘어, 커밋 Diff 패턴과 파일 구조 변화를 바탕으로 "요구사항 → 기획 → 개발"이라는 개발자의 의사결정 흐름을 역추론(**Reverse Spec Recovery**)하여 완성도 높은 마크다운 문서를 자동 생성·발행합니다.
+
+> **"코딩만 하세요. 기술 블로그는 AI가 완성합니다."**
+
+---
 
 ## 핵심 파이프라인 (Core Pipeline)
-이 프로젝트의 주요 데이터 흐름은 **커밋 수집 → 작업 등록 → AI 분석 → 포스트 발행**의 4단계 파이프라인으로 구성됩니다.
 
-1. **GitHub 연동 및 커밋 수집 (\`lib/github.ts\`)**
-   - NextAuth를 통해 GitHub OAuth 인증 후 리포지토리 접근 권한을 획득합니다.
-   - Octokit을 사용해 커밋 Diff를 추출하며, AI 응답 품질 향상과 토큰 절약을 위해 패키지 Lock 파일, 환경변수, 바이너리, 빌드 결과물 등 불필요한 파일을 자동(\`shouldExcludeFile\`) 필터링합니다.
-2. **비동기 작업 큐 및 상태 관리 (\`lib/jobs.ts\`)**
-   - 사용자 경험을 위해 무거운 AI 분석 작업은 Supabase \`jobs\` 테이블에 대기열(Pending 상태)로 등록됩니다.
-   - 백그라운드 프로세스(\`runAIAnalysisBackground\`)가 최대 5분의 타임아웃 규칙과 함께 작업을 비동기 처리하며 진행 상태(Processing, Completed, Failed)를 UI에 실시간(또는 Polling)으로 반영합니다.
-3. **AI 심층 분석 및 명세 역추론 (\`lib/ai.ts\`)**
-   - 수집된 Commit Diff를 바탕으로 Gemini 프롬프트를 구성합니다.
-   - 단일 스트링 생성이 아닌 **Structured Output(JSON Schema)** 모드를 활용해 제목, 요약문, 태그, 본문(마크다운) 구조를 강제하여 파싱 안정성을 더했습니다.
-   - Rate Limiting 429 에러 처리와 Exponential Backoff를 통한 Retry 메커니즘이 내장되어 있습니다.
-4. **포스트 발행 및 관리 (\`lib/posts.ts\`)**
-   - 생성된 JSON 데이터는 마크다운으로 변환되어 \`posts\` 테이블에 저장되며, 날짜 기반의 고유 Slug(예: \`YYYY-MM-DD-title-slug\`)가 자동 할당됩니다.
-   - ISR(Incremental Static Regeneration) 등을 통해 Vercel 환경에서 빠른 페이지 렌더링을 제공합니다.
+전체 데이터 흐름은 **인증 → 커밋 수집 → 작업 큐 → AI 분석 → 포스트 발행**의 5단계로 구성됩니다.
+
+\`\`\`
+GitHub OAuth     →   커밋 Diff 수집   →   Job 큐 등록    →   Gemini 분석    →   포스트 발행
+─────────────        ─────────────        ───────────        ─────────────       ─────────────
+NextAuth v5          Octokit API           Supabase jobs       Structured JSON     Slug 자동 생성
+GitHub 토큰 저장      불필요 파일 필터링      pending → done      5-섹션 강제 검증     Soft Delete
+repo scope           80,000자 제한          5분 타임아웃          Exponential Retry   ISR 렌더링
+\`\`\`
+
+### 1단계: GitHub 인증 및 커밋 수집 (\`auth.ts\`, \`lib/github.ts\`)
+
+- NextAuth v5로 GitHub OAuth 인증. \`repo\` scope 요청으로 퍼블릭·프라이빗 저장소 모두 접근
+- **GitHub Numeric ID를 안정적 사용자 식별자로 고정**: NextAuth 기본 동작(매 로그인마다 randomUUID 생성)을 오버라이드하여 \`account.providerAccountId\`를 \`token.sub\`으로 명시 설정. 로그인할 때마다 user.id가 달라지는 버그를 원천 차단
+- Octokit으로 커밋 Diff 추출 시 \`EXCLUDED_FILE_PATTERNS\`로 lock 파일, 바이너리, 빌드 아티팩트, \`.env\` 계열을 자동 필터링하여 AI 컨텍스트 윈도우 낭비 방지
+
+### 2단계: 비동기 작업 큐 (\`lib/jobs.ts\`)
+
+- AI 분석은 Serverless Request Timeout을 초과할 수 있으므로, 작업을 \`jobs\` 테이블에 \`pending\` 상태로 등록 후 백그라운드에서 처리
+- \`runAIAnalysisBackground\`는 \`Promise.race([run(), timeout])\` 패턴으로 5분 초과 시 자동 \`failed\` 처리
+- 프론트엔드는 폴링으로 상태(\`pending → processing → completed / failed\`)를 실시간 반영
+
+### 3단계: AI 심층 분석 (\`lib/ai.ts\`)
+
+- Gemini API의 \`responseMimeType: "application/json"\` + \`responseSchema\`(JSON Schema)로 **Structured Output** 강제. 자유 텍스트 파싱의 불안정성 완전 제거
+- **5개 섹션 완결성 정규식 검증**: 응답에 \`커밋 개발내역 / 작업 순서 / 핵심 기능 / 개발 스토리 / 핵심 교훈\` 5개 섹션이 모두 포함되지 않으면 즉시 재시도
+- **Exponential Backoff 재시도**: Rate Limit(429) 또는 섹션 누락 시 \`2^n * 2000ms\` 딜레이로 최대 3회 재시도
+- **Reverse Spec Recovery 프롬프팅**: 단순 코드 설명 금지. 커밋(구현)으로부터 요구사항·기획·개발 의사결정을 역추론하도록 시스템 프롬프트 설계
+- 전체 Diff 합산 80,000자 초과 시 자동 트런케이션으로 토큰 비용 제어
+
+### 4단계: 포스트 발행 (\`lib/posts.ts\`)
+
+- \`YYYY-MM-DD-<slugified-title>\` 형식의 날짜 기반 Slug 자동 생성
+- 동일 Slug 충돌 방지: DB에서 기존 Slug를 조회 후 \`-1\`, \`-2\` 카운터 부여 (최대 100회 보호)
+- **Soft Delete 패턴**: 삭제 요청 시 실제 레코드 삭제 대신 \`deletedAt\` 타임스탬프 설정. 휴먼 에러 시 복구 가능
+- React \`cache()\` 적용으로 동일 요청 내 DB 중복 조회 방지 (\`getPostById\`, \`getPostByUsernameAndSlug\`)
+
+---
 
 ## 프로젝트 구조 (Project Structure)
+
 \`\`\`text
 synapso.dev/
-├── app/                  # Next.js 16 App Router (UI, Route, API)
-│   ├── [locale]/         # next-intl 기반 다국어 지원 라우팅
-│   ├── actions/          # React Server Actions (데이터 변이 로직)
-│   └── api/              # 백엔드 API Routes 및 Webhook 엔드포인트
-│       ├── cron/         # 자동 발행 스케줄러 (Vercel Cron)
-│       └── webhooks/     # Stripe / PortOne 결제 콜백
-├── lib/                  # 핵심 서비스 및 비즈니스 로직
-│   ├── ai.ts             # Gemini 연동, 프롬프트 빌딩 및 Retry 로직
-│   ├── github.ts         # Octokit 기반 API (커밋 diff 추출)
-│   ├── jobs.ts           # 백그라운드 워커 및 Job 상태 머신
-│   ├── posts.ts          # 블로그 포스트 CRUD 및 Slug 중복 방지 로직
-│   ├── portone-billing.ts# 국내 결제 연동 (PortOne SDK)
-│   └── subscription.ts   # 유저 구독 플랜(Free, Pro, Business) 검증
-└── components/           # 재사용 가능한 UI 컴포넌트 세트
+├── app/
+│   ├── [locale]/               # next-intl 다국어 라우팅 (ko / en)
+│   │   ├── @[username]/        # 사용자 퍼블릭 블로그 페이지 (/:username)
+│   │   ├── generate/           # 포스트 생성 UI
+│   │   ├── jobs/               # 작업 현황 대시보드
+│   │   ├── settings/           # 자동 포스팅·결제 설정
+│   │   ├── pricing/            # 구독 플랜 안내
+│   │   ├── demo/               # 로그인 없이 체험 가능한 데모
+│   │   └── admin/              # 관리자 전용 포털
+│   ├── actions/                # React Server Actions
+│   └── api/
+│       ├── generate/           # AI 분석 트리거 엔드포인트
+│       ├── jobs/               # Job CRUD
+│       ├── posts/              # 포스트 CRUD
+│       ├── github/             # 리포·커밋 목록 조회
+│       ├── settings/           # 사용자 설정 관리
+│       ├── subscription/       # 사용량·플랜 조회
+│       ├── portone/            # PortOne 결제 연동
+│       ├── webhooks/           # PortOne / Stripe 웹훅 수신
+│       └── cron/
+│           ├── auto-post/      # 자동 포스팅 스케줄러 (매일 09:00 UTC)
+│           └── billing/        # 구독 갱신 청구 스케줄러 (매일 01:00 UTC)
+├── lib/
+│   ├── ai.ts                   # Gemini 연동, 프롬프트 빌딩, Retry 로직
+│   ├── github.ts               # Octokit 기반 커밋 Diff 추출, 파일 필터링
+│   ├── jobs.ts                 # Job 상태 머신 및 백그라운드 워커
+│   ├── posts.ts                # 포스트 CRUD, Slug 생성, Soft Delete
+│   ├── profiles.ts             # 사용자 프로필 관리, Profile ID 마이그레이션
+│   ├── subscription.ts         # 티어별 제한 상수(TIER_LIMITS), 사용량 Lazy Reset
+│   ├── portone-billing.ts      # PortOne SDK 결제키 저장·청구·취소·웹훅 처리
+│   ├── settings.ts             # 자동 포스팅 설정, processed_commits 중복 방지
+│   ├── email.ts                # Resend 기반 트랜잭션 이메일 발송
+│   ├── billing.ts              # Stripe 기반 레거시 결제 (글로벌)
+│   ├── changelog.ts            # GitHub Releases 기반 업데이트 노트
+│   └── supabase-admin.ts       # Service Role Key 기반 관리자 클라이언트
+└── components/
+    ├── GenerateForm.tsx         # 커밋 선택 및 AI 생성 폼
+    ├── EditForm.tsx             # 마크다운 편집기
+    ├── PostContent.tsx          # rehype 기반 마크다운 렌더러
+    ├── jobs/                   # Job 상태 폴링 컴포넌트
+    └── settings/               # 자동 포스팅 / 결제 설정 UI
 \`\`\`
+
+---
 
 ## 상세 기능 구현 (Technical Implementation)
 
-- **Reverse Spec Recovery 패턴 (AI Prompting)**
-  프롬프트 설계 시 "단순 코드 설명 제한" 규칙을 강제합니다. 대신 개발자가 왜 이러한 코드를 작성했는지, 구조와 의존성 변화를 바탕으로 "기획 의도"와 "해결하려 한 문제"를 추론하게 지시합니다. (예: \`AI가 코드로부터 추론한 내용입니다\` 문구 포함 규칙 처리)
-- **과금 및 구독 시스템 (Tier-based Constraint)**
-  Free, Pro, Business 티어에 따라 사용할 수 있는 Gemini 모델(Flash Lite / Flash / Pro)을 동적으로 분기(\`TIER_LIMITS\`)합니다. 또한 한 달 생성 가능 횟수에 제한을 두어 AI 인프라 비용을 제어합니다. 국내 결제는 PortOne, 글로벌 결제는 Stripe를 도입한 하이브리드 결제 스택을 사용합니다.
-- **안정적인 Slug 생성 및 Soft Delete**
-  동일한 제목에서 파생될 수 있는 URL 충돌을 방지하기 위해 생성 시 중복을 확인하고 \`-1\`, \`-2\` 등 카운터를 붙이는 알고리즘을 사용합니다. 포스트 삭제 요청 시 실제 데이터를 삭제하지 않고 \`deletedAt\` 값을 부여하여(Soft Delete) 휴먼 에러 시 복구할 수 있는 방어 코드가 적용되어 있습니다.
+### AI 프롬프팅: Reverse Spec Recovery
+
+\`\`\`typescript
+// lib/ai.ts — 개발자가 userContext를 제공하지 않은 경우 AI가 코드로부터 역추론
+const section4Instruction = userContext
+  ? \`### 개발 스토리
+     [USER CONTEXT]를 바탕으로 요구사항 → 기획 → 개발 순서로 스토리를 구성하라.\`
+  : \`### 개발 스토리
+     [USER CONTEXT 없음 — AI가 코드로부터 역추론]
+     반드시 섹션 서두에 "AI가 코드로부터 추론한 내용입니다"라는 문구를 포함할 것.\`;
+\`\`\`
+
+프롬프트는 단순 코드 설명을 명시적으로 금지하고, Diff 패턴과 의존성 변화로부터 "왜 이 코드를 만들었는지"를 독자가 이해할 수 있도록 설계됩니다.
+
+### Structured Output으로 환각 억제
+
+\`\`\`typescript
+// lib/ai.ts — JSON Schema를 responseSchema로 강제하여 파싱 에러 원천 차단
+const schema: Schema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    title: { type: SchemaType.STRING },
+    summary: { type: SchemaType.STRING },
+    tags: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+    content: { type: SchemaType.STRING },
+  },
+  required: ["title", "summary", "tags", "content"],
+};
+
+const model = genAI.getGenerativeModel({
+  model: modelName,
+  generationConfig: {
+    responseMimeType: "application/json",
+    responseSchema: schema,
+  },
+});
+\`\`\`
+
+응답 수신 후 SECTION_HEADINGS 상수로 5개 섹션 완결성을 정규식 검증합니다. 누락 시 Exponential Backoff로 재시도합니다.
+
+### 계층적 구독 시스템 (Tier-based Constraint)
+
+\`\`\`typescript
+// lib/subscription.ts
+export const TIER_LIMITS: Record<SubscriptionTier, { ... }> = {
+  free:     { monthlyLimit: 20,       aiModel: "gemini-3.1-flash-lite-preview", watermark: true,  maxAutoRepos: 1        },
+  pro:      { monthlyLimit: 30,       aiModel: "gemini-3-flash-preview",        watermark: false, maxAutoRepos: Infinity },
+  business: { monthlyLimit: Infinity, aiModel: "gemini-3.1-pro-preview",        watermark: false, maxAutoRepos: Infinity },
+};
+\`\`\`
+
+- **Lazy Reset**: 매 사용량 조회 시 \`usage_reset_date\`가 현재 시각을 지났으면 카운터를 자동 초기화. 별도 스케줄러 없이 DB 부하를 최소화
+- **원자적 증가**: Supabase RPC \`increment_usage_count\`로 경쟁 조건(race condition) 없는 카운터 증가. RPC 미존재 시 fallback 로직 포함
+- **취소 롤백**: 분석 실패 또는 취소 시 \`decrementUsage\`로 사용량을 원복
+
+### PortOne 결제 시스템
+
+\`\`\`typescript
+// lib/portone-billing.ts — 빌링키 기반 정기 결제 흐름
+export async function saveBillingKeyAndCharge(username, billingKey, tier, cycle) {
+  // 1. 첫 결제 실행
+  await paymentClient.payWithBillingKey({ paymentId, billingKey, ... });
+
+  // 2. 결제 이벤트 멱등성 기록 (upsert + ignoreDuplicates)
+  await supabaseAdmin.from("payment_events").upsert({ id: paymentId, ... }, { onConflict: "id", ignoreDuplicates: true });
+
+  // 3. 프로필 구독 상태 업데이트
+  await supabaseAdmin.from("profiles").update({ subscription_tier, subscription_status: "active", ... });
+}
+\`\`\`
+
+- **자동 갱신 Cron** (\`/api/cron/billing\`, 매일 01:00 UTC): \`usage_reset_date <= now\`인 active 구독자를 조회하여 \`chargeWithBillingKey\` 자동 실행. 결제 실패 시 \`past_due\` 상태 전환
+- **웹훅 멱등성**: \`payment_events\` 테이블에 이벤트 ID를 PK로 upsert하여 동일 이벤트 중복 처리 방지
+- **빌링키 삭제 복원력**: 구독 취소 시 PortOne 빌링키 삭제 실패해도 DB 상태는 정상 업데이트 (zombie key는 추후 cron에서 정리)
+
+### 자동 포스팅 파이프라인 (\`/api/cron/auto-post\`, 매일 09:00 UTC)
+
+\`\`\`
+auto_mode 유저 조회 → 사용량·티어 확인 → weekly 스케줄 체크 → 미처리 커밋 조회
+→ Gemini 분석 → 사용량 증가 → 포스트 생성 → processed_commits 기록
+\`\`\`
+
+- \`processed_commits\` 테이블로 이미 포스팅된 커밋 SHA를 추적, 중복 발행 방지
+- \`auto_schedule: "weekly"\` 설정 시 마지막 포스트 생성 후 7일 이내면 건너뜀
+- Free 티어는 \`auto_repos\` 최대 1개만 허용 (\`TIER_LIMITS.maxAutoRepos\`)
+- AI 분석 실패 시 \`jobs\` 테이블에 실패 기록을 남겨 사용자가 \`/jobs\` 페이지에서 확인 가능
+
+### 보안 아키텍처
+
+\`\`\`typescript
+// next.config.ts — 전역 보안 헤더 설정
+{
+  "X-Frame-Options": "DENY",                    // 클릭재킹 방지
+  "X-Content-Type-Options": "nosniff",          // MIME 스니핑 방지
+  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+  "Content-Security-Policy": "default-src 'self'; connect-src 'self' https://*.supabase.co ...",
+}
+\`\`\`
+
+- **역할 기반 접근 제어**: NextAuth JWT에 \`role\` 필드 포함. 미들웨어에서 \`/admin\` 경로를 \`role === 'admin'\`으로 보호. \`/@admin-user\` 같은 username과의 오탐을 \`startsWith\` 정밀 매칭으로 구분
+- **Cron 엔드포인트 보호**: \`CRON_SECRET\` Bearer 토큰으로 외부 호출 차단
+- **마크다운 XSS 방지**: \`isomorphic-dompurify\`로 사용자 입력 HTML 살균
+- **Rate Limiting**: Upstash Redis 기반 API 요청 제한
+
+---
+
+## 데이터베이스 스키마 (Database Schema)
+
+| 테이블              | 역할                                                  |
+| ------------------- | ----------------------------------------------------- |
+| \`profiles\`          | 사용자 정보, 구독 티어, PortOne 빌링키, 월별 사용량   |
+| \`posts\`             | 블로그 포스트 (Soft Delete, is_public 필드)           |
+| \`jobs\`              | AI 분석 작업 큐 (pending/processing/completed/failed) |
+| \`user_settings\`     | 자동 포스팅 모드, 대상 저장소, 스케줄 설정            |
+| \`processed_commits\` | 자동 포스팅 처리된 커밋 SHA (중복 방지)               |
+| \`payment_events\`    | 결제 이벤트 멱등성 기록                               |
+
+---
 
 ## 사용 기술 및 라이브러리 (Tech Stack)
 
-- **Frontend Core**: Next.js 16.1.6 (App Router), React 19, Tailwind CSS 4
-- **Backend & Database**: Supabase (PostgreSQL), NextAuth v5
-- **AI / LLM**: \`@google/generative-ai\` (Gemini API 2.5)
-- **Payments**: PortOne SDK, Stripe
-- **Utils**: \`zod\`(데이터 검증), \`octokit\`(GitHub 연동), \`date-fns\`, Upstash Redis (Rate Limiting)
-- **Markdown Tools**: \`react-markdown\`, \`rehype-highlight\`, \`remark-gfm\`
-- **Infra**: Vercel (Hosting, Cron Jobs)
+| 영역              | 기술                                                                  |
+| ----------------- | --------------------------------------------------------------------- |
+| **Framework**     | Next.js 16.1.6 (App Router), React 19.2.3                             |
+| **Auth**          | NextAuth v5.0.0-beta.30 (GitHub OAuth, JWT 전략)                      |
+| **Database**      | Supabase (PostgreSQL, RLS, Service Role Admin)                        |
+| **AI / LLM**      | \`@google/generative-ai\` — Gemini 2.5 Flash Lite / Flash / Pro         |
+| **결제 (국내)**   | PortOne Server SDK (\`@portone/server-sdk\`, 빌링키 정기결제)           |
+| **결제 (글로벌)** | Stripe (레거시 보존)                                                  |
+| **Styling**       | Tailwind CSS v4.2.0, CSS Variables, 다크 테마                         |
+| **i18n**          | next-intl v4 (ko / en 이중 언어)                                      |
+| **Markdown**      | \`react-markdown\`, \`rehype-highlight\`, \`rehype-sanitize\`, \`remark-gfm\` |
+| **이메일**        | Resend + \`@react-email/components\`                                    |
+| **Rate Limiting** | Upstash Redis (\`@upstash/ratelimit\`)                                  |
+| **Validation**    | Zod v4                                                                |
+| **GitHub 연동**   | Octokit v5                                                            |
+| **Analytics**     | Vercel Analytics                                                      |
+| **Infra**         | Vercel (Serverless, ISR, Cron Jobs)                                   |
+| **Testing**       | Vitest, @testing-library/react                                        |
+
+---
 
 ## 주요 구현 특징 (Key Highlights)
 
-1. **AI 환각(Hallucination) 억제를 위한 스키마 강제**
-   자유로운 텍스트 생성이 가진 파싱 불안정성을 해결하기 위해, Gemini API의 \`responseSchema\`를 활용해 JSON 타입 응답을 보장받음으로써 백엔드 오류를 원천 차단했습니다.
-2. **탄력적인 토큰 워크플로우 최적화**
-   GitHub Diff에서 토큰을 심하게 잡아먹는 lock 파일과 바이너리 확장자들을 \`EXCLUDED_FILE_PATTERNS\`로 사전에 차단(\`lib/github.ts\`)하여, 컨텍스트 윈도우 한계를 우회하고 불필요한 AI 연산 비용을 최적화했습니다.
-3. **분산 환경을 고려한 작업 관리**
-   Serverless 환경의 Request Timeout 한계를 극복하기 위해 \`jobs\` 테이블 기반 비동기 폴링 구조를 구현하여 대용량 커밋 분석 작업 시 시스템 안전성을 확보했습니다.
+### 1. Structured Output으로 AI 환각(Hallucination) 억제
+
+Gemini API의 \`responseSchema\`를 활용한 JSON 타입 응답 강제와, 5개 섹션 완결성의 정규식 후검증을 결합하여 백엔드 파싱 에러를 원천 차단합니다. 자유 텍스트 생성의 불안정성을 스키마 계층에서 봉쇄한 설계입니다.
+
+### 2. Serverless 환경에 최적화된 비동기 작업 큐
+
+Vercel Serverless의 10~60초 Request Timeout 한계를 극복하기 위해, 무거운 AI 분석 작업을 \`jobs\` 테이블 기반 상태 머신으로 분리하고 \`Promise.race([run(), 5분_타임아웃])\`으로 안전하게 처리합니다. 실패 내역도 DB에 기록되어 사용자 관점에서 투명한 에러 처리를 제공합니다.
+
+### 3. 토큰 비용 최적화 파이프라인
+
+\`EXCLUDED_FILE_PATTERNS\`로 lock 파일, 빌드 아티팩트, 바이너리 파일을 Diff에서 사전 차단하고, 파일당 3,000자 패치 트런케이션과 전체 80,000자 상한선을 적용하여 AI 컨텍스트 윈도우 한계를 우회하고 API 비용을 구조적으로 절감합니다.
+
+### 4. 멱등성 보장 결제 시스템
+
+\`payment_events\` 테이블에 이벤트 ID를 Primary Key로 \`upsert + ignoreDuplicates\`하여 웹훅 재전송에 의한 이중 결제를 방지합니다. Lazy Reset 패턴으로 월별 사용량 초기화도 별도 스케줄러 없이 처리합니다.
+
+### 5. 안정적인 사용자 식별자 설계
+
+NextAuth v5 기본 동작의 불안정한 UUID 생성 문제를 해결하기 위해 GitHub Numeric ID를 \`token.sub\`으로 고정하고, 기존 UUID 기반 프로필의 \`id\` 컬럼을 \`migrateProfileId\` 함수로 1회성 자동 마이그레이션합니다.
 `,
     techStack: [
       "Next.js",
@@ -239,7 +712,7 @@ Minions Bid는 리그 오브 레전드 커뮤니티 운영을 위한 도구로, 
 2. 리그 일정 생성 및 경기 결과 관리
 3. 시즌 종료 후 우승팀 명예의 전당 아카이빙
 
-이 프로젝트는 Next.js App Router 기반으로 구축되어 있으며, 백엔드 플랫폼으로 Firebase를 사용합니다. 경매 기능은 주최자, 팀장, 관전자 사이의 저지연 실시간 동기화에 초점을 맞추고 있고, 일정 관리와 아카이브 기능은 단발성 드래프트 도구를 시즌 운영 시스템으로 확장하는 역할을 합니다.
+이 프로젝트는 Next.js App Router 기반으로 구축되어 있으며, 백엔드 플랫폼으로 Firebase를 사용합니다. 경매 기능은 주최자, 팀장, 관전자 사이의 저지연 실시간 동기화에 초점을 맞추고 있고, 일정 관리와 아카이브 기능은 단발성 드래프트 도구를 시즌 운영 시스템으로 확장하는 역할을 합니다. 최근에는 설치 가능한 PWA 셸을 추가해 모바일 홈 화면 진입과 기본 오프라인 캐시까지 고려한 구조로 확장되었습니다.
 
 UI 역시 일반적인 대시보드 스타일을 그대로 따르지 않습니다. 두꺼운 테두리, CRT 오버레이, 픽셀 아이콘, 모달 중심 인터랙션을 조합한 레트로 아케이드 감성의 "Cyber-Pixel" 비주얼 시스템을 채택하고 있습니다.
 
@@ -259,6 +732,7 @@ UI 역시 일반적인 대시보드 스타일을 그대로 따르지 않습니�
 - 날짜별 매치 타임라인 구성
 - 팀 간 대진과 경기 시간을 배정
 - 경기별 승자와 메모 기록
+- 경기 단계와 상태 기준으로 전적/점수/경기 목록 필터링
 - 최종 우승팀을 선택해 일정 종료 처리
 
 ### 3. 명예의 전당 워크플로우
@@ -274,6 +748,7 @@ UI 역시 일반적인 대시보드 스타일을 그대로 따르지 않습니�
 - 프레임워크: Next.js 16 App Router
 - 렌더링 방식: 서버에서 진입 라우트를 렌더링하고, 기능 중심 UI는 클라이언트 컴포넌트로 구성
 - 상태 관리: 클라이언트 경매 상태는 Zustand, 백엔드 동기화는 Firebase 구독 기반으로 처리
+- PWA 구성: Web App Manifest, 서비스 워커 등록 컴포넌트, 정적 자산 캐시를 포함한 설치형 웹앱 셸
 
 ### 백엔드 모델
 
@@ -385,6 +860,8 @@ UI 역시 일반적인 대시보드 스타일을 그대로 따르지 않습니�
 - [\`src/components/ScheduleCalendar.tsx\`](D:/development/league-auction/src/components/ScheduleCalendar.tsx)
 - [\`src/components/ScheduleMatchDayEditor.tsx\`](D:/development/league-auction/src/components/ScheduleMatchDayEditor.tsx)
 - [\`src/components/ScheduleRosterPanel.tsx\`](D:/development/league-auction/src/components/ScheduleRosterPanel.tsx)
+- [\`src/components/LeagueRecordSummaryPanel.tsx\`](D:/development/league-auction/src/components/LeagueRecordSummaryPanel.tsx)
+- [\`src/features/schedules/utils/leagueRecords.ts\`](D:/development/league-auction/src/features/schedules/utils/leagueRecords.ts)
 
 핵심 책임은 다음과 같습니다.
 
@@ -394,6 +871,7 @@ UI 역시 일반적인 대시보드 스타일을 그대로 따르지 않습니�
 - 미완료 경기 기준으로 "다음 경기" 계산
 - 경기 결과 검증 및 저장
 - 일정 종료와 함께 우승팀을 명예의 전당에 반영
+- 단계별 참가 팀만 추려서 순위표를 다시 계산하고, 상태 필터 기준으로 경기 수/완료 수/점수 합계를 재집계
 
 이 기능에서 특히 중요한 부분은 로스터 복원입니다. 일정 레이어는 다음 데이터 원본을 이용해 팀 정보를 재구성할 수 있습니다.
 
@@ -424,12 +902,15 @@ src/
     api/room-auth/            토큰 검증 및 쿠키 부트스트랩
     hall-of-fame/             명예의 전당 페이지와 클라이언트 셸
     league-schedule/          리그 일정 라우트
+    manifest.ts               PWA manifest 정의
     room/[id]/                실시간 경매방 라우트
     page.tsx                  홈 / 런처 화면
   components/
     create-room/              다단계 방 생성 플로우
     ui/                       공용 프리미티브 컴포넌트
     LeagueScheduleManager.tsx 일정 관리 셸
+    LeagueRecordSummaryPanel.tsx 전적 요약, 필터, 경기 목록 UI
+    PwaRegistration.tsx       프로덕션 서비스 워커 등록
   content/
     updateFeed.ts             홈 화면 티커 / 업데이트 피드
   features/
@@ -445,9 +926,12 @@ src/
     schedules/
       api/                    일정 CRUD 및 타임라인 로직
       types.ts                공용 일정 도메인 타입
+      utils/                  경기 규칙, 전적 계산, 다음 경기 도출
   lib/
     firebase.ts               클라이언트 Firebase 초기화
     firebaseAdmin.ts          Admin SDK 초기화와 lazy Firestore proxy
+public/
+  sw.js                       PWA 서비스 워커
 \`\`\`
 
 ## 기술 스택
@@ -509,6 +993,17 @@ src/
 
 덕분에 서버 액션, 훅, 컴포넌트, 타입이 각 비즈니스 흐름 가까이에 배치되어 있습니다.
 
+### 6. 설치형 웹앱 레이어를 별도 기능으로 얹은 구조
+
+PWA 기능은 기존 비즈니스 로직을 흔들지 않도록 얇은 셸로 추가되어 있습니다.
+
+- [\`src/app/layout.tsx\`](D:/development/league-auction/src/app/layout.tsx)에서 메타데이터, manifest, apple web app 옵션, 구조화 데이터를 설정
+- [\`src/app/manifest.ts\`](D:/development/league-auction/src/app/manifest.ts)에서 웹앱 메타데이터를 생성
+- [\`src/components/PwaRegistration.tsx\`](D:/development/league-auction/src/components/PwaRegistration.tsx)가 프로덕션에서만 서비스 워커를 등록
+- [\`public/sw.js\`](D:/development/league-auction/public/sw.js)가 기본 정적 자산과 네비게이션 요청을 캐시
+
+이 방식은 경매/일정/아카이브 도메인 코드와 설치형 셸을 분리해 유지보수 부담을 줄입니다.
+
 ## 이 프로젝트가 기술적으로 흥미로운 이유
 
 - 정적인 CRUD 대시보드가 아니라, 다수 사용자가 동시에 참여하는 상태 중심 상호작용 문제를 다룹니다.
@@ -524,12 +1019,16 @@ src/
 - [\`package.json\`](D:/development/league-auction/package.json)
 - [\`README.md\`](D:/development/league-auction/README.md)
 - [\`src/app/page.tsx\`](D:/development/league-auction/src/app/page.tsx)
+- [\`src/app/layout.tsx\`](D:/development/league-auction/src/app/layout.tsx)
+- [\`src/app/manifest.ts\`](D:/development/league-auction/src/app/manifest.ts)
 - [\`src/app/room/[id]/RoomClient.tsx\`](D:/development/league-auction/src/app/room/[id]/RoomClient.tsx)
 - [\`src/features/auction/api/auctionFlowActions.ts\`](D:/development/league-auction/src/features/auction/api/auctionFlowActions.ts)
 - [\`src/features/auction/api/roomActions.ts\`](D:/development/league-auction/src/features/auction/api/roomActions.ts)
 - [\`src/features/auction/hooks/useAuctionRealtime.ts\`](D:/development/league-auction/src/features/auction/hooks/useAuctionRealtime.ts)
 - [\`src/features/auction/hooks/usePresence.ts\`](D:/development/league-auction/src/features/auction/hooks/usePresence.ts)
 - [\`src/features/schedules/api/scheduleActions.ts\`](D:/development/league-auction/src/features/schedules/api/scheduleActions.ts)
+- [\`src/components/LeagueRecordSummaryPanel.tsx\`](D:/development/league-auction/src/components/LeagueRecordSummaryPanel.tsx)
+- [\`src/features/schedules/utils/leagueRecords.ts\`](D:/development/league-auction/src/features/schedules/utils/leagueRecords.ts)
 - [\`src/features/hall-of-fame/api/hallOfFameActions.ts\`](D:/development/league-auction/src/features/hall-of-fame/api/hallOfFameActions.ts)
 `,
     techStack: [

@@ -1,32 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Page from '../page';
 import { describe, it, expect, vi } from 'vitest';
-import React from 'react';
-
-// mock next/navigation
-const mockPush = vi.fn();
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-  useSearchParams: () => new URLSearchParams(),
-  usePathname: () => '/',
-}));
-
-// mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: { children: React.ReactNode }) => <div {...props}>{children}</div>,
-    section: ({ children, ...props }: { children: React.ReactNode }) => <section {...props}>{children}</section>,
-    article: ({ children, ...props }: { children: React.ReactNode }) => <article {...props}>{children}</article>,
-    h2: ({ children, ...props }: { children: React.ReactNode }) => <h2 {...props}>{children}</h2>,
-    p: ({ children, ...props }: { children: React.ReactNode }) => <p {...props}>{children}</p>,
-    span: ({ children, ...props }: { children: React.ReactNode }) => <span {...props}>{children}</span>,
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  fadeInUp: {},
-  staggerContainer: {},
-}));
 
 // mock sub-components
 vi.mock('@/components/HeroSection', () => ({
@@ -46,12 +20,13 @@ vi.mock('@/components/Footer', () => ({
 }));
 
 describe('Portfolio Home Page Integration', () => {
-  it('updates URL when "자세히 보기" button is clicked', () => {
+  it('renders the home layout sections', () => {
     render(<Page />);
-    
-    const detailButtons = screen.getAllByText(/자세히 보기/i);
-    fireEvent.click(detailButtons[0]);
-    
-    expect(mockPush).toHaveBeenCalled();
+
+    expect(screen.getByText('Header')).toBeInTheDocument();
+    expect(screen.getByTestId('hero')).toBeInTheDocument();
+    expect(screen.getByTestId('about')).toBeInTheDocument();
+    expect(screen.getByTestId('contact')).toBeInTheDocument();
+    expect(screen.getByText('Footer')).toBeInTheDocument();
   });
 });

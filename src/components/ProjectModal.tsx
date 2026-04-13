@@ -3,7 +3,6 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { motion } from "framer-motion";
 import { ExternalLink, Github, X } from "lucide-react";
 import Image from "next/image";
 import { Project } from "@/data/projects";
@@ -45,11 +44,8 @@ export default function ProjectModal({
           </DialogClose>
 
           {/* Header Image Section */}
-          <div className="relative w-full bg-white overflow-hidden flex items-center justify-center">
-            <motion.div 
-              layoutId={`project-image-${project.id}`} 
-              className="relative w-full h-full flex items-center justify-center"
-            >
+          <div className="relative flex w-full items-center justify-center overflow-hidden bg-white">
+            <div className="relative flex h-full w-full items-center justify-center">
               {!imgError ? (
                 <Image
                   src={project.imageUrl}
@@ -68,7 +64,7 @@ export default function ProjectModal({
                   <div className="text-black/20 font-medium">Image not available</div>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
 
           {/* Content Section */}

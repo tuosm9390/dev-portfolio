@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main id="page-top" className="main-copy-flow relative overflow-hidden">
         <HeroSection />
         <Suspense fallback={<ProjectsSectionSkeleton />}>
           <ProjectsSection />
