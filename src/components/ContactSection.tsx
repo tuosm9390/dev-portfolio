@@ -41,32 +41,32 @@ export default function ContactSection() {
 
           <div className="relative grid gap-10 lg:grid-cols-[0.88fr_1.12fr]">
             <div className="max-w-[32rem]">
-              <span className="eyebrow">contact vector</span>
+              <span className="eyebrow">연락하기</span>
               <h2 className="section-title mt-6 max-w-[10ch] text-white">
-                함께 만들고 싶은 것이 있다면 바로 연결해 주세요.
+                뭔가 같이 해보고 싶다면
+                편하게 연락 주세요.
               </h2>
               <p className="body-copy mt-7">
-                포트폴리오를 보는 것으로 끝나지 않게, 실제 대화로 이어질 수 있는
-                접점을 열어두었습니다. 아이디어가 아직 흐릿해도 괜찮고, 이미 구체적인
-                요구사항이 있어도 좋습니다.
+                아직 머릿속에만 있는 아이디어여도 괜찮고, 이미 해야 할 일이 정리돼
+                있어도 괜찮습니다. 일단 이야기부터 해보면 그다음은 같이 맞춰볼 수 있습니다.
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <span className="surface-chip border-white/10 bg-white/[0.05] text-white/64">
-                  initial call
+                  첫 상담
                 </span>
                 <span className="surface-chip border-white/10 bg-white/[0.05] text-white/64">
-                  async review
+                  비동기 피드백
                 </span>
                 <span className="surface-chip border-white/10 bg-white/[0.05] text-white/64">
-                  freelance inquiry
+                  외주 문의
                 </span>
               </div>
 
               <div className="mt-10">
                 <div className="flex items-center gap-2 text-sm text-white/60">
                   <Orbit className="h-4 w-4" />
-                  어떤 맥락에서든 편하게 시작할 수 있습니다.
+                  너무 갖춰서 보내지 않아도 됩니다.
                 </div>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {contactLinks.map((link) => (

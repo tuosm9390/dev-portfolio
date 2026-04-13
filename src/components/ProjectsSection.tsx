@@ -54,25 +54,26 @@ export default function ProjectsSection() {
       <div className="section-shell">
         <div className="mb-16 grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <span className="eyebrow">selected work</span>
+            <span className="eyebrow">주요 작업</span>
             <h2 className="section-title mt-6 max-w-none text-white sm:max-w-[14ch] lg:max-w-[12ch]">
-              결과물로 말하는 프로젝트들.
+              말보다 결과물이
+              더 빠른 프로젝트들.
             </h2>
             <div className="mt-6 hidden items-center gap-3 lg:flex">
               <span className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-[0.72rem] uppercase tracking-[0.18em] text-white/44">
                 archive / {projects.length.toString().padStart(2, "0")}
               </span>
               <span className="text-sm text-white/40">
-                서로 다른 맥락에서 살아남은 작업만 남겼습니다.
+                이것저것 다 넣기보다, 다시 봐도 괜찮은 것만 남겼습니다.
               </span>
             </div>
           </div>
 
           <div className="space-y-5 lg:pt-3">
             <p className="body-copy">
-              단순히 예쁜 카드 모음이 아니라, 문제를 어떤 구조로 파고들었는지까지
-              보이도록 정리했습니다. 제품의 결, 기술적 의도, 그리고 실제 구현 밀도를
-              함께 읽을 수 있어야 포트폴리오가 제대로 작동한다고 생각합니다.
+              여기 적힌 소개 문구는 읽기 쉽게 AI 도움을 받아 조금 다듬었습니다. 다만
+              프로젝트 자체는 제가 직접 만들고 부딪히면서 정리한 것들이라, 결과물하고
+              설명이 너무 따로 놀지 않게만 맞춰두려고 했습니다.
             </p>
             <div className="flex flex-wrap gap-3 text-sm text-white/62">
               <span className="surface-chip">
@@ -214,7 +215,7 @@ function ProjectCard({
               prefetch={false}
               className="inline-flex items-center gap-2 text-sm font-medium text-white/86"
             >
-              케이스 읽기
+              자세히 보기
               <ArrowRight className="h-4 w-4" />
             </Link>
 

@@ -1,41 +1,41 @@
 export const profile = {
   name: "김개발",
-  businessName: "DevCraft Studio",
-  siteUrl: "https://devcraft-dev-portfolio.vercel.app",
+  businessName: "chan.works",
+  siteUrl: "https://chanworks.vercel.app/",
   title: "풀스택 웹 개발자",
-  tagline: "아이디어를 현실로, 코드로 가치를 만듭니다",
+  tagline: "생각한 걸 실제로 돌아가게 만드는 일을 합니다.",
   description: [
-    "5년 이상의 웹 개발 경험을 바탕으로, 비즈니스 목표에 맞춘 최적의 솔루션을 설계하고 구현합니다. ",
-    "기획부터 디자인, 개발, 배포까지 원스톱으로 진행하여 빠르고 효율적인 프로젝트 완수를 보장합니다.",
+    "혼자서도 처음부터 끝까지 만들 수 있는 개발자입니다. 화면만 만드는 쪽보다, 서비스가 실제로 돌아가는 데 필요한 구조까지 같이 보는 편입니다.",
+    "기획이 조금 덜 정리돼 있어도 같이 풀어가면서 만들 수 있고, 이미 방향이 잡혀 있으면 더 빠르게 밀어붙일 수 있습니다.",
   ],
   strengths: [
     {
       icon: "Code2",
       title: "풀스택 개발",
       description:
-        "프론트엔드부터 백엔드, 인프라까지 전 영역을 아우르는 통합 개발 역량으로 일관된 품질의 서비스를 제공합니다.",
+        "프론트엔드만 보는 스타일은 아닙니다. 백엔드, 배포, 운영까지 이어지는 흐름을 같이 잡는 편입니다.",
     },
     {
       icon: "Rocket",
       title: "빠른 실행력",
       description:
-        "1인 개발의 민첩성을 극대화하여, 불필요한 커뮤니케이션 비용 없이 빠르게 결과물을 도출합니다.",
+        "혼자 결정하고 바로 만드는 구간에서는 속도가 꽤 빠릅니다. 괜히 오래 끄는 편은 아닙니다.",
     },
     {
       icon: "Shield",
       title: "책임감 있는 유지보수",
       description:
-        "프로젝트 완료 후에도 안정적인 운영을 위한 지속적인 유지보수와 기술 지원을 제공합니다.",
+        "만들고 끝내기보다, 배포 뒤에 생기는 자잘한 문제까지 챙기는 쪽이 더 익숙합니다.",
     },
     {
       icon: "Sparkles",
       title: "모던 기술 스택",
       description:
-        "최신 기술 트렌드를 적극 활용하여, 성능과 사용자 경험 모두를 만족시키는 서비스를 구축합니다.",
+        "유행만 따라가진 않지만, 지금 쓰는 게 맞는 기술이면 꽤 적극적으로 가져다 씁니다.",
     },
   ],
   contact: {
-    email: "devcraft0416@gmail.com",
+    email: "tuosm123@gmail.com",
     phone: "010-9121-8397",
     github: "https://github.com/tuosm9390",
     linkedin:

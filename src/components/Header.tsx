@@ -24,7 +24,7 @@ export default function Header() {
                   {profile.businessName}
                 </p>
                 <p className="truncate text-xs text-white/48">
-                  몰입해서 끝까지 파고드는 개발자
+                  혼자서도 끝까지 만드는 개발자
                 </p>
               </div>
             </Link>
@@ -64,7 +64,7 @@ export default function Header() {
             <div className="mb-4 rounded-[1.2rem] border border-white/8 bg-white/4 p-4">
               <p className="text-sm font-semibold text-white/82">{profile.name}</p>
               <p className="mt-1 text-sm text-white/56">
-                채용 검토, 작업물 확인, 외주 탐색 모두를 위한 포트폴리오
+                작업물 보고 이야기 이어갈 수 있게 만든 페이지입니다.
               </p>
             </div>
 
@@ -92,7 +92,7 @@ export default function Header() {
                 {profile.businessName}
               </p>
               <p className="truncate text-xs text-white/48">
-                몰입해서 끝까지 파고드는 개발자
+                혼자서도 끝까지 만드는 개발자
               </p>
             </div>
           </Link>

@@ -14,8 +14,7 @@ export default function Footer() {
               {profile.businessName}
             </p>
             <p className="mt-3 text-lg leading-8 text-white/70">
-              일회성 인상보다 오래 남는 결과를 만드는 쪽을 선호합니다. 포트폴리오는
-              그 태도를 가장 압축해서 보여주는 인터페이스여야 한다고 생각합니다.
+              한 번 보고 지나가는 인상보다, 실제로 써도 괜찮은 결과를 만드는 쪽을 더 중요하게 생각합니다.
             </p>
           </div>
 
@@ -42,7 +41,7 @@ export default function Footer() {
             </div>
 
             <p className="max-w-[18rem] text-sm leading-6 text-white/42 md:text-right">
-              깊게 파고드는 작업자를 찾는 사람에게 가장 먼저 열리는 입구.
+              어떤 사람인지 궁금할 때 제일 먼저 열어보는 페이지가 됐으면 합니다.
             </p>
 
             <Link

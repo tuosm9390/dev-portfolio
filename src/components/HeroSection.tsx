@@ -14,19 +14,19 @@ export default function HeroSection() {
       <div className="section-shell">
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)] lg:gap-12">
           <div className="relative z-10">
-            <span className="eyebrow">
-              immersive portfolio system
-            </span>
+            <span className="eyebrow">소개와 작업물</span>
 
             <h1 className="mt-6 max-w-[10ch] text-[clamp(2.7rem,10vw,6.2rem)] font-semibold leading-[0.95] tracking-[-0.065em] text-white sm:max-w-[12ch] lg:max-w-[11ch]">
-              흩어진 생각도 끝까지 파고들면 결과가 됩니다.
+              생각만 남기지 않고,
+              끝까지 만들어냅니다.
             </h1>
 
             <p className="body-copy mt-8">
-              {profile.businessName}는 템플릿 같은 소개 페이지보다, 작업자의 사고방식과
-              결과물이 동시에 드러나는 화면을 지향합니다. 채용 검토, 레퍼런스 확인,
-              외주 탐색 어느 맥락에서 들어오더라도 한 가지는 분명하게 남아야 합니다.
-              <span className="text-white"> 이 사람은 깊게 일한다.</span>
+              {profile.businessName}는 그냥 보기 좋게 꾸민 소개 페이지라기보다,
+              제가 어떻게 일하는지까지 같이 보이게 만들고 싶었습니다. 채용 때문에
+              들어오든, 작업물 보러 들어오든, 외주 알아보다가 들어오든 대충 이런
+              사람이라는 건 남았으면 좋겠습니다.
+              <span className="text-white"> 맡기면 끝까지 보겠구나.</span>
             </p>
 
             <div className="mt-8 flex flex-wrap items-start gap-3 sm:gap-4">
@@ -35,7 +35,7 @@ export default function HeroSection() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="#contact" scroll className="secondary-button">
-                작업 문의
+                얘기 꺼내보기
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -44,23 +44,23 @@ export default function HeroSection() {
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <p className="text-[0.72rem] uppercase tracking-[0.18em] text-white/36">
-                    field note
+                    이런 식으로 일합니다
                   </p>
                   <p className="mt-3 max-w-[30ch] text-base leading-7 text-white/72">
-                    빠르게 끝내는 사람보다, 끝까지 물고 늘어지는 사람으로 기억되는 편이
-                    더 맞다고 생각합니다.
+                    빨리 만드는 것도 중요하지만, 중간에 손 놓지 않는 쪽이 제 일하는
+                    방식에 더 가깝습니다.
                   </p>
                 </div>
                 <div className="hidden min-w-[9rem] rounded-[1.2rem] border border-white/8 bg-black/16 px-4 py-3 sm:block">
                   <p className="text-[0.68rem] uppercase tracking-[0.18em] text-white/34">
-                    visitor lens
+                    주로 이런 분들이 봅니다
                   </p>
                   <p className="mt-2 text-sm leading-6 text-white/62">
-                    hiring
+                    채용
                     <br />
-                    references
+                    레퍼런스
                     <br />
-                    freelance
+                    외주
                   </p>
                 </div>
               </div>
@@ -68,7 +68,7 @@ export default function HeroSection() {
 
             <div className="mt-6 rounded-[1.5rem] border border-white/8 bg-white/[0.035] px-4 py-4 sm:hidden">
               <p className="text-xs uppercase tracking-[0.18em] text-white/38">
-                current frame
+                지금 먼저 보이는 작업
               </p>
               <div className="mt-4 space-y-3">
                 <div className="rounded-[1.2rem] border border-white/8 bg-black/18 px-4 py-3">
@@ -105,34 +105,34 @@ export default function HeroSection() {
             <div className="mt-8 hidden gap-3 sm:grid sm:grid-cols-[1.25fr_0.8fr_0.95fr]">
               <div className="panel rounded-[1.7rem] px-5 py-5">
                 <p className="text-xs uppercase tracking-[0.18em] text-white/38">
-                  reading context
+                  읽는 흐름
                 </p>
                 <p className="mt-3 max-w-[24ch] text-base leading-7 text-white/74">
-                  채용 검토, 외주 탐색, 레퍼런스 확인에 모두 견디는 구조를 먼저 잡습니다.
+                  보는 사람이 누구든 읽기 어렵지 않게, 그런데 너무 뻔하지는 않게 잡았습니다.
                 </p>
               </div>
               <div className="panel rounded-[1.7rem] px-4 py-5">
                 <p className="text-xs uppercase tracking-[0.18em] text-white/38">
-                  visual axis
+                  화면 분위기
                 </p>
                 <p className="mt-3 text-sm leading-6 text-white/70">
-                  dark
+                  어두운 톤
                   <br />
-                  depth
+                  깊이감
                   <br />
-                  personal grain
+                  개인적인 결
                 </p>
               </div>
               <div className="panel rounded-[1.7rem] px-4 py-5">
                 <p className="text-xs uppercase tracking-[0.18em] text-white/38">
-                  output logic
+                  보여주는 방식
                 </p>
                 <p className="mt-3 text-sm leading-6 text-white/72">
-                  생각의 밀도를
+                  만든 것만 보여주지 않고
                   <br />
-                  결과물과 설명 구조에
+                  왜 그렇게 만들었는지도
                   <br />
-                  같이 남깁니다.
+                  같이 남겨둡니다.
                 </p>
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function HeroSection() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xs uppercase tracking-[0.18em] text-white/42">
-                      signal focus
+                      먼저 볼 작업
                     </p>
                     <h2 className="mt-3 max-w-[10ch] text-[1.9rem] font-semibold leading-[0.98] tracking-[-0.05em] text-white">
                       {primaryProject.title}
@@ -188,7 +188,7 @@ export default function HeroSection() {
                 transform: "translate3d(0,0,32px) rotateX(8deg) rotateY(18deg) rotateZ(4deg)",
               }}
             >
-              <p className="text-xs uppercase tracking-[0.18em] text-white/34">artifact</p>
+              <p className="text-xs uppercase tracking-[0.18em] text-white/34">다른 작업</p>
               <p className="mt-3 text-lg font-semibold tracking-[-0.03em] text-white">
                 {secondaryProjects[0]?.title}
               </p>
@@ -203,7 +203,7 @@ export default function HeroSection() {
                 transform: "translate3d(0,0,26px) rotateX(8deg) rotateY(-16deg) rotateZ(-5deg)",
               }}
             >
-              <p className="text-xs uppercase tracking-[0.18em] text-white/34">proof</p>
+              <p className="text-xs uppercase tracking-[0.18em] text-white/34">함께 볼 것</p>
               <p className="mt-3 text-lg font-semibold tracking-[-0.03em] text-white">
                 {secondaryProjects[1]?.title}
               </p>
@@ -216,17 +216,17 @@ export default function HeroSection() {
               <div className="flex items-center gap-3 text-white/72">
                 <Telescope className="h-4 w-4" />
                 <span className="text-xs uppercase tracking-[0.18em]">
-                  working mode
+                  일하는 방식
                 </span>
               </div>
               <div className="grid gap-3 text-sm text-white/76">
                 <div className="flex items-center gap-3">
                   <Layers3 className="h-4 w-4 text-white/40" />
-                  구조를 먼저 세운 뒤 감각을 얹습니다.
+                  먼저 구조를 세우고, 그다음에 디테일을 올립니다.
                 </div>
                 <div className="flex items-center gap-3">
                   <Sparkles className="h-4 w-4 text-white/40" />
-                  장식보다 깊이와 긴장을 더 중요하게 봅니다.
+                  보기 좋은 것보다 오래 버티는 쪽을 더 중요하게 봅니다.
                 </div>
               </div>
             </div>

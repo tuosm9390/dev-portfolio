@@ -36,14 +36,14 @@
 
 :root {
   --font-body:
+    var(--font-body-kr),
+    "Noto Sans KR",
     "Apple SD Gothic Neo",
     "Malgun Gothic",
-    "Noto Sans KR",
-    "Segoe UI",
     system-ui,
     sans-serif;
   --font-display:
-    var(--font-hahmlet),
+    var(--font-display-kr),
     "Noto Sans KR",
     "Apple SD Gothic Neo",
     "Malgun Gothic",
@@ -70,6 +70,8 @@ body {
   background: transparent;
   color: var(--color-foreground);
   font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: -0.012em;
 }
 
 body::before {
@@ -174,33 +176,37 @@ textarea {
 .display-title {
   font-family: var(--font-display);
   font-size: clamp(3.25rem, 8vw, 7.2rem);
-  line-height: 0.94;
-  letter-spacing: -0.055em;
+  line-height: 1;
+  letter-spacing: -0.045em;
 }
 
 .section-title {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 4vw, 4.4rem);
-  line-height: 0.96;
-  letter-spacing: -0.05em;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
 }
 
 .body-copy {
   max-width: 66ch;
   font-size: clamp(1rem, 1.4vw, 1.125rem);
-  line-height: 1.78;
+  line-height: 1.9;
   color: rgba(228, 232, 245, 0.72);
   word-break: keep-all;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .muted-copy {
   color: rgba(228, 232, 245, 0.58);
 }
 
-.main-copy-flow p {
+.main-copy-flow :is(h1, h2, h3, h4, p, li, blockquote) {
   word-break: keep-all;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  line-break: strict;
+  text-wrap: pretty;
 }
 
 .panel {

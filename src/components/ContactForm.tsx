@@ -42,10 +42,10 @@ export default function ContactForm() {
     >
       <div className="mb-8">
         <p className="text-xs uppercase tracking-[0.18em] text-white/34">
-          open a thread
+          편하게 남겨주세요
         </p>
         <p className="mt-3 text-lg text-white/78">
-          간단한 소개와 원하는 작업 내용을 남겨주세요.
+          어떤 이야기인지 짧게 적어주시면 됩니다.
         </p>
       </div>
 
@@ -89,13 +89,13 @@ export default function ContactForm() {
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-6 text-white/44">
-          답변은 가능한 빠르게 드립니다. 아직 정리되지 않은 아이디어도 괜찮습니다.
+          정리가 덜 된 상태여도 괜찮습니다. 읽고 나서 필요한 건 제가 다시 물어볼게요.
         </p>
 
         <button
           type="submit"
           disabled={isSubmitting || submitted}
-          className="primary-button min-w-[10rem] disabled:cursor-not-allowed disabled:opacity-70"
+          className="primary-button min-w-[11.5rem] whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? (
             <>

@@ -27,7 +27,7 @@ export async function generateMetadata({
       canonical: `${profile.siteUrl}/projects/${project.id}`,
     },
     openGraph: {
-      title: `${project.title} | DevCraft Studio`,
+      title: `${project.title} | chan.works`,
       description: project.summary,
       url: `${profile.siteUrl}/projects/${project.id}`,
       images: [
@@ -41,7 +41,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} | DevCraft Studio`,
+      title: `${project.title} | chan.works`,
       description: project.summary,
       images: [`${profile.siteUrl}/projects/${project.id}/opengraph-image`],
     },

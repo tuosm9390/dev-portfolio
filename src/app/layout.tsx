@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
-import { Hahmlet } from "next/font/google";
+import { Noto_Sans_KR, Song_Myung } from "next/font/google";
 import "./globals.css";
 import JsonLd from "@/components/JsonLd";
 import { profile } from "@/data/profile";
 
-const hahmlet = Hahmlet({
+const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
-  variable: "--font-hahmlet",
+  variable: "--font-body-kr",
   display: "swap",
-  weight: ["500", "700"],
+  weight: ["400", "500", "700"],
+});
+
+const songMyung = Song_Myung({
+  variable: "--font-display-kr",
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(profile.siteUrl),
   title: {
-    default: "DevCraft Studio | 몰입형 풀스택 웹 개발 포트폴리오",
-    template: "%s | DevCraft Studio",
+    default: "chan.works | 풀스택 웹 개발 포트폴리오",
+    template: "%s | chan.works",
   },
   description:
-    "깊게 파고드는 방식으로 제품을 완성하는 풀스택 웹 개발자 포트폴리오. Next.js, TypeScript, React로 구조와 결과를 함께 만듭니다.",
+    "화면부터 구조, 배포 이후까지 같이 보는 풀스택 웹 개발자 포트폴리오.",
   keywords: [
     "웹 개발",
     "풀스택 개발자",
@@ -28,7 +34,7 @@ export const metadata: Metadata = {
     "포트폴리오",
     "프리랜서 개발자",
     "외주 개발",
-    "DevCraft Studio",
+    "chan.works",
     "Supabase",
     "Tailwind CSS",
   ],
@@ -40,27 +46,27 @@ export const metadata: Metadata = {
     languages: { "ko-KR": profile.siteUrl },
   },
   openGraph: {
-    title: "DevCraft Studio | 몰입형 풀스택 웹 개발 포트폴리오",
+    title: "chan.works | 풀스택 웹 개발 포트폴리오",
     description:
-      "깊게 파고드는 방식으로 제품을 완성하는 풀스택 웹 개발자 포트폴리오.",
+      "화면부터 구조, 배포 이후까지 같이 보는 풀스택 웹 개발자 포트폴리오.",
     type: "website",
     locale: "ko_KR",
     url: profile.siteUrl,
-    siteName: "DevCraft Studio",
+    siteName: "chan.works",
     images: [
       {
         url: `${profile.siteUrl}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: "DevCraft Studio | 풀스택 웹 개발 포트폴리오",
+        alt: "chan.works | 풀스택 웹 개발 포트폴리오",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DevCraft Studio | 몰입형 풀스택 웹 개발 포트폴리오",
+    title: "chan.works | 풀스택 웹 개발 포트폴리오",
     description:
-      "깊게 파고드는 방식으로 제품을 완성하는 풀스택 웹 개발자 포트폴리오.",
+      "화면부터 구조, 배포 이후까지 같이 보는 풀스택 웹 개발자 포트폴리오.",
     images: [`${profile.siteUrl}/opengraph-image`],
   },
   robots: {
@@ -82,7 +88,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={hahmlet.variable}>
+    <html lang="ko" className={`${notoSansKr.variable} ${songMyung.variable}`}>
       <body className="site-shell antialiased">
         <JsonLd />
         {children}

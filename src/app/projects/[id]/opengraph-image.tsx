@@ -48,7 +48,7 @@ export default async function OgImage({
           }}
         />
 
-        {/* 상단: DevCraft Studio 레이블 */}
+        {/* 상단: chan.works 레이블 */}
         <div
           style={{
             color: "rgba(255,255,255,0.3)",
