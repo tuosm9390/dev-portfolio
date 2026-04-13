@@ -1,8 +1,8 @@
 export const profile = {
-  name: "김개발",
+  name: "김상찬",
   businessName: "chan.works",
   siteUrl: "https://chanworks.vercel.app/",
-  title: "풀스택 웹 개발자",
+  title: "프론트엔드 개발자",
   tagline: "생각한 걸 실제로 돌아가게 만드는 일을 합니다.",
   description: [
     "혼자서도 처음부터 끝까지 만들 수 있는 개발자입니다. 화면만 만드는 쪽보다, 서비스가 실제로 돌아가는 데 필요한 구조까지 같이 보는 편입니다.",
