@@ -6,3 +6,4 @@
 - 2026-05-15: Used vanilla `three` instead of React Three Fiber to keep the dependency surface small. The canvas renders animated textured planes from existing project images, while the clickable Stage Manager UI stays in HTML.
 - 2026-05-15: Verification notes: targeted ESLint passed for the changed components, production build passed, Vitest passed. Full `npm run lint` still fails because `.agents/skills/gstack` files are included by the repo lint command and contain pre-existing lint errors.
 - 2026-05-15: User clarified that the existing frontend view and style should be treated as absent. The home page is now rebuilt as a single Stage Manager style 3D portfolio screen instead of layering the new hero on top of the previous section-based portfolio.
+- 2026-05-15: Removed unused legacy home components after the rebuild: Header, HeroSection, section components, contact form, project modal, and the now-unused UI dialog/button helpers.

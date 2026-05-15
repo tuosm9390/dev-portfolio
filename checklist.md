@@ -7,3 +7,4 @@
 - [x] Replace the old section-based home composition with the new standalone stage.
 - [x] Remove dependency on the previous home styling model.
 - [x] Update home tests to the rebuilt view contract.
+- [x] Remove unused legacy frontend components from the old home view.
