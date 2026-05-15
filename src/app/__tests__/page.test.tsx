@@ -1,15 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import Page from '../page';
-import { describe, it, expect, vi } from 'vitest';
-
-vi.mock('@/components/PortfolioStage', () => ({
-  default: () => <main data-testid="portfolio-stage">Portfolio Stage</main>
-}));
+import { describe, it, expect } from 'vitest';
 
 describe('Portfolio Home Page Integration', () => {
-  it('renders the rebuilt portfolio stage as the home view', () => {
+  it('renders the reset portfolio baseline', () => {
     render(<Page />);
 
-    expect(screen.getByTestId('portfolio-stage')).toBeInTheDocument();
+    expect(screen.getByRole('main', { name: 'portfolio' })).toBeInTheDocument();
   });
 });

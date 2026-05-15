@@ -1,159 +1,22 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
-:root {
-  --font-body:
-    var(--font-body-kr),
-    "Noto Sans KR",
-    "Apple SD Gothic Neo",
-    "Malgun Gothic",
-    system-ui,
-    sans-serif;
-  --font-display:
-    var(--font-display-kr),
-    "Noto Sans KR",
-    "Apple SD Gothic Neo",
-    "Malgun Gothic",
-    system-ui,
-    sans-serif;
-  color-scheme: dark;
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   min-height: 100%;
-  background: #090b12;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: #090b12;
-  color: #f6f7fb;
-  font-family: var(--font-body);
-}
-
-button,
-input,
-textarea {
-  font: inherit;
-}
-
-button,
-a {
-  transition:
-    border-color 180ms ease,
-    background-color 180ms ease,
-    color 180ms ease,
-    opacity 180ms ease,
-    transform 180ms ease,
-    box-shadow 180ms ease;
-}
-
-::selection {
-  background: rgba(126, 166, 255, 0.42);
-  color: #ffffff;
-}
-
-.site-shell {
-  min-height: 100vh;
-}
-
-.section-shell-narrow {
-  width: min(900px, calc(100vw - 2rem));
-  margin-inline: auto;
-}
-
-.primary-button,
-.secondary-button,
-.surface-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  border-radius: 999px;
-  text-decoration: none;
-}
-
-.primary-button {
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: #f6f7fb;
-  color: #090b12;
-  padding: 0.9rem 1.2rem;
-  font-weight: 700;
-}
-
-.secondary-button,
-.surface-chip {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.055);
-  color: rgba(246, 247, 251, 0.78);
-  padding: 0.82rem 1.05rem;
-  font-weight: 650;
-}
-
-.panel,
-.panel-strong {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(10, 12, 19, 0.78);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
-}
-
-.project-prose {
-  color: rgba(246, 247, 251, 0.8);
-}
-
-.project-prose h1,
-.project-prose h2,
-.project-prose h3 {
-  color: #ffffff;
-  font-family: var(--font-display);
-  line-height: 1.05;
-}
-
-.project-prose p,
-.project-prose li {
-  font-size: 1.03rem;
-  line-height: 1.85;
-}
-
-.project-prose a {
-  color: #9fc2ff;
-}
-
-.project-prose pre {
-  overflow-x: auto;
-  border-radius: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.38);
-  padding: 1.2rem;
-}
-
-.project-prose code {
-  border-radius: 0.45rem;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.12rem 0.35rem;
-}
-
-.project-prose pre code {
-  background: transparent;
-  padding: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }

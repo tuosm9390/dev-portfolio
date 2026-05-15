@@ -8,3 +8,7 @@
 - [x] Remove dependency on the previous home styling model.
 - [x] Update home tests to the rebuilt view contract.
 - [x] Remove unused legacy frontend components from the old home view.
+- [x] Reset home and project frontend views to a minimal blank baseline.
+- [x] Remove the Three.js portfolio stage files and dependency.
+- [x] Keep project data and project image assets untouched.
+- [x] Verify the reset with targeted tests and build.

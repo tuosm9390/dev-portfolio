@@ -1,5 +1,3 @@
-import PortfolioStage from "@/components/PortfolioStage";
-
 export default function Home() {
-  return <PortfolioStage />;
+  return <main aria-label="portfolio" />;
 }
