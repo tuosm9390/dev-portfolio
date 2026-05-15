@@ -17,40 +17,46 @@ type FileObject = {
 };
 
 const MAX_VISIBLE_PROJECTS = 10;
-const FILE_WIDTH = 1.58;
-const FILE_DEPTH = 1.04;
-const FILE_HEIGHT = 0.055;
+const FILE_WIDTH = 0.58;
+const FILE_HEIGHT = 2.15;
+const FILE_DEPTH = 1.16;
 
 function targetForFile(index: number, isHovered: boolean, isSelected: boolean) {
   if (isSelected) {
     if (isHovered) {
       return {
-        position: new THREE.Vector3(-3.25, 0.25 + index * 0.04, 1.84 - index * 0.24),
-        rotation: new THREE.Euler(-0.04, 0, 0.11),
-        scale: 0.6,
+        position: new THREE.Vector3(
+          -3.45,
+          FILE_HEIGHT * 0.34 + index * 0.035,
+          1.35 - index * 0.18,
+        ),
+        rotation: new THREE.Euler(-0.02, 0.28, 0.02),
+        scale: 0.72,
       };
     }
 
     return {
-      position: new THREE.Vector3(-3.32, 0.15 + index * 0.035, 1.92 - index * 0.24),
-      rotation: new THREE.Euler(-0.08, 0, 0.12),
-      scale: 0.52,
+      position: new THREE.Vector3(
+        -3.55,
+        FILE_HEIGHT * 0.32 + index * 0.03,
+        1.46 - index * 0.18,
+      ),
+      rotation: new THREE.Euler(-0.02, 0.24, 0.015),
+      scale: 0.64,
     };
   }
 
-  const columns = 5;
-  const row = Math.floor(index / columns);
-  const column = index % columns;
-  const stagger = row % 2 ? 0.12 : 0;
+  const centerOffset = (MAX_VISIBLE_PROJECTS - 1) / 2;
+  const lean = (index - centerOffset) * 0.012;
 
   return {
     position: new THREE.Vector3(
-      (column - 2) * 1.18 + stagger,
-      0.14 + index * 0.018 + (isHovered ? 0.2 : 0),
-      (row - 0.5) * 1.2 - column * 0.05,
+      (index - centerOffset) * 0.64,
+      FILE_HEIGHT / 2 + (isHovered ? 0.1 : 0),
+      isHovered ? 0.16 : 0,
     ),
-    rotation: new THREE.Euler(-0.1, 0, (column - 2) * -0.035),
-    scale: isHovered ? 1.12 : 1,
+    rotation: new THREE.Euler(0, lean, (index - centerOffset) * -0.018),
+    scale: isHovered ? 1.13 : 1,
   };
 }
 
@@ -113,9 +119,9 @@ export default function FolderPortfolio() {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 80);
-    camera.position.set(0.8, 6.6, 6.9);
-    camera.lookAt(0, 0, 0);
+    const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 80);
+    camera.position.set(0.2, 5.6, 6);
+    camera.lookAt(0, 1, 0);
 
     const ambient = new THREE.AmbientLight(0xffffff, 2.2);
     const key = new THREE.DirectionalLight(0xffffff, 2.6);
@@ -132,19 +138,19 @@ export default function FolderPortfolio() {
       color: "#efe5d4",
       roughness: 0.86,
     });
-    const base = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.18, 5.6), baseMaterial);
-    base.position.y = -0.16;
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.42, 0.18), wallMaterial);
-    backWall.position.set(0, 0.05, -2.75);
-    const frontWall = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.26, 0.16), wallMaterial);
-    frontWall.position.set(0, -0.02, 2.75);
-    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.38, 5.6), wallMaterial);
-    leftWall.position.set(-4.2, 0, 0);
-    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.38, 5.6), wallMaterial);
-    rightWall.position.set(4.2, 0, 0);
-    const tab = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.16, 0.52), wallMaterial);
-    tab.position.set(-2.1, 0.11, -3.02);
-    folder.add(base, backWall, frontWall, leftWall, rightWall, tab);
+    const base = new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.18, 2.1), baseMaterial);
+    base.position.set(0, -0.09, 0.1);
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(8.8, 2.62, 0.18), wallMaterial);
+    backWall.position.set(0, 1.22, -0.7);
+    const frontLip = new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.22, 0.16), wallMaterial);
+    frontLip.position.set(0, 0.02, 1.17);
+    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.42, 2.1), wallMaterial);
+    leftWall.position.set(-4.4, 1.08, 0.1);
+    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.42, 2.1), wallMaterial);
+    rightWall.position.set(4.4, 1.08, 0.1);
+    const shelfTop = new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.12, 2.1), wallMaterial);
+    shelfTop.position.set(0, 2.54, 0.1);
+    folder.add(base, backWall, frontLip, leftWall, rightWall, shelfTop);
     scene.add(folder);
 
     const shadowMaterial = new THREE.MeshBasicMaterial({
@@ -153,7 +159,6 @@ export default function FolderPortfolio() {
       opacity: 0.34,
       depthWrite: false,
     });
-    const textureLoader = new THREE.TextureLoader();
     const textures: THREE.Texture[] = [];
     const sideMaterial = new THREE.MeshStandardMaterial({
       color: "#f6f4ef",
@@ -161,58 +166,61 @@ export default function FolderPortfolio() {
     });
     const files: FileObject[] = visibleProjects.map((project, index) => {
       const group = new THREE.Group();
-      const texture = textureLoader.load(project.imageUrl, () => renderFrame());
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.minFilter = THREE.LinearMipmapLinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      texture.anisotropy = 2;
-      textures.push(texture);
 
-      const topMaterial = new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        map: texture,
+      const spineMaterial = new THREE.MeshStandardMaterial({
+        color: project.accentColor,
         roughness: 0.58,
       });
       const geometry = new THREE.BoxGeometry(FILE_WIDTH, FILE_HEIGHT, FILE_DEPTH);
       const mesh = new THREE.Mesh(geometry, [
         sideMaterial,
         sideMaterial,
-        topMaterial,
         sideMaterial,
         sideMaterial,
+        spineMaterial,
         sideMaterial,
       ]);
       mesh.userData.projectId = project.id;
 
       const shadow = new THREE.Mesh(
-        new THREE.PlaneGeometry(FILE_WIDTH * 1.05, FILE_DEPTH * 1.08),
+        new THREE.PlaneGeometry(FILE_WIDTH * 1.18, FILE_DEPTH * 1.16),
         shadowMaterial.clone(),
       );
       shadow.rotation.x = -Math.PI / 2;
-      shadow.position.y = -0.06;
+      shadow.position.set(0, -FILE_HEIGHT / 2 - 0.02, 0.08);
 
       const labelCanvas = document.createElement("canvas");
-      labelCanvas.width = 512;
-      labelCanvas.height = 144;
+      labelCanvas.width = 192;
+      labelCanvas.height = 768;
       const context = labelCanvas.getContext("2d");
       if (context) {
         context.fillStyle = project.accentColor;
-        context.fillRect(0, 0, 512, 144);
+        context.fillRect(0, 0, 192, 768);
+        context.fillStyle = "rgba(255,255,255,0.18)";
+        context.fillRect(22, 24, 148, 720);
+        context.save();
+        context.translate(68, 704);
+        context.rotate(-Math.PI / 2);
         context.fillStyle = "#ffffff";
-        context.font = "600 34px system-ui";
-        context.fillText(project.title.slice(0, 24), 28, 58);
-        context.font = "500 20px system-ui";
-        context.fillText(project.techStack.slice(0, 2).join(" / "), 28, 102);
+        context.font = "700 42px system-ui";
+        context.fillText(project.title.slice(0, 26), 0, 0);
+        context.restore();
+        context.save();
+        context.translate(138, 704);
+        context.rotate(-Math.PI / 2);
+        context.fillStyle = "rgba(255,255,255,0.78)";
+        context.font = "600 24px system-ui";
+        context.fillText(project.techStack.slice(0, 2).join(" / "), 0, 0);
+        context.restore();
       }
       const labelTexture = new THREE.CanvasTexture(labelCanvas);
       labelTexture.colorSpace = THREE.SRGBColorSpace;
       textures.push(labelTexture);
       const label = new THREE.Mesh(
-        new THREE.PlaneGeometry(FILE_WIDTH * 0.86, 0.28),
+        new THREE.PlaneGeometry(FILE_WIDTH * 0.82, FILE_HEIGHT * 0.72),
         new THREE.MeshBasicMaterial({ map: labelTexture }),
       );
-      label.rotation.x = -Math.PI / 2;
-      label.position.set(0, FILE_HEIGHT / 2 + 0.003, FILE_DEPTH * 0.24);
+      label.position.set(0, 0.05, FILE_DEPTH / 2 + 0.004);
 
       group.add(shadow, mesh, label);
       const target = targetForFile(index, false, false);
@@ -233,15 +241,15 @@ export default function FolderPortfolio() {
       const height = canvasElement.clientHeight;
       renderer.setSize(width, height, false);
       const isMobile = width < 700;
-      camera.fov = isMobile ? 58 : 38;
+      camera.fov = isMobile ? 62 : 46;
       camera.position.set(
-        isMobile ? 0.5 : 0.8,
-        isMobile ? 8.8 : 6.6,
-        isMobile ? 10.4 : 6.9,
+        isMobile ? 0.25 : 0.2,
+        isMobile ? 6.4 : 5.6,
+        isMobile ? 7.7 : 6,
       );
       camera.aspect = width / Math.max(height, 1);
       camera.updateProjectionMatrix();
-      camera.lookAt(0, 0, 0);
+      camera.lookAt(0, 1, 0);
       renderFrame();
     }
 
@@ -273,9 +281,9 @@ export default function FolderPortfolio() {
           isSelected && selectedIdRef.current !== file.id,
         );
         if (selectedIdRef.current === file.id) {
-          target.position.set(-1.25, 0.32, -0.12);
-          target.rotation.set(-0.08, 0, -0.07);
-          target.scale = hoveredIdRef.current === file.id ? 1.16 : 1.08;
+          target.position.set(-1.45, FILE_HEIGHT / 2 + 0.05, 0.24);
+          target.rotation.set(0, 0.1, -0.04);
+          target.scale = hoveredIdRef.current === file.id ? 1.22 : 1.14;
         }
 
         file.group.position.lerp(target.position, 0.18);

@@ -18,3 +18,6 @@
 - [x] Add explicit texture/render-loop cleanup for memory control.
 - [x] Update tests for the new portfolio screen.
 - [x] Verify with targeted tests, lint, production build, and browser canvas screenshots.
+- [x] Change project objects from flat floor cards to upright shelf files.
+- [x] Adjust camera to a shelf-like 45 degree viewing angle.
+- [x] Re-verify canvas screenshots after the shelf layout change.
