@@ -21,3 +21,4 @@
 - [x] Change project objects from flat floor cards to upright shelf files.
 - [x] Adjust camera to a shelf-like 45 degree viewing angle.
 - [x] Re-verify canvas screenshots after the shelf layout change.
+- [x] Rotate the camera and shelf objects 90 degrees to the right.

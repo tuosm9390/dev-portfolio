@@ -120,13 +120,17 @@ export default function FolderPortfolio() {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 80);
-    camera.position.set(0.2, 5.6, 6);
+    camera.position.set(6, 5.6, -0.2);
     camera.lookAt(0, 1, 0);
 
     const ambient = new THREE.AmbientLight(0xffffff, 2.2);
     const key = new THREE.DirectionalLight(0xffffff, 2.6);
     key.position.set(2, 6, 4);
     scene.add(ambient, key);
+
+    const stageGroup = new THREE.Group();
+    stageGroup.rotation.y = Math.PI / 2;
+    scene.add(stageGroup);
 
     const folder = new THREE.Group();
     const baseMaterial = new THREE.MeshStandardMaterial({
@@ -151,7 +155,7 @@ export default function FolderPortfolio() {
     const shelfTop = new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.12, 2.1), wallMaterial);
     shelfTop.position.set(0, 2.54, 0.1);
     folder.add(base, backWall, frontLip, leftWall, rightWall, shelfTop);
-    scene.add(folder);
+    stageGroup.add(folder);
 
     const shadowMaterial = new THREE.MeshBasicMaterial({
       color: "#d8d2c5",
@@ -227,7 +231,7 @@ export default function FolderPortfolio() {
       group.position.copy(target.position);
       group.rotation.copy(target.rotation);
       group.scale.setScalar(target.scale);
-      scene.add(group);
+      stageGroup.add(group);
 
       return { id: project.id, group, mesh, index };
     });
@@ -243,9 +247,9 @@ export default function FolderPortfolio() {
       const isMobile = width < 700;
       camera.fov = isMobile ? 62 : 46;
       camera.position.set(
-        isMobile ? 0.25 : 0.2,
-        isMobile ? 6.4 : 5.6,
         isMobile ? 7.7 : 6,
+        isMobile ? 6.4 : 5.6,
+        isMobile ? -0.25 : -0.2,
       );
       camera.aspect = width / Math.max(height, 1);
       camera.updateProjectionMatrix();
