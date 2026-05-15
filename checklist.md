@@ -4,3 +4,6 @@
 - [x] Replace the hero visual with the interactive project workspace.
 - [x] Keep existing project data, links, About, Contact, and Footer intact.
 - [x] Verify with lint/build or the smallest relevant available checks.
+- [x] Replace the old section-based home composition with the new standalone stage.
+- [x] Remove dependency on the previous home styling model.
+- [x] Update home tests to the rebuilt view contract.
