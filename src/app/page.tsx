@@ -1,3 +1,5 @@
+import FolderPortfolio from "@/components/FolderPortfolio";
+
 export default function Home() {
-  return <main aria-label="portfolio" />;
+  return <FolderPortfolio />;
 }

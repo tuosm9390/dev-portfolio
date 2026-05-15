@@ -12,3 +12,9 @@
 - [x] Remove the Three.js portfolio stage files and dependency.
 - [x] Keep project data and project image assets untouched.
 - [x] Verify the reset with targeted tests and build.
+- [x] Reintroduce Three.js as the main frontend technology.
+- [x] Build the white-background folder box portfolio view.
+- [x] Implement hover focus and Stage Manager style selected layout.
+- [x] Add explicit texture/render-loop cleanup for memory control.
+- [x] Update tests for the new portfolio screen.
+- [x] Verify with targeted tests, lint, production build, and browser canvas screenshots.
