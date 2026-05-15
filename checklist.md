@@ -1,0 +1,6 @@
+- [x] Define the Stage Manager portfolio interaction goal.
+- [x] Add the minimum Three.js dependency needed for the first screen.
+- [x] Build a client-side Three.js folder-stage component.
+- [x] Replace the hero visual with the interactive project workspace.
+- [x] Keep existing project data, links, About, Contact, and Footer intact.
+- [x] Verify with lint/build or the smallest relevant available checks.

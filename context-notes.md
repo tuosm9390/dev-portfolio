@@ -1,0 +1,7 @@
+- 2026-05-15: The requested redesign is centered on the first viewport, not the whole content model. Existing project data and lower sections should stay intact unless the new interaction requires otherwise.
+- 2026-05-15: The selected-state layout should feel like macOS Stage Manager: project list collapses to a left vertical stack, and the selected project occupies the main workspace.
+- 2026-05-15: Three.js should serve the folder/file-stack depth and motion. Text, links, and readable project detail should remain HTML for accessibility and SEO.
+- 2026-05-15: The worktree is already dirty with user changes across many files. Avoid reverting or reformatting unrelated edits.
+- 2026-05-15: Implemented the new first viewport as `PortfolioStage`, mounted through `HeroSection` so existing page composition, tests, project data, About, Contact, and Footer can remain in place.
+- 2026-05-15: Used vanilla `three` instead of React Three Fiber to keep the dependency surface small. The canvas renders animated textured planes from existing project images, while the clickable Stage Manager UI stays in HTML.
+- 2026-05-15: Verification notes: targeted ESLint passed for the changed components, production build passed, Vitest passed. Full `npm run lint` still fails because `.agents/skills/gstack` files are included by the repo lint command and contain pre-existing lint errors.
