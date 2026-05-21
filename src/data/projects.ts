@@ -477,7 +477,7 @@ GitHub 연결 전에는 PRD만으로 초기 스냅샷을 자동 생성하고, \`
     ],
     liveUrl: "https://synapso.dev",
     githubUrl: "https://github.com/tuosm9390/Synapso.dev",
-    imageUrl: "/images/project-synapso.dev.png",
+    imageUrl: "/images/project-synapso-main.png",
     accentColor: "#f43f5e",
   },
   {

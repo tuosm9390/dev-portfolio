@@ -15,7 +15,7 @@ const projects = [
     cwd: "D:\\development\\auto-blog",
     command: "npm run dev -- --port 4310",
     url: "http://127.0.0.1:4310",
-    output: "project-synapso.dev.png",
+    output: "project-synapso-main.png",
   },
   {
     name: "Minions Bid",
