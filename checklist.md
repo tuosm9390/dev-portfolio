@@ -27,3 +27,11 @@
 - [x] Remove `three` and `@types/three` from project dependencies.
 - [x] Update tests to assert the baseline view instead of the 3D portfolio.
 - [x] Verify with lint, targeted tests, and production build.
+- [x] Add Framer Motion for portfolio interactions.
+- [x] Build Apple-inspired white home layout sections.
+- [x] Add shared reveal animation for section entry.
+- [x] Implement project grid and same-screen selection state.
+- [x] Implement desktop book-opening project detail animation.
+- [x] Implement mobile-friendly project detail fallback.
+- [x] Update tests for the interactive portfolio flow.
+- [x] Verify with targeted tests, lint, build, and browser check.
