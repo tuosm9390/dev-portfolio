@@ -22,3 +22,8 @@
 - [x] Adjust camera to a shelf-like 45 degree viewing angle.
 - [x] Re-verify canvas screenshots after the shelf layout change.
 - [x] Rotate the camera and shelf objects 90 degrees to the right.
+- [x] Reset the home frontend view to a basic Next/React baseline.
+- [x] Remove the Three.js folder portfolio component and styles.
+- [x] Remove `three` and `@types/three` from project dependencies.
+- [x] Update tests to assert the baseline view instead of the 3D portfolio.
+- [x] Verify with lint, targeted tests, and production build.
