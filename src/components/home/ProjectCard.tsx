@@ -4,6 +4,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { isProjectInProgress } from "./projectStatus";
 import type { Project } from "@/data/projects";
 
 type ProjectCardProps = {
@@ -17,6 +18,8 @@ export default function ProjectCard({
   isSelected,
   onSelect,
 }: ProjectCardProps) {
+  const inProgress = isProjectInProgress(project.id);
+
   return (
     <motion.button
       aria-label={`프로젝트 선택: ${project.title}`}
@@ -43,9 +46,16 @@ export default function ProjectCard({
         </motion.div>
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <p className="text-[13px] font-semibold tracking-[-0.12px] text-[var(--text-muted)]">
-          {project.techStack.slice(0, 3).join(" / ")}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-[13px] font-semibold tracking-[-0.12px] text-[var(--text-muted)]">
+            {project.techStack.slice(0, 3).join(" / ")}
+          </p>
+          {inProgress ? (
+            <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold tracking-[-0.08px] text-[#0066cc]">
+              개발 진행중
+            </span>
+          ) : null}
+        </div>
         <h3 className="mt-3 text-[28px] font-normal leading-[1.14] tracking-[0.196px] text-[var(--text-primary)]">
           {project.title}
         </h3>

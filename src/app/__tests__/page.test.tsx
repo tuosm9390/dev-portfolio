@@ -50,6 +50,7 @@ describe("Home Page", () => {
       "href",
       "#projects",
     );
+    expect(screen.getAllByText("개발 진행중")).toHaveLength(4);
   });
 
   it("opens a project detail in the same screen", async () => {

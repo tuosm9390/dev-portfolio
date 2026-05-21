@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import ProjectBook from "./ProjectBook";
 import ProjectCard from "./ProjectCard";
 import RevealSection from "./RevealSection";
+import { isProjectInProgress } from "./projectStatus";
 import { projects } from "@/data/projects";
 
 export default function ProjectsSection() {
@@ -79,6 +80,7 @@ export default function ProjectsSection() {
               <div className="flex gap-2 overflow-x-auto pb-3 lg:block lg:space-y-2 lg:overflow-visible lg:pb-0">
                 {projects.map((project) => {
                   const active = selectedProjectId === project.id;
+                  const inProgress = isProjectInProgress(project.id);
 
                   return (
                     <button
@@ -99,6 +101,11 @@ export default function ProjectsSection() {
                       <span className="mt-1 block truncate text-[12px] text-[var(--text-muted)]">
                         {project.techStack.slice(0, 2).join(" / ")}
                       </span>
+                      {inProgress ? (
+                        <span className="mt-2 inline-flex rounded-full bg-white px-2 py-1 text-[11px] font-semibold tracking-[-0.08px] text-[#0066cc]">
+                          개발 진행중
+                        </span>
+                      ) : null}
                     </button>
                   );
                 })}

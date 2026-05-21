@@ -4,6 +4,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { ExternalLink, Github, X } from "lucide-react";
+import { isProjectInProgress } from "./projectStatus";
 import type { Project } from "@/data/projects";
 
 type ProjectBookProps = {
@@ -39,6 +40,7 @@ function LimitedList({
 
 export default function ProjectBook({ project, onClose }: ProjectBookProps) {
   const shouldReduceMotion = useReducedMotion();
+  const inProgress = isProjectInProgress(project.id);
   const coverVariants = {
     closed: { opacity: 1, rotateY: 0 },
     open: shouldReduceMotion
@@ -92,9 +94,16 @@ export default function ProjectBook({ project, onClose }: ProjectBookProps) {
             <div className="absolute inset-0 bg-white/72" />
             <div className="absolute inset-y-0 left-0 w-4 bg-[rgba(0,0,0,0.12)]" />
             <div className="absolute bottom-8 left-8 right-8">
-              <p className="text-[13px] font-semibold text-[var(--text-muted)]">
-                Project Book
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-[13px] font-semibold text-[var(--text-muted)]">
+                  Project Book
+                </p>
+                {inProgress ? (
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold tracking-[-0.08px] text-[#0066cc]">
+                    개발 진행중
+                  </span>
+                ) : null}
+              </div>
               <h3 className="mt-2 text-[40px] font-semibold leading-[1.1] tracking-[-0.28px] text-[var(--text-primary)]">
                 {project.title}
               </h3>
@@ -115,9 +124,16 @@ export default function ProjectBook({ project, onClose }: ProjectBookProps) {
             >
               <X size={18} />
             </button>
-            <p className="text-[13px] font-semibold tracking-[-0.12px] text-[var(--text-muted)]">
-              {project.techStack.slice(0, 3).join(" / ")}
-            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-[13px] font-semibold tracking-[-0.12px] text-[var(--text-muted)]">
+                {project.techStack.slice(0, 3).join(" / ")}
+              </p>
+              {inProgress ? (
+                <span className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-[11px] font-semibold tracking-[-0.08px] text-[#0066cc]">
+                  개발 진행중
+                </span>
+              ) : null}
+            </div>
             <h3 className="mt-4 text-[38px] font-semibold leading-[1.08] tracking-[-0.28px] text-[var(--text-primary)]">
               {project.title}
             </h3>
