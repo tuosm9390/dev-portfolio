@@ -9,7 +9,6 @@ const PROJECTS_FILE = path.join(ROOT_DIR, 'src/data/projects.ts');
 // 프로젝트 ID와 외부 DESCRIPTION.md 경로 매핑
 const projectPaths = {
   'threads-autoposter': 'D:/development/threads-autoposter/DESCRIPTION.md',
-  'agent-diary': 'D:/development/agent-diary/DESCRIPTION.md',
   'minions-bid': 'D:/development/league-auction/DESCRIPTION.md',
   'investment-platform': 'D:/development/investment-platform/DESCRIPTION.md',
   'persona-style': 'D:/development/persona-style/DESCRIPTION.md',

@@ -35,3 +35,7 @@
 - [x] Implement mobile-friendly project detail fallback.
 - [x] Update tests for the interactive portfolio flow.
 - [x] Verify with targeted tests, lint, build, and browser check.
+- [x] Update Synapso.dev portfolio copy from `D:\development\auto-blog\DESCRIPTION.md`.
+- [x] Verify the Synapso.dev data update with focused tests/build.
+- [x] Update Minions Bid portfolio copy from `D:\development\league-auction\DESCRIPTION.md`.
+- [x] Verify the Minions Bid data update with focused tests/build.

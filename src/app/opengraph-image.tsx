@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { profile } from "@/data/profile";
 
 export const runtime = "edge";
-export const alt = "chan.works | 풀스택 웹 개발 포트폴리오";
+export const alt = "chan.works | AI 제품형 프론트엔드 포트폴리오";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
