@@ -7,7 +7,11 @@
     "dev": "npm run sync && next dev",
     "build": "npm run sync && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "diag": "node scripts/diag.js",
+    "browse": "D:\\development\\dev-portfolio\\.agents\\skills\\gstack\\browse\\dist\\browse.exe",
+    "playwright-install": "npx playwright install chromium",
+    "build-node-server": "node scripts/build-node-server.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

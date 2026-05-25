@@ -5,10 +5,10 @@ import { profile } from "@/data/profile";
 
 export default function ProofCounters() {
   return (
-    <RevealSection className="bg-[var(--surface)]">
+    <RevealSection className="bg-[#ffffff] pt-4 pb-12">
       <div className="grid gap-px overflow-hidden rounded-lg bg-[var(--divider)] sm:grid-cols-2 lg:grid-cols-4">
         {profile.proofCounters.map((item) => (
-          <div className="bg-[var(--surface)] p-7 sm:p-8" key={item.label}>
+          <div className="bg-[#f5f5f7] p-7 sm:p-8" key={item.label}>
             <p className="text-[40px] font-semibold leading-[1.1] tracking-[-0.28px] text-[var(--text-primary)]">
               {item.value}
             </p>

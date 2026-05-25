@@ -8,21 +8,21 @@ const navItems = [
 
 export default function Header() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[rgba(0,0,0,0.08)] bg-white/80 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-none bg-[rgba(0,0,0,0.8)] backdrop-blur-[20px] backdrop-saturate-[180%]">
       <nav
         aria-label="주요 내비게이션"
-        className="mx-auto flex h-12 max-w-[1120px] items-center justify-between px-5 text-[12px] text-[rgba(0,0,0,0.8)] sm:px-8"
+        className="mx-auto flex h-12 max-w-[1120px] items-center justify-between px-5 text-[12px] font-normal tracking-[-0.12px] text-[rgba(255,255,255,0.8)] sm:px-8"
       >
         <a
-          className="font-semibold tracking-[-0.12px] text-[#1d1d1f] transition-colors hover:text-[#0066cc]"
+          className="font-semibold text-white transition-colors duration-200 hover:text-white"
           href="#top"
         >
           chan.works
         </a>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-6">
           {navItems.map((item) => (
             <a
-              className="transition-colors hover:text-[#0066cc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]"
+              className="transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]"
               href={item.href}
               key={item.href}
             >

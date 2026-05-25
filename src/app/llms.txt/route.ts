@@ -19,7 +19,7 @@ export function GET() {
 ## Who is ${profile.name}?
 
 ${profile.name}(chanworks)는 React · TypeScript · Next.js 기반의 프론트엔드 개발자입니다.
-불편함을 발견하면 AI와 소프트웨어로 직접 제품화하는 프론트엔드 / 프로덕트 엔지니어입니다.
+불편함을 발견하면 AI 툴과 소프트웨어를 활용하여 직접 제품화하는 프론트엔드 / 프로덕트 엔지니어입니다.
 chan.works는 ${profile.name}의 개인 브랜드명입니다.
 
 ${profile.description.join(" ")}
@@ -45,7 +45,7 @@ Other: WebSocket, Flutter, Playwright
 
 ## Key Achievements
 
-- AI·자동화 기반 웹 서비스 10개 이상 설계·배포
+- AI 툴 및 자동화 기반 웹 서비스 10개 이상 설계·배포
 - 불편함에서 출발한 문제를 제품 흐름으로 전환
 - Supabase 기반 실시간 AI 워크플로우 플랫폼 구축 (Synapso.dev)
 - Gemini API 연동 AI 퍼스널 스타일링 서비스 출시 (Persona Style AI)
