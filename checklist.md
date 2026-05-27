@@ -44,3 +44,7 @@
 - [x] Reduce wheel delay without allowing inertial multi-section skips.
 - [x] Remove duplicate section id that can confuse hash navigation.
 - [x] Verify scroll behavior with production build.
+- [x] Slow the project book-opening animation enough to inspect the effect.
+- [x] Add a `구현내용` action in the selected project detail view.
+- [x] Show the selected project image and `description` content in a modal.
+- [x] Verify the changed project interaction with focused tests/build.

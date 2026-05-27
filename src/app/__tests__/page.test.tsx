@@ -66,6 +66,23 @@ describe("Home Page", () => {
     ).toBeInTheDocument();
   });
 
+  it("opens the project implementation modal", async () => {
+    render(<Page />);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "프로젝트 선택: Synapso.dev" }),
+    );
+    await screen.findByText("만든 이유");
+
+    fireEvent.click(screen.getByRole("button", { name: /구현내용/ }));
+
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "Synapso.dev 대표 이미지" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/AI-Powered Project Memory Dashboard/)).toBeInTheDocument();
+  });
+
   it("closes the selected project with Escape", async () => {
     render(<Page />);
 

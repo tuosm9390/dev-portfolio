@@ -24,6 +24,10 @@ export default function ProjectsSection() {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
+      if (document.querySelector("[data-project-description-modal]")) {
+        return;
+      }
+
       if (event.key === "Escape") {
         setSelectedProjectId(null);
       }
@@ -48,7 +52,7 @@ export default function ProjectsSection() {
             실제 제품 흐름으로 연결한 작업들.
           </h2>
           <p className="mt-4 text-[17px] leading-[1.6] tracking-[-0.374px] text-[var(--text-secondary)]">
-            각 프로젝트의 배경, 제품 흐름, 기술 결정, 증거 신호를 한 화면에서
+            각 프로젝트의 배경, 제품 흐름, 기술 결정, 구현 내용을 한 화면에서
             이어 보여줍니다.
           </p>
         </div>
