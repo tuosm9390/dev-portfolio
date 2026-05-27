@@ -1435,7 +1435,7 @@ Firestore Admin SDK 대신 \`firestore-rest.ts\`를 통해 REST API를 호출하
     id: "cafe-book",
     title: "Cafe Book (카페 도감)",
     summary:
-      "가본 카페를 기억하고 싶었다. 카카오 지도 + Firebase 실시간 동기화로 만든 카페 기록·레시피 공유 플랫폼.",
+      "가 본 카페를 기억하고, 브루잉 레시피를 정리하기 위해 만들었습니다. 카카오 지도 + Firebase 실시간 동기화로 만든 카페 기록·레시피 공유 플랫폼.",
     origin:
       "좋았던 카페와 커피 경험을 사진첩이나 메모장에 흩어두는 방식이 아쉬워서 만들었습니다.",
     brandSignal:
