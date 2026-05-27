@@ -51,3 +51,6 @@
 - [x] Give project description modal scroll priority over page rolling.
 - [x] Remove the modal backdrop blur for smoother overlay performance.
 - [x] Verify modal scroll and build checks.
+- [x] Reduce the project modal image height.
+- [x] Merge the modal image and text into one content section.
+- [x] Verify the modal layout change.

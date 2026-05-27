@@ -244,31 +244,31 @@ export default function ProjectBook({ project, onClose }: ProjectBookProps) {
           onTouchMove={(event) => event.stopPropagation()}
           onWheel={(event) => event.stopPropagation()}
         >
-          <div className="relative aspect-[16/9] min-h-[190px] shrink-0 bg-[var(--surface)]">
-            <Image
-              alt={`${project.title} 대표 이미지`}
-              className="object-cover"
-              fill
-              sizes="(max-width: 768px) 92vw, 880px"
-              src={project.imageUrl}
-            />
-            <Dialog.Close asChild>
-              <button
-                aria-label="구현내용 닫기"
-                className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/88 text-[var(--text-primary)] shadow-[rgba(0,0,0,0.14)_0_2px_12px] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]"
-                type="button"
-              >
-                <X size={18} />
-              </button>
-            </Dialog.Close>
-          </div>
+          <Dialog.Close asChild>
+            <button
+              aria-label="구현내용 닫기"
+              className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[var(--text-primary)] shadow-[rgba(0,0,0,0.14)_0_2px_12px] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]"
+              type="button"
+            >
+              <X size={18} />
+            </button>
+          </Dialog.Close>
           <div
             className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-6 sm:px-8 sm:py-7"
             data-project-description-scroll=""
             onTouchMove={(event) => event.stopPropagation()}
             onWheel={(event) => event.stopPropagation()}
           >
-            <Dialog.Title className="text-[26px] font-semibold leading-[1.15] tracking-[-0.224px] text-[var(--text-primary)]">
+            <div className="relative aspect-[16/7] overflow-hidden rounded-lg bg-[var(--surface)]">
+              <Image
+                alt={`${project.title} 대표 이미지`}
+                className="object-cover"
+                fill
+                sizes="(max-width: 768px) 80vw, 816px"
+                src={project.imageUrl}
+              />
+            </div>
+            <Dialog.Title className="mt-6 text-[26px] font-semibold leading-[1.15] tracking-[-0.224px] text-[var(--text-primary)]">
               {project.title}
             </Dialog.Title>
             <div
