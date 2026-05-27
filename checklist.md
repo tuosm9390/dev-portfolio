@@ -48,3 +48,6 @@
 - [x] Add a `구현내용` action in the selected project detail view.
 - [x] Show the selected project image and `description` content in a modal.
 - [x] Verify the changed project interaction with focused tests/build.
+- [x] Give project description modal scroll priority over page rolling.
+- [x] Remove the modal backdrop blur for smoother overlay performance.
+- [x] Verify modal scroll and build checks.

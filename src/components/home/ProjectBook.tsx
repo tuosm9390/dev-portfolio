@@ -236,13 +236,15 @@ export default function ProjectBook({ project, onClose }: ProjectBookProps) {
       </motion.article>
       </div>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/48 backdrop-blur-sm" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/52" />
         <Dialog.Content
           aria-describedby={`project-description-${project.id}`}
           className="fixed left-1/2 top-1/2 z-50 flex max-h-[86vh] w-[min(92vw,880px)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-lg bg-white shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0px] focus-visible:outline-none"
           data-project-description-modal=""
+          onTouchMove={(event) => event.stopPropagation()}
+          onWheel={(event) => event.stopPropagation()}
         >
-          <div className="relative aspect-[16/9] min-h-[190px] bg-[var(--surface)]">
+          <div className="relative aspect-[16/9] min-h-[190px] shrink-0 bg-[var(--surface)]">
             <Image
               alt={`${project.title} 대표 이미지`}
               className="object-cover"
@@ -260,7 +262,12 @@ export default function ProjectBook({ project, onClose }: ProjectBookProps) {
               </button>
             </Dialog.Close>
           </div>
-          <div className="overflow-y-auto px-6 py-6 sm:px-8 sm:py-7">
+          <div
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-6 sm:px-8 sm:py-7"
+            data-project-description-scroll=""
+            onTouchMove={(event) => event.stopPropagation()}
+            onWheel={(event) => event.stopPropagation()}
+          >
             <Dialog.Title className="text-[26px] font-semibold leading-[1.15] tracking-[-0.224px] text-[var(--text-primary)]">
               {project.title}
             </Dialog.Title>

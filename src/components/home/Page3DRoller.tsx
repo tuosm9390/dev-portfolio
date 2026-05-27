@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 
 const WHEEL_TRANSITION_THRESHOLD = 32;
+const PROJECT_MODAL_SELECTOR = "[data-project-description-modal]";
 
 interface Page3DRollerProps {
   children: React.ReactNode[];
@@ -22,6 +23,10 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
   const currentIndexRef = useRef(currentIndex);
 
   const totalSections = children.length;
+
+  const isProjectModalOpen = useCallback(() => {
+    return document.querySelector(PROJECT_MODAL_SELECTOR) !== null;
+  }, []);
 
   // 각 섹션의 id 추출
   const sectionIds = React.useMemo(() => {
@@ -163,6 +168,11 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
   // 마우스 휠 이벤트 (델타 누적 및 디바운스식 연속 스크롤 제어)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
+      if (isProjectModalOpen()) {
+        wheelAccumulatorRef.current = 0;
+        return;
+      }
+
       if (isAnimatingRef.current) {
         // 애니메이션 도중 들어온 모든 휠 이벤트는 무시하고 누적치 리셋
         wheelAccumulatorRef.current = 0;
@@ -203,15 +213,23 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
     return () => {
       window.removeEventListener("wheel", handleWheel);
     };
-  }, [getActiveScrollState, handleScrollDirection]);
+  }, [getActiveScrollState, handleScrollDirection, isProjectModalOpen]);
 
   // 터치 이벤트 (모바일/트랙패드 제스처)
   useEffect(() => {
     const handleTouchStart = (e: TouchEvent) => {
+      if (isProjectModalOpen()) {
+        return;
+      }
+
       touchStartY.current = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      if (isProjectModalOpen()) {
+        return;
+      }
+
       const activeSection = sectionRefs.current[currentIndex];
       if (!activeSection) return;
 
@@ -242,6 +260,10 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      if (isProjectModalOpen()) {
+        return;
+      }
+
       const touchEndY = e.changedTouches[0].clientY;
       const deltaY = touchStartY.current - touchEndY;
 
@@ -261,11 +283,15 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [currentIndex, handleScrollDirection]);
+  }, [currentIndex, handleScrollDirection, isProjectModalOpen]);
 
   // 키보드 방향키 내비게이션
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (isProjectModalOpen()) {
+        return;
+      }
+
       // 입력 폼에 포커스가 있을 때는 작동 안 함
       const activeEl = document.activeElement;
       if (
@@ -288,7 +314,7 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleScrollDirection]);
+  }, [handleScrollDirection, isProjectModalOpen]);
 
   return (
     <div ref={containerRef} className="cube-viewport">
