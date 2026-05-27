@@ -39,3 +39,8 @@
 - [x] Verify the Synapso.dev data update with focused tests/build.
 - [x] Update Minions Bid portfolio copy from `D:\development\league-auction\DESCRIPTION.md`.
 - [x] Verify the Minions Bid data update with focused tests/build.
+- [x] Add same-index guard to 3D roller navigation.
+- [x] Split wheel handling between section transitions and internal scroll containers.
+- [x] Reduce wheel delay without allowing inertial multi-section skips.
+- [x] Remove duplicate section id that can confuse hash navigation.
+- [x] Verify scroll behavior with production build.

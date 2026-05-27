@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
+
+const WHEEL_TRANSITION_THRESHOLD = 32;
 
 interface Page3DRollerProps {
   children: React.ReactNode[];
@@ -16,6 +18,8 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const touchStartY = useRef(0);
   const wheelAccumulatorRef = useRef(0);
+  const isAnimatingRef = useRef(false);
+  const currentIndexRef = useRef(currentIndex);
 
   const totalSections = children.length;
 
@@ -42,9 +46,18 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
   // 3D 회전 애니메이션 실행 함수
   const rotateTo = useCallback(
     async (nextIndex: number) => {
-      if (isAnimating) return;
+      if (
+        isAnimatingRef.current ||
+        nextIndex === currentIndexRef.current ||
+        nextIndex < 0 ||
+        nextIndex >= totalSections
+      ) {
+        return;
+      }
+      isAnimatingRef.current = true;
       setIsAnimating(true);
       setCurrentIndex(nextIndex);
+      currentIndexRef.current = nextIndex;
 
       // 모션 진행 시간(0.8초) 동안 추가 제스처 입력 차단
       await new Promise((resolve) => setTimeout(resolve, 800));
@@ -58,14 +71,39 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
       }
 
       setIsAnimating(false);
+      isAnimatingRef.current = false;
     },
-    [isAnimating, sectionIds]
+    [sectionIds, totalSections]
   );
 
-  const currentIndexRef = useRef(currentIndex);
   useEffect(() => {
     currentIndexRef.current = currentIndex;
   }, [currentIndex]);
+
+  const getActiveScrollState = useCallback((direction: "UP" | "DOWN") => {
+    const activeSection = sectionRefs.current[currentIndexRef.current];
+    if (!activeSection) {
+      return { canScrollFurther: false, scrollContainer: null };
+    }
+
+    const scrollContainer =
+      (activeSection.querySelector(".scroll-container") as HTMLElement) ||
+      activeSection;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    const isScrollable = scrollHeight > clientHeight + 20;
+
+    if (!isScrollable) {
+      return { canScrollFurther: false, scrollContainer };
+    }
+
+    const canScrollFurther =
+      direction === "DOWN"
+        ? scrollTop + clientHeight < scrollHeight - 15
+        : scrollTop > 15;
+
+    return { canScrollFurther, scrollContainer };
+  }, []);
 
   // 해시 변경 감지 및 최초 로드 시 해시 이동 처리
   useEffect(() => {
@@ -105,34 +143,9 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
         return;
       }
 
-      const activeSection = sectionRefs.current[currentIndex];
-      if (!activeSection) return;
-
-      // 자식 요소 중 스크롤 영역 (.scroll-container) 탐색, 없으면 자기 자신
-      const scrollContainer =
-        (activeSection.querySelector(".scroll-container") as HTMLElement) ||
-        activeSection;
-
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      // 화면 높이 대비 20px 이상 여백이 존재할 때만 스크롤 가능 영역으로 판단
-      const isScrollable = scrollHeight > clientHeight + 20;
-
-      if (isScrollable) {
-        if (direction === "DOWN") {
-          // 소수점 픽셀 렌더링 오차를 극복하기 위해 15px 마진 적용
-          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 15;
-          if (!isAtBottom) {
-            // 아직 내부 스크롤이 끝까지 안 내려갔으므로 네이티브 스크롤을 하도록 허용
-            return;
-          }
-        } else if (direction === "UP") {
-          // 소수점 픽셀 렌더링 오차를 극복하기 위해 15px 마진 적용
-          const isAtTop = scrollTop <= 15;
-          if (!isAtTop) {
-            // 아직 맨 위가 아니므로 네이티브 스크롤을 위로 올리도록 허용
-            return;
-          }
-        }
+      const { canScrollFurther } = getActiveScrollState(direction);
+      if (canScrollFurther) {
+        return;
       }
 
       // 스크롤이 끝에 도달했거나 스크롤이 불가한 경우 -> 3D 롤링 개시 및 이벤트 차단
@@ -144,14 +157,23 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
         rotateTo(currentIndex - 1);
       }
     },
-    [currentIndex, isAnimating, totalSections, rotateTo]
+    [currentIndex, getActiveScrollState, isAnimating, totalSections, rotateTo]
   );
 
   // 마우스 휠 이벤트 (델타 누적 및 디바운스식 연속 스크롤 제어)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (isAnimating) {
+      if (isAnimatingRef.current) {
         // 애니메이션 도중 들어온 모든 휠 이벤트는 무시하고 누적치 리셋
+        wheelAccumulatorRef.current = 0;
+        e.preventDefault();
+        return;
+      }
+
+      const direction = e.deltaY > 0 ? "DOWN" : "UP";
+      const { canScrollFurther } = getActiveScrollState(direction);
+
+      if (canScrollFurther) {
         wheelAccumulatorRef.current = 0;
         return;
       }
@@ -167,11 +189,13 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
       // 델타 값 누적
       wheelAccumulatorRef.current += e.deltaY;
 
-      // 누적 델타량이 임계치(80px)를 넘었을 때만 롤링 방향 감지하여 가동
-      if (Math.abs(wheelAccumulatorRef.current) >= 80) {
-        const direction = wheelAccumulatorRef.current > 0 ? "DOWN" : "UP";
+      // 짧은 휠 제스처에도 섹션 전환이 시작되도록 낮은 임계치만 적용
+      if (Math.abs(wheelAccumulatorRef.current) >= WHEEL_TRANSITION_THRESHOLD) {
+        const nextDirection = wheelAccumulatorRef.current > 0 ? "DOWN" : "UP";
         wheelAccumulatorRef.current = 0; // 누적치 즉시 초기화
-        handleScrollDirection(direction, e);
+        handleScrollDirection(nextDirection, e);
+      } else {
+        e.preventDefault();
       }
     };
 
@@ -179,7 +203,7 @@ export default function Page3DRoller({ children }: Page3DRollerProps) {
     return () => {
       window.removeEventListener("wheel", handleWheel);
     };
-  }, [isAnimating, handleScrollDirection]);
+  }, [getActiveScrollState, handleScrollDirection]);
 
   // 터치 이벤트 (모바일/트랙패드 제스처)
   useEffect(() => {

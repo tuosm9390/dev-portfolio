@@ -14,7 +14,7 @@ const icons = {
 
 export default function StrengthsSection() {
   return (
-    <RevealSection className="bg-[#f5f5f7] min-h-screen flex flex-col justify-center py-0 px-5 sm:px-8" id="about">
+    <RevealSection className="bg-[#f5f5f7] min-h-screen flex flex-col justify-center py-0 px-5 sm:px-8">
       <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
           <p className="text-[14px] font-semibold tracking-[-0.224px] text-[var(--text-muted)]">
