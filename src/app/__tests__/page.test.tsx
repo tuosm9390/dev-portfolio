@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Page from "../page";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
@@ -14,6 +14,11 @@ vi.mock("next/image", () => ({
       {alt}
     </span>
   ),
+}));
+
+// Mock usePathname
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
 }));
 
 beforeAll(() => {
@@ -34,69 +39,27 @@ beforeAll(() => {
 });
 
 describe("Home Page", () => {
-  it("renders the interactive portfolio sections", () => {
+  it("renders the monospace developer portfolio layout", () => {
     render(<Page />);
 
+    // Brand logo Link
+    expect(screen.getByRole("link", { name: "chan.works" })).toBeInTheDocument();
+
+    // Section Headings
     expect(
-      screen.getByRole("heading", { level: 1, name: "chan.works" }),
+      screen.getByRole("heading", { level: 2, name: "What I do best?" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", {
-        level: 2,
-        name: "실제 제품 흐름으로 연결한 작업들.",
-      }),
+      screen.getByRole("heading", { level: 2, name: "Selected work" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "프로젝트 보기" })).toHaveAttribute(
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Experience" }),
+    ).toBeInTheDocument();
+
+    // Verification of list and footer links
+    expect(screen.getByRole("link", { name: "All Projects →" })).toHaveAttribute(
       "href",
-      "#projects",
+      "/projects",
     );
-    expect(screen.getAllByText("개발 진행중")).toHaveLength(4);
-  });
-
-  it("opens a project detail in the same screen", async () => {
-    render(<Page />);
-
-    fireEvent.click(
-      screen.getByRole("button", { name: "프로젝트 선택: Synapso.dev" }),
-    );
-
-    expect(await screen.findByText("만든 이유")).toBeInTheDocument();
-    expect(
-      screen.getByRole("complementary", { name: "프로젝트 목록" }),
-    ).toBeInTheDocument();
-  });
-
-  it("opens the project implementation modal", async () => {
-    render(<Page />);
-
-    fireEvent.click(
-      screen.getByRole("button", { name: "프로젝트 선택: Synapso.dev" }),
-    );
-    await screen.findByText("만든 이유");
-
-    fireEvent.click(screen.getByRole("button", { name: /구현내용/ }));
-
-    expect(await screen.findByRole("dialog")).toBeInTheDocument();
-    expect(
-      screen.getByRole("img", { name: "Synapso.dev 대표 이미지" }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/AI-Powered Project Memory Dashboard/)).toBeInTheDocument();
-  });
-
-  it("closes the selected project with Escape", async () => {
-    render(<Page />);
-
-    fireEvent.click(
-      screen.getByRole("button", { name: "프로젝트 선택: Synapso.dev" }),
-    );
-    await screen.findByText("만든 이유");
-
-    fireEvent.keyDown(window, { key: "Escape" });
-
-    await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "프로젝트 선택: Synapso.dev" }),
-      ).toBeInTheDocument();
-    });
   });
 });

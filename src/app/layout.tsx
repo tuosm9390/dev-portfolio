@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { profile } from "@/data/profile";
 
 export const metadata: Metadata = {
-  title: "chan.works",
-  description: "Portfolio baseline",
+  title: `${profile.name} | Product Engineer & Frontend Developer`,
+  description: profile.title,
 };
 
 export default function RootLayout({
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className="antialiased select-text">
+        {children}
+      </body>
     </html>
   );
 }

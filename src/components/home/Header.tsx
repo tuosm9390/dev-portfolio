@@ -1,36 +1,122 @@
-// 포트폴리오 상단 고정 내비게이션을 렌더링하는 컴포넌트
+"use client";
 
-const navItems = [
-  { href: "#projects", label: "Projects" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
-];
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { profile } from "@/data/profile";
 
 export default function Header() {
+  const [seoulTime, setSeoulTime] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const updateTime = () => {
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Seoul",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+      setSeoulTime(formatter.format(new Date()));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const navItems = [
+    { href: "/", label: "HOME" },
+    { href: "/about", label: "ABOUT" },
+    { href: "/projects", label: "PROJECTS" },
+    { href: "/contact", label: "CONTACT" },
+  ];
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-none bg-[rgba(0,0,0,0.8)] backdrop-blur-[20px] backdrop-saturate-[180%]">
-      <nav
-        aria-label="주요 내비게이션"
-        className="mx-auto flex h-12 max-w-[1120px] items-center justify-between px-5 text-[12px] font-normal tracking-[-0.12px] text-[rgba(255,255,255,0.8)] sm:px-8"
-      >
-        <a
-          className="font-semibold text-white transition-colors duration-200 hover:text-white"
-          href="#top"
-        >
-          chan.works
-        </a>
-        <div className="flex items-center gap-6">
-          {navItems.map((item) => (
-            <a
-              className="transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]"
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-            </a>
-          ))}
+    <header className="absolute top-0 left-0 w-full px-6 md:px-20 pt-10 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono">
+      {/* Brand & Availability Status */}
+      <div className="flex flex-col items-start relative z-[60]">
+        <Link href="/" className="font-bold hover:opacity-75 transition-opacity uppercase">
+          {profile.businessName}
+        </Link>
+        <div className="flex items-center mt-1">
+          <div className="rounded-full bg-green-500 h-1.5 w-1.5 animate-pulse"></div>
+          <span className="ml-1.5 opacity-60 text-[9px] uppercase tracking-wider">AVAILABLE FOR WORK</span>
         </div>
-      </nav>
+      </div>
+
+      {/* Desktop Navigation & Clock */}
+      <div className="hidden md:flex gap-16 items-start">
+        <nav className="flex gap-8">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`transition-opacity hover:opacity-50 ${
+                  isActive ? "opacity-100 font-semibold border-b border-black pb-0.5" : "opacity-60"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="flex flex-col items-end opacity-60">
+          <span>SEOUL TIME</span>
+          <span className="mt-1 tabular-nums font-medium">{seoulTime}</span>
+        </div>
+      </div>
+
+      {/* Mobile Menu Toggle */}
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="md:hidden relative z-[60] p-2 -mr-2"
+        aria-label="Toggle menu"
+      >
+        <div className="flex flex-col gap-1 items-end w-5">
+          <div
+            className={`h-[1px] bg-black transition-all duration-300 ${
+              isMenuOpen ? "transform rotate-45 translate-y-1 w-5" : "w-5"
+            }`}
+          ></div>
+          <div
+            className={`h-[1px] bg-black transition-all duration-300 ${
+              isMenuOpen ? "opacity-0 w-0" : "w-3"
+            }`}
+          ></div>
+          <div
+            className={`h-[1px] bg-black transition-all duration-300 ${
+              isMenuOpen ? "transform -rotate-45 -translate-y-1 w-5" : "w-4"
+            }`}
+          ></div>
+        </div>
+      </button>
+
+      {/* Mobile Overlay Menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-white z-[50] flex flex-col justify-center px-6">
+          <nav className="flex flex-col gap-6 text-base font-bold tracking-widest text-center">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="hover:opacity-50 py-2 border-b border-black/5"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="absolute bottom-10 left-0 w-full flex flex-col items-center opacity-60 text-[10px]">
+            <span>SEOUL TIME</span>
+            <span className="mt-1 tabular-nums font-semibold text-xs">{seoulTime}</span>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

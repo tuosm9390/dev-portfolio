@@ -2,29 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --surface: #f5f5f7;
-  --text-primary: #1d1d1f;
-  --text-secondary: rgba(0, 0, 0, 0.8);
-  --text-muted: rgba(0, 0, 0, 0.48);
-  --accent: #0071e3;
-  --link: #0066cc;
-  --divider: #e5e5ea;
-
-  /* Apple 디자인 시스템 고유 색상 토큰 */
-  --apple-black: #000000;
-  --apple-light-gray: #f5f5f7;
-  --apple-near-black: #1d1d1f;
-  --apple-blue: #0071e3;
-  --apple-link-blue: #0066cc;
-  --apple-bright-blue: #2997ff;
-
-  --dark-surface-1: #272729;
-  --dark-surface-2: #262628;
-  --dark-surface-3: #28282a;
-  --dark-surface-4: #2a2a2d;
-  --dark-surface-5: #242426;
-
-  --card-shadow: 3px 5px 30px 0px rgba(0, 0, 0, 0.22);
+  --foreground: #111111;
+  --divider: rgba(0, 0, 0, 0.05);
 }
 
 *,
@@ -35,184 +14,42 @@
 
 html {
   height: 100%;
-  overflow: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100%;
   margin: 0;
-  overflow: hidden;
-  position: relative;
-  background: var(--background);
-  color: var(--text-primary);
-  font-family:
-    "SF Pro Text",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
 
-button {
-  font: inherit;
+/* Selection Highlight */
+::selection {
+  background-color: #111111;
+  color: #ffffff;
 }
 
-img {
-  display: block;
-}
-
-/* 3D Book Animation */
-.book-shell {
-  perspective: 1600px;
-}
-
-.book-inner {
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.book-cover {
-  backface-visibility: hidden;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.book-page {
-  backface-visibility: hidden;
-}
-
-/* Apple 정밀 타이포그래피 유틸리티 클래스 */
-.font-display-hero {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 3.50rem; /* 56px */
-  font-weight: 600;
-  line-height: 1.07;
-  letter-spacing: -0.28px;
-}
-
-.font-section-heading {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 2.50rem; /* 40px */
-  font-weight: 600;
-  line-height: 1.10;
-  letter-spacing: normal;
-}
-
-.font-tile-heading {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 1.75rem; /* 28px */
-  font-weight: 400;
-  line-height: 1.14;
-  letter-spacing: 0.196px;
-}
-
-.font-card-title {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 1.31rem; /* 21px */
-  font-weight: 700;
-  line-height: 1.19;
-  letter-spacing: 0.231px;
-}
-
-.font-sub-heading {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 1.31rem; /* 21px */
-  font-weight: 400;
-  line-height: 1.19;
-  letter-spacing: 0.231px;
-}
-
-.font-body-text {
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 1.06rem; /* 17px */
-  font-weight: 400;
-  line-height: 1.47;
-  letter-spacing: -0.374px;
-}
-
-.font-body-emphasis {
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 1.06rem; /* 17px */
-  font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: -0.374px;
-}
-
-.font-caption {
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.88rem; /* 14px */
-  font-weight: 400;
-  line-height: 1.29;
-  letter-spacing: -0.224px;
-}
-
-.font-caption-bold {
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.88rem; /* 14px */
-  font-weight: 600;
-  line-height: 1.29;
-  letter-spacing: -0.224px;
-}
-
-.font-micro {
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.75rem; /* 12px */
-  font-weight: 400;
-  line-height: 1.33;
-  letter-spacing: -0.12px;
-}
-
-.font-micro-bold {
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.75rem; /* 12px */
-  font-weight: 600;
-  line-height: 1.33;
-  letter-spacing: -0.12px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* 3D Section Roller Layout */
-.cube-viewport {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  perspective: 2800px;
-}
-
-.cube-roller {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.cube-face {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  overflow: hidden;
-}
-
-/* 스크롤바 숨기기 유틸리티 */
+/* Hide Scrollbar Utility */
 .hide-scrollbar {
   -ms-overflow-style: none;  /* IE & Edge */
   scrollbar-width: none;  /* Firefox */
@@ -220,6 +57,3 @@ img {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;  /* Chrome, Safari, Opera */
 }
-
-
-

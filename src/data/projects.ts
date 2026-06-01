@@ -19,6 +19,10 @@ export const ProjectSchema = z.object({
   githubUrl: z.string().url().optional(),
   imageUrl: z.string(),
   accentColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/), // Hex color validation
+  year: z.string().optional(),
+  status: z.string().optional(),
+  focus: z.string().optional(),
+  videoUrl: z.string().optional(),
 });
 
 export type Project = z.infer<typeof ProjectSchema>;
@@ -2354,3 +2358,42 @@ export const projects: Project[] = [...rawProjects].sort((a, b) => {
   if (bIndex === -1) return -1;
   return aIndex - bIndex;
 });
+
+// Helper to provide fallback year/focus metadata if not defined
+export function getProjectMetadata(project: Project) {
+  const yearsMap: Record<string, string> = {
+    "Synapso.dev": "2026",
+    "minions-bid": "2026",
+    "persona-style": "2026",
+    "spend-intervention": "2026",
+    "cafe-book": "2025",
+    "threads-autoposter": "2025",
+    "sumpyo-flutter-app": "2025",
+    "self-growth-dashboard": "2024",
+    "investment-platform": "2024",
+    "quote-builder": "2024",
+    "ai-doc-agent": "2025",
+    "youtube-notebooklm-platform": "2025",
+  };
+
+  const statusMap: Record<string, string> = {
+    "Synapso.dev": "active",
+    "minions-bid": "production",
+    "persona-style": "completed",
+    "spend-intervention": "completed",
+    "cafe-book": "completed",
+    "threads-autoposter": "completed",
+    "sumpyo-flutter-app": "completed",
+    "self-growth-dashboard": "completed",
+    "investment-platform": "completed",
+    "quote-builder": "completed",
+    "ai-doc-agent": "completed",
+    "youtube-notebooklm-platform": "completed",
+  };
+
+  return {
+    year: project.year || yearsMap[project.id] || "2026",
+    status: project.status || statusMap[project.id] || "completed",
+    focus: project.focus || project.techStack[0] || "Fullstack",
+  };
+}
