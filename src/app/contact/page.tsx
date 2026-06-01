@@ -84,6 +84,17 @@ export default function ContactPage() {
                 </p>
               </div>
               <div>
+                <p className="uppercase tracking-widest opacity-40 mb-2">What I Can Help With</p>
+                <ul className="space-y-1.5 opacity-70">
+                  {profile.collaborationScope.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-[5px] shrink-0 w-1 h-1 rounded-full bg-black/40" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
                 <p className="uppercase tracking-widest opacity-40 mb-1">Working Hours</p>
                 <p className="font-medium">09:00 — 18:00 (KST)</p>
               </div>

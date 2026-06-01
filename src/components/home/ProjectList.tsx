@@ -30,12 +30,19 @@ export default function ProjectList({ projects, limit }: ProjectListProps) {
               </div>
 
               {/* Title */}
-              <div className="w-[45%] md:w-[50%] text-[13px] md:text-[15px] tracking-tight font-medium group-hover:translate-x-1 transition-transform duration-500 ease-out">
-                {project.title}
+              <div className="w-[45%] md:w-[50%] group-hover:translate-x-1 transition-transform duration-500 ease-out">
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] md:text-[15px] tracking-tight font-medium">
+                    {project.title}
+                  </span>
+                  {project.liveUrl && (
+                    <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-green-500 opacity-70 shrink-0" />
+                  )}
+                </div>
               </div>
 
               {/* Description Snippet (Desktop only) */}
-              <div className="hidden md:block w-[25%] text-[9px] uppercase tracking-[0.15em] opacity-30 leading-relaxed line-clamp-2">
+              <div className="hidden md:block w-[25%] text-[9px] uppercase tracking-[0.15em] opacity-50 leading-relaxed line-clamp-2">
                 {project.summary}
               </div>
 

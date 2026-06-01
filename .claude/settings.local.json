@@ -7,7 +7,10 @@
       "Bash(rtk next:*)",
       "Bash(~/.claude/skills/gstack/bin/gstack-review-read 2>/dev/null)",
       "Bash(npx next:*)",
-      "Bash(rtk git:*)"
+      "Bash(rtk git:*)",
+      "Bash(npx tsc *)",
+      "mcp__plugin_oh-my-claudecode_t__state_list_active",
+      "mcp__plugin_oh-my-claudecode_t__state_clear"
     ]
   }
 }

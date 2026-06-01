@@ -172,6 +172,22 @@ export default async function ProjectPage({
                 </p>
               </div>
 
+              {project.productFlow && project.productFlow.length > 0 && (
+                <div className="pt-8 border-t border-black/5">
+                  <h3 className="text-[10px] tracking-[0.2em] uppercase mb-4 opacity-40 font-mono font-medium">
+                    Product Flow
+                  </h3>
+                  <ol className="space-y-2">
+                    {project.productFlow.map((step, i) => (
+                      <li key={i} className="flex gap-3 text-[12px] leading-[1.6] opacity-70">
+                        <span className="shrink-0 text-[10px] tabular-nums opacity-40 pt-[2px]">{String(i + 1).padStart(2, "0")}</span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
               {project.keyDecisions && project.keyDecisions.length > 0 && (
                 <div className="pt-8 border-t border-black/5">
                   <h3 className="text-[10px] tracking-[0.2em] uppercase mb-4 opacity-40 font-mono font-medium">

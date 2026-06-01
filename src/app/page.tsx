@@ -1,3 +1,4 @@
+// 포트폴리오 메인 홈 페이지 - Hero → 증거 수치 → 대표 프로젝트 → 역량 → 경력 순 배치
 "use client";
 
 import { motion } from "framer-motion";
@@ -10,16 +11,8 @@ import { projects } from "@/data/projects";
 import { profile } from "@/data/profile";
 
 export default function Home() {
-  // We will display the featured projects on the landing page
   const featuredProjects = projects.filter((p) =>
-    [
-      "Synapso.dev",
-      "persona-style",
-      "threads-autoposter",
-      "minions-bid",
-      "ai-doc-agent",
-      "youtube-notebooklm-platform",
-    ].includes(p.id)
+    ["Synapso.dev", "minions-bid", "threads-autoposter"].includes(p.id)
   );
 
   return (
@@ -38,7 +31,7 @@ export default function Home() {
               className="max-w-[300px] text-[11px] md:text-[12px] leading-[1.6] tracking-tight whitespace-pre-wrap z-10 text-center md:text-left order-2 md:order-1"
             >
               <span>
-                AI 툴을 활용하여 속도감 있게 완성형 제품을 구현하는 프론트엔드 및 프로덕트 엔지니어 김상찬입니다. 필요한 것을 직접 설계하고, 끝까지 배포해 나갑니다.
+                React·Next.js 기반 프론트엔드 경력 2년 10개월. AI·자동화 서비스 10개 이상을 직접 설계·배포한 프로덕트 엔지니어 김상찬입니다. 인증·결제·AI 파이프라인·배포까지 끝까지 연결합니다.
               </span>
             </motion.div>
 
@@ -59,6 +52,50 @@ export default function Home() {
               <p>ai automation builder</p>
             </motion.div>
           </div>
+        </section>
+
+        {/* Proof Numbers Section */}
+        <section className="w-full px-6 md:px-20 pb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-b border-black/5 py-12"
+          >
+            {profile.proofCounters.map((item) => (
+              <div key={item.label} className="text-center">
+                <p className="text-[28px] md:text-[36px] font-medium tracking-tight">{item.value}</p>
+                <p className="text-[10px] uppercase tracking-widest opacity-40 mt-2 leading-[1.5]">{item.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        </section>
+
+        {/* Selected Work Section */}
+        <section className="w-full px-6 md:px-20 pb-40">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="w-full"
+          >
+            <h2 className="text-[11px] tracking-[0.2em] uppercase mb-16 opacity-40">
+              Selected work
+            </h2>
+
+            <ProjectList projects={featuredProjects} />
+
+            <div className="mt-8 flex justify-end">
+              <Link
+                href="/projects"
+                className="text-[11px] uppercase tracking-wider opacity-60 hover:opacity-100 border-b border-black pb-0.5 transition-opacity"
+              >
+                All Projects →
+              </Link>
+            </div>
+          </motion.div>
         </section>
 
         {/* What I Do Best Section */}
@@ -123,32 +160,6 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* Selected Work Section */}
-        <section className="w-full px-6 md:px-20 pb-40">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full"
-          >
-            <h2 className="text-[11px] tracking-[0.2em] uppercase mb-16 opacity-40">
-              Selected work
-            </h2>
-
-            <ProjectList projects={featuredProjects} />
-
-            <div className="mt-8 flex justify-end">
-              <Link
-                href="/projects"
-                className="text-[11px] uppercase tracking-wider opacity-60 hover:opacity-100 border-b border-black pb-0.5 transition-opacity"
-              >
-                All Projects →
-              </Link>
-            </div>
-          </motion.div>
-        </section>
-
         {/* Experience Section */}
         <section className="w-full px-6 md:px-20 pb-40">
           <motion.div
@@ -172,7 +183,7 @@ export default function Home() {
                 <span className="text-[10px] font-bold tracking-widest">[SAAS PROTOTYPER]</span>
               </div>
               <p className="text-[12px] text-left md:text-right leading-[1.8] opacity-80">
-                {profile.description[1]}
+                {profile.description[2]}
               </p>
             </div>
           </motion.div>
