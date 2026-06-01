@@ -31,7 +31,7 @@ export default function Home() {
               className="max-w-[300px] text-[11px] md:text-[12px] leading-[1.6] tracking-tight whitespace-pre-wrap z-10 text-center md:text-left order-2 md:order-1"
             >
               <span>
-                React·Next.js 기반 프론트엔드 경력 2년 10개월. AI·자동화 서비스 10개 이상을 직접 설계·배포한 프로덕트 엔지니어 김상찬입니다. 인증·결제·AI 파이프라인·배포까지 끝까지 연결합니다.
+                AI·자동화 서비스 10개 이상을 직접 설계·배포한 프로덕트 엔지니어 김상찬입니다. 기획·설계·구현·배포까지 끝까지 연결합니다.
               </span>
             </motion.div>
 
