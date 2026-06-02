@@ -54,3 +54,9 @@
 - [x] Reduce the project modal image height.
 - [x] Merge the modal image and text into one content section.
 - [x] Verify the modal layout change.
+- [x] Add Firestore/Firebase Auth dependencies and configuration for `geul`.
+- [x] Define the `geul_posts` data model and Firestore read/write helpers.
+- [x] Build hidden `/geul` author editor with form, auth gate, save/publish flow, and Markdown preview.
+- [x] Build public `/geul/[slug]` reader with topic, created date, updated date, and Markdown rendering.
+- [x] Add tests for editor behavior, public reader lookup, and missing/unpublished posts.
+- [x] Verify with focused tests, lint, production build, and browser QA.
