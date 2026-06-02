@@ -1,15 +1,48 @@
 "use client";
 // geul 글 작성 폼과 마크다운 미리보기를 제공한다
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import { FormEvent, useEffect, useState } from "react";
+import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User } from "firebase/auth";
-import { getAllowedGeulAuthorEmail, getGeulAuth, getGeulFirestore } from "@/lib/geul/firebase";
+import remarkBreaks from "remark-breaks";
 import { getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
 import type { GeulPost, GeulPostInput, GeulPostStatus } from "@/lib/geul/types";
 import { createExcerpt, createSlug, geulPostSchema } from "@/lib/geul/validation";
 import { formatGeulDate } from "@/lib/geul/dates";
+
+const markdownComponents: Components = {
+  h1: ({ children }) => <h1 className="font-mono text-xl font-semibold tracking-tight mt-6 mb-3 leading-tight">{children}</h1>,
+  h2: ({ children }) => <h2 className="font-mono text-lg font-semibold tracking-tight mt-5 mb-2 leading-tight">{children}</h2>,
+  h3: ({ children }) => <h3 className="font-mono text-base font-semibold mt-4 mb-2 leading-tight">{children}</h3>,
+  p: ({ children }) => <p className="font-mono text-sm leading-8 mb-4">{children}</p>,
+  ul: ({ children }) => <ul className="font-mono text-sm leading-8 list-disc pl-5 mb-4">{children}</ul>,
+  ol: ({ children }) => <ol className="font-mono text-sm leading-8 list-decimal pl-5 mb-4">{children}</ol>,
+  li: ({ children }) => <li className="font-mono text-sm leading-7">{children}</li>,
+  blockquote: ({ children }) => <blockquote className="border-l-2 border-black/20 pl-4 my-4 opacity-60 italic">{children}</blockquote>,
+  code: ({ className, children }) =>
+    className?.startsWith("language-")
+      ? <code className={className}>{children}</code>
+      : <code className="font-mono text-xs bg-black/5 px-1.5 py-0.5 rounded">{children}</code>,
+  pre: ({ children }) => <pre className="font-mono text-xs bg-black/5 p-4 rounded overflow-x-auto mb-4 leading-6">{children}</pre>,
+  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+  em: ({ children }) => <em className="italic">{children}</em>,
+  del: ({ children }) => <del className="line-through opacity-50">{children}</del>,
+  hr: () => <hr className="border-t border-black/10 my-8" />,
+  a: ({ href, children }) => <a href={href} className="underline opacity-70 hover:opacity-40">{children}</a>,
+  img: ({ src, alt }) => <img src={src} alt={alt ?? ""} className="max-w-full rounded my-4" />,
+  table: ({ children }) => (
+    <div className="overflow-x-auto mb-4">
+      <table className="w-full text-xs border-collapse font-mono">{children}</table>
+    </div>
+  ),
+  thead: ({ children }) => <thead className="border-b-2 border-black/20">{children}</thead>,
+  tbody: ({ children }) => <tbody>{children}</tbody>,
+  tr: ({ children }) => <tr className="border-b border-black/10">{children}</tr>,
+  th: ({ children }) => <th className="font-semibold text-left py-2 px-3">{children}</th>,
+  td: ({ children }) => <td className="py-2 px-3">{children}</td>,
+  input: ({ type, checked }) =>
+    type === "checkbox" ? <input type="checkbox" checked={checked} readOnly className="mr-1.5 accent-black" /> : null,
+};
 
 const emptyPost: GeulPostInput = {
   slug: "",
@@ -21,11 +54,9 @@ const emptyPost: GeulPostInput = {
 };
 
 export default function GeulEditor() {
-  const auth = useMemo(() => getGeulAuth(), []);
-  const db = useMemo(() => getGeulFirestore(), []);
-  const allowedEmail = getAllowedGeulAuthorEmail();
-  const [user, setUser] = useState<User | null>(null);
-  const [email, setEmail] = useState(allowedEmail);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [isConfigured, setIsConfigured] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [form, setForm] = useState<GeulPostInput>(emptyPost);
@@ -33,45 +64,56 @@ export default function GeulEditor() {
   const [message, setMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  const isFirebaseReady = Boolean(auth && db);
-  const isAllowedAuthor = Boolean(user?.email && user.email === allowedEmail);
   const previewExcerpt = form.excerpt || createExcerpt(form.body);
 
   useEffect(() => {
-    if (!auth) {
-      return;
-    }
-
-    return onAuthStateChanged(auth, (nextUser) => {
-      setUser(nextUser);
-    });
-  }, [auth]);
+    fetch("/api/geul/session")
+      .then((response) => response.json())
+      .then((state: { authenticated?: boolean; configured?: boolean }) => {
+        setIsAuthenticated(Boolean(state.authenticated));
+        setIsConfigured(state.configured !== false);
+      })
+      .catch(() => {
+        setIsConfigured(false);
+      })
+      .finally(() => {
+        setIsCheckingSession(false);
+      });
+  }, []);
 
   useEffect(() => {
-    if (!user || !isAllowedAuthor) {
+    if (!isAuthenticated) {
       setPosts([]);
       return;
     }
 
-    getAuthorGeulPosts(user)
+    getAuthorGeulPosts()
       .then(setPosts)
       .catch((error: unknown) => {
         setMessage(error instanceof Error ? error.message : "글 목록을 불러오지 못했습니다.");
       });
-  }, [isAllowedAuthor, user]);
+  }, [isAuthenticated]);
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!auth) {
-      setAuthError("Firebase 환경변수가 설정되지 않았습니다.");
-      return;
-    }
-
     setAuthError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const response = await fetch("/api/geul/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        const error = (await response.json().catch(() => null)) as { message?: string } | null;
+        throw new Error(error?.message ?? "로그인에 실패했습니다.");
+      }
+
+      setIsAuthenticated(true);
       setPassword("");
     } catch (error) {
       setAuthError(error instanceof Error ? error.message : "로그인에 실패했습니다.");
@@ -79,9 +121,9 @@ export default function GeulEditor() {
   }
 
   async function handleLogout() {
-    if (auth) {
-      await signOut(auth);
-    }
+    await fetch("/api/geul/session", { method: "DELETE" });
+    setIsAuthenticated(false);
+    setPosts([]);
   }
 
   function updateField(name: keyof GeulPostInput, value: string) {
@@ -111,7 +153,7 @@ export default function GeulEditor() {
   }
 
   async function handleSave(status: GeulPostStatus) {
-    if (!user || !isAllowedAuthor) {
+    if (!isAuthenticated) {
       setMessage("작성 권한이 없습니다.");
       return;
     }
@@ -133,9 +175,9 @@ export default function GeulEditor() {
     }
 
     try {
-      const slug = await saveGeulPost(parsed.data, user);
+      const slug = await saveGeulPost(parsed.data);
       setMessage(status === "published" ? `공개했습니다. /geul/${slug}` : "초안으로 저장했습니다.");
-      const nextPosts = await getAuthorGeulPosts(user);
+      const nextPosts = await getAuthorGeulPosts();
       setPosts(nextPosts);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "저장에 실패했습니다.");
@@ -156,7 +198,7 @@ export default function GeulEditor() {
                 채용 담당자와 협업자가 읽을 수 있는 개인 서사 글을 작성합니다.
               </p>
             </div>
-            {user ? (
+            {isAuthenticated ? (
               <button
                 type="button"
                 onClick={handleLogout}
@@ -167,31 +209,20 @@ export default function GeulEditor() {
             ) : null}
           </div>
 
-          {!isFirebaseReady ? (
+          {!isCheckingSession && !isConfigured ? (
             <div className="mb-8 border border-black/10 p-4 text-xs leading-6">
-              <p className="font-semibold">Firebase 설정이 필요합니다.</p>
+              <p className="font-semibold">관리자 비밀번호 설정이 필요합니다.</p>
               <p className="mt-2 opacity-60">
-                `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`,
-                `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID`를 설정해야 저장할 수
-                있습니다.
+                `GEUL_PASSWORD_HASH`와 `GEUL_SESSION_SECRET`을 설정해야 작성 화면을 사용할 수
+                있습니다. Firestore 저장에는 Firebase Admin 환경변수도 필요합니다.
               </p>
             </div>
           ) : null}
 
-          {isFirebaseReady && !user ? (
+          {!isCheckingSession && !isAuthenticated ? (
             <form onSubmit={handleLogin} className="mb-8 space-y-3 border border-black/10 p-4">
-              <label className="block text-[10px] uppercase tracking-widest opacity-50" htmlFor="email">
-                author email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className="w-full border border-black/10 px-3 py-2 text-xs outline-none focus:border-black"
-              />
               <label className="block text-[10px] uppercase tracking-widest opacity-50" htmlFor="password">
-                password
+                admin password
               </label>
               <input
                 id="password"
@@ -210,13 +241,7 @@ export default function GeulEditor() {
             </form>
           ) : null}
 
-          {user && !isAllowedAuthor ? (
-            <div className="mb-8 border border-red-200 p-4 text-xs leading-6 text-red-700">
-              허용된 작성자 이메일이 아닙니다. 현재 로그인: {user.email}
-            </div>
-          ) : null}
-
-          <div className={!isAllowedAuthor ? "pointer-events-none opacity-40" : ""}>
+          <div className={!isAuthenticated ? "pointer-events-none opacity-40" : ""}>
             <div className="mb-4 flex items-center justify-between gap-3">
               <h2 className="text-[11px] uppercase tracking-[0.2em] opacity-50">write</h2>
               <button
@@ -293,7 +318,7 @@ export default function GeulEditor() {
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  disabled={isSaving || !isAllowedAuthor}
+                  disabled={isSaving || !isAuthenticated}
                   onClick={() => handleSave("draft")}
                   className="border border-black px-4 py-3 text-[10px] uppercase tracking-widest disabled:opacity-40"
                 >
@@ -301,7 +326,7 @@ export default function GeulEditor() {
                 </button>
                 <button
                   type="button"
-                  disabled={isSaving || !isAllowedAuthor}
+                  disabled={isSaving || !isAuthenticated}
                   onClick={() => handleSave("published")}
                   className="bg-black px-4 py-3 text-[10px] uppercase tracking-widest text-white disabled:opacity-40"
                 >
@@ -310,6 +335,38 @@ export default function GeulEditor() {
               </div>
 
               {message ? <p className="text-xs leading-6 opacity-70">{message}</p> : null}
+
+              <div className="mt-10 border-t border-black/10 pt-6">
+                <p className="mb-3 text-[10px] uppercase tracking-[0.2em] opacity-40">markdown guide</p>
+                <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5">
+                  {[
+                    ["# 제목", "H1 헤딩"],
+                    ["## 제목", "H2 헤딩"],
+                    ["### 제목", "H3 헤딩"],
+                    ["**텍스트**", "굵은 텍스트"],
+                    ["*텍스트*", "기울인 텍스트"],
+                    ["- 항목", "순서 없는 목록"],
+                    ["1. 항목", "순서 있는 목록"],
+                    ["`코드`", "인라인 코드"],
+                    ["```코드```", "코드 블록"],
+                    ["> 텍스트", "인용 블록"],
+                    ["---", "구분선"],
+                    ["[텍스트](URL)", "링크"],
+                    ["Enter 1번", "줄바꿈"],
+                    ["Enter 2번", "단락 구분"],
+                    ["~~텍스트~~", "취소선"],
+                    ["![이름](URL)", "이미지"],
+                    ["| A | B |\\n|---|---|\\n| 1 | 2 |", "테이블"],
+                    ["- [ ] 항목", "체크리스트 (미완료)"],
+                    ["- [x] 항목", "체크리스트 (완료)"],
+                  ].map(([syntax, desc]) => (
+                    <div key={syntax} className="contents">
+                      <dt className="font-mono text-[10px] leading-5 opacity-60 whitespace-nowrap bg-black/5 px-1.5 py-0.5 rounded self-start">{syntax}</dt>
+                      <dd className="text-[10px] leading-5 opacity-40 self-center">{desc}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </div>
 
             {posts.length > 0 ? (
@@ -347,8 +404,8 @@ export default function GeulEditor() {
               </h2>
               {previewExcerpt ? <p className="mt-5 text-sm leading-7 opacity-60">{previewExcerpt}</p> : null}
             </div>
-            <div className="prose prose-neutral max-w-none prose-headings:font-mono prose-p:font-mono prose-p:text-sm prose-p:leading-8 prose-li:font-mono prose-li:text-sm">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <div className="max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
                 {form.body || "본문을 입력하면 Markdown 미리보기가 여기에 표시됩니다."}
               </ReactMarkdown>
             </div>

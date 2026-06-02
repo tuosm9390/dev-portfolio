@@ -10,7 +10,14 @@
       "Bash(rtk git:*)",
       "Bash(npx tsc *)",
       "mcp__plugin_oh-my-claudecode_t__state_list_active",
-      "mcp__plugin_oh-my-claudecode_t__state_clear"
+      "mcp__plugin_oh-my-claudecode_t__state_clear",
+      "Bash(node -e \"const pkg = require\\('./package.json'\\); const all = {...pkg.dependencies, ...pkg.devDependencies}; Object.keys\\(all\\).filter\\(k => k.includes\\('firebase'\\)\\).forEach\\(k => console.log\\(k, all[k]\\)\\)\")",
+      "Bash(node -e \"const pkg = require\\('./package.json'\\); console.log\\('deps:', JSON.stringify\\(Object.keys\\(pkg.dependencies || {}\\).filter\\(k=>k.includes\\('firebase'\\)\\), null, 2\\)\\); console.log\\('devDeps:', JSON.stringify\\(Object.keys\\(pkg.devDependencies || {}\\).filter\\(k=>k.includes\\('firebase'\\)\\), null, 2\\)\\)\")",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/next/package.json'\\).version\\)\")",
+      "Bash(node *)",
+      "Bash(npm install *)",
+      "Bash(taskkill /F /IM node.exe /T)",
+      "Bash(cmd.exe *)"
     ]
   }
 }

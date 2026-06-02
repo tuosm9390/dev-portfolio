@@ -60,3 +60,6 @@
 - [x] Build public `/geul/[slug]` reader with topic, created date, updated date, and Markdown rendering.
 - [x] Add tests for editor behavior, public reader lookup, and missing/unpublished posts.
 - [x] Verify with focused tests, lint, production build, and browser QA.
+- [x] Replace Firebase Auth email gating with server-side password hash verification.
+- [x] Move geul writes behind password-protected server APIs using Firebase Admin.
+- [x] Verify password hash comparison, editor auth state, public reader, build, and browser QA.

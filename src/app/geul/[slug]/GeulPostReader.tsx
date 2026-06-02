@@ -3,11 +3,48 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import { getPublishedGeulPost } from "@/lib/geul/posts";
 import type { GeulPost } from "@/lib/geul/types";
 import { formatGeulDate } from "@/lib/geul/dates";
+
+const markdownComponents: Components = {
+  h1: ({ children }) => <h1 className="font-mono text-2xl font-semibold tracking-tight mt-10 mb-4 leading-tight">{children}</h1>,
+  h2: ({ children }) => <h2 className="font-mono text-xl font-semibold tracking-tight mt-8 mb-3 leading-tight">{children}</h2>,
+  h3: ({ children }) => <h3 className="font-mono text-lg font-semibold mt-6 mb-2 leading-tight">{children}</h3>,
+  p: ({ children }) => <p className="font-mono text-[15px] leading-8 mb-5">{children}</p>,
+  ul: ({ children }) => <ul className="font-mono text-[15px] leading-8 list-disc pl-6 mb-5">{children}</ul>,
+  ol: ({ children }) => <ol className="font-mono text-[15px] leading-8 list-decimal pl-6 mb-5">{children}</ol>,
+  li: ({ children }) => <li className="font-mono text-[15px] leading-8">{children}</li>,
+  blockquote: ({ children }) => <blockquote className="border-l-2 border-black/20 pl-5 my-6 opacity-60 italic">{children}</blockquote>,
+  code: ({ className, children }) => {
+    if (className?.startsWith("language-")) {
+      return <code className={className}>{children}</code>;
+    }
+    return <code className="font-mono text-sm bg-black/5 px-1.5 py-0.5 rounded">{children}</code>;
+  },
+  pre: ({ children }) => <pre className="font-mono text-sm bg-black/5 p-5 rounded overflow-x-auto my-6 leading-7">{children}</pre>,
+  strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+  em: ({ children }) => <em className="italic">{children}</em>,
+  del: ({ children }) => <del className="line-through opacity-50">{children}</del>,
+  hr: () => <hr className="border-t border-black/10 my-10" />,
+  a: ({ href, children }) => <a href={href} className="underline opacity-70 hover:opacity-40">{children}</a>,
+  img: ({ src, alt }) => <img src={src} alt={alt ?? ""} className="max-w-full rounded my-6" />,
+  table: ({ children }) => (
+    <div className="overflow-x-auto my-6">
+      <table className="w-full text-[14px] border-collapse font-mono">{children}</table>
+    </div>
+  ),
+  thead: ({ children }) => <thead className="border-b-2 border-black/20">{children}</thead>,
+  tbody: ({ children }) => <tbody>{children}</tbody>,
+  tr: ({ children }) => <tr className="border-b border-black/10">{children}</tr>,
+  th: ({ children }) => <th className="font-semibold text-left py-2 px-4">{children}</th>,
+  td: ({ children }) => <td className="py-2 px-4">{children}</td>,
+  input: ({ type, checked }) =>
+    type === "checkbox" ? <input type="checkbox" checked={checked} readOnly className="mr-1.5 accent-black" /> : null,
+};
 
 type GeulPostReaderProps = {
   slug: string;
@@ -85,8 +122,8 @@ export default function GeulPostReader({ slug }: GeulPostReaderProps) {
           {post.excerpt ? <p className="mt-6 max-w-2xl text-sm leading-7 opacity-60">{post.excerpt}</p> : null}
         </header>
 
-        <div className="prose prose-neutral mt-12 max-w-none prose-headings:font-mono prose-headings:tracking-tight prose-p:font-mono prose-p:text-[15px] prose-p:leading-8 prose-li:font-mono prose-li:text-[15px] prose-li:leading-8">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
+        <div className="mt-12 max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>{post.body}</ReactMarkdown>
         </div>
       </article>
     </main>

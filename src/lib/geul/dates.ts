@@ -1,7 +1,7 @@
 // Firestore 날짜 값을 공개 화면용 문자열로 변환한다
-import type { Timestamp } from "firebase/firestore";
+import type { GeulTimestamp } from "./types";
 
-type FirestoreDate = Date | Timestamp | null | undefined;
+type FirestoreDate = Date | GeulTimestamp | string | null | undefined;
 
 function toDate(value: FirestoreDate) {
   if (!value) {
@@ -10,6 +10,11 @@ function toDate(value: FirestoreDate) {
 
   if (value instanceof Date) {
     return value;
+  }
+
+  if (typeof value === "string") {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
   }
 
   if ("toDate" in value && typeof value.toDate === "function") {
