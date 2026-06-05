@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import PortfolioAssistantIsland from "@/components/assistant/PortfolioAssistantIsland";
 import { profile } from "@/data/profile";
 
 export default function Header() {
   const [seoulTime, setSeoulTime] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -49,9 +51,31 @@ export default function Header() {
       </div>
 
       {/* Desktop Navigation & Clock */}
-      <div className="hidden md:flex gap-16 items-start">
+      <div className="hidden md:flex gap-16 items-start" aria-hidden={isMenuOpen}>
         <nav className="flex gap-8">
-          {navItems.map((item) => {
+          {navItems.slice(0, 2).map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`transition-opacity hover:opacity-50 ${
+                  isActive ? "opacity-100 font-semibold border-b border-black pb-0.5" : "opacity-60"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => setIsAssistantOpen(true)}
+            className="transition-opacity hover:opacity-50 opacity-80 lowercase"
+            data-assistant-trigger="desktop"
+          >
+            ask me!
+          </button>
+          {navItems.slice(2).map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
@@ -99,8 +123,19 @@ export default function Header() {
 
       {/* Mobile Overlay Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-white z-[50] flex flex-col justify-center px-6">
+        <div className="fixed inset-0 bg-white z-[50] flex flex-col justify-center px-6" data-mobile-menu="open">
           <nav className="flex flex-col gap-6 text-base font-bold tracking-widest text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setIsMenuOpen(false);
+                setIsAssistantOpen(true);
+              }}
+              className="hover:opacity-50 py-2 border-b border-black/5 lowercase"
+              data-assistant-trigger="mobile"
+            >
+              ask me!
+            </button>
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -118,6 +153,12 @@ export default function Header() {
           </div>
         </div>
       )}
+      <PortfolioAssistantIsland
+        triggerLabel="ask me!"
+        open={isAssistantOpen}
+        onOpenChange={setIsAssistantOpen}
+        renderTrigger={() => null}
+      />
     </header>
   );
 }

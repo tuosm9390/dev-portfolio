@@ -63,3 +63,15 @@
 - [x] Replace Firebase Auth email gating with server-side password hash verification.
 - [x] Move geul writes behind password-protected server APIs using Firebase Admin.
 - [x] Verify password hash comparison, editor auth state, public reader, build, and browser QA.
+- [x] Explore portfolio AI agent integration points and current test setup.
+- [x] Record portfolio AI agent planning assumptions in `.omo/drafts/portfolio-ai-agent.md`.
+- [x] Run planning gap analysis before generating the portfolio AI agent plan.
+- [x] Write the decision-complete portfolio AI agent plan to `plans/portfolio-ai-agent.md`.
+- [x] Verify the plan includes references, acceptance criteria, QA scenarios, and final verification tasks.
+- [x] Update assistant UI plan to use centered `ask me!` menu trigger and Dynamic Island style popup.
+- [x] Translate `plans/portfolio-ai-agent.md` into Korean for review.
+- [x] Add shared portfolio context builder for assistant and `llms.txt`.
+- [x] Add Gemini-backed portfolio-only assistant policy and `/api/assistant` route.
+- [x] Add header-centered `ask me!` Dynamic Island style assistant UI.
+- [x] Verify assistant context, policy, API route, widget, and header integration with focused Vitest.
+- [x] Verify portfolio assistant implementation with full tests, lint, build, and browser/API QA.
