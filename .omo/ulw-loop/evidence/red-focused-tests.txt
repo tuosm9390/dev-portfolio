@@ -1,0 +1,553 @@
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/development/dev-portfolio[39m
+
+ [31m❯[39m src/lib/__tests__/portfolio-context.test.ts [2m([22m[2m0 test[22m[2m)[22m
+ [31m❯[39m src/components/assistant/__tests__/PortfolioAssistantIsland.test.tsx [2m([22m[2m0 test[22m[2m)[22m
+ [31m❯[39m src/lib/__tests__/portfolio-assistant.test.ts [2m([22m[2m0 test[22m[2m)[22m
+ [31m❯[39m src/app/api/assistant/__tests__/route.test.ts [2m([22m[2m0 test[22m[2m)[22m
+ [31m❯[39m src/components/home/__tests__/Header.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 307[2mms[22m[39m
+[31m     [31m×[31m renders-centered-ask-me-trigger[39m[32m 221[2mms[22m[39m
+[31m     [31m×[31m mobile-ask-me-closes-menu-and-opens-island[39m[32m 84[2mms[22m[39m
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/__tests__/portfolio-assistant.test.ts [ src/lib/__tests__/portfolio-assistant.test.ts ]
+Error: Failed to resolve import "../portfolio-assistant" from "src/lib/__tests__/portfolio-assistant.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: D:/development/dev-portfolio/src/lib/__tests__/portfolio-assistant.test.ts:9:7
+  1  |  // 포트폴리오 AI 정책과 provider 경계 동작을 검증한다
+  2  |  import { describe, expect, it, vi } from "vitest";
+  3  |  ...ndlePortfolioAssistantMessage, shouldRefuseQuestion } from "../portfolio-assistant";
+     |                                                                 ^
+  4  |  describe("portfolio assistant policy", () => {
+  5  |  	it("refuses-weather-before-provider", () => {
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:30234:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:30231:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:27519:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:27582:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:27550:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:30023:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:24152:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/lib/__tests__/portfolio-context.test.ts [ src/lib/__tests__/portfolio-context.test.ts ]
+Error: Failed to resolve import "../portfolio-context" from "src/lib/__tests__/portfolio-context.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: D:/development/dev-portfolio/src/lib/__tests__/portfolio-context.test.ts:8:7
+  3  |  import { profile } from "@/data/profile";
+  4  |  import { GET } from "@/app/llms.txt/route";
+  5  |  import { buildAssistantContext, buildPortfolioSummaryText } from "../portfolio-context";
+     |                                                                    ^
+  6  |  describe("portfolio context", () => {
+  7  |  	it("includes-core-portfolio-facts", () => {
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:30234:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:30231:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:27519:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:27582:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:27550:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:30023:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:24152:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/components/assistant/__tests__/PortfolioAssistantIsland.test.tsx [ src/components/assistant/__tests__/PortfolioAssistantIsland.test.tsx ]
+Error: Failed to resolve import "../PortfolioAssistantIsland" from "src/components/assistant/__tests__/PortfolioAssistantIsland.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: D:/development/dev-portfolio/src/components/assistant/__tests__/PortfolioAssistantIsland.test.tsx:4:37
+  2  |  import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+  3  |  import { beforeEach, describe, expect, it, vi } from "vitest";
+  4  |  import PortfolioAssistantIsland from "../PortfolioAssistantIsland";
+     |                                        ^
+  5  |  var _jsxFileName = "D:/development/dev-portfolio/src/components/assistant/__tests__/PortfolioAssistantIsland.test.tsx";
+  6  |  import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:30234:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:30231:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:27519:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:27582:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:27550:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:30023:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:24152:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/app/api/assistant/__tests__/route.test.ts [ src/app/api/assistant/__tests__/route.test.ts ]
+Error: Failed to resolve import "../route" from "src/app/api/assistant/__tests__/route.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: D:/development/dev-portfolio/src/app/api/assistant/__tests__/route.test.ts:3:0
+  23 |  	};
+  24 |  }) }));
+  25 |  const __vi_import_0__ = await import("../route");
+     |                                       ^
+  26 |  // 포트폴리오 assistant API 계약을 검증한다
+  27 |  import { beforeEach, describe, expect, it, vi } from "vitest";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:30234:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:30231:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:27519:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:27582:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:27550:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:30023:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:24152:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/home/__tests__/Header.test.tsx > Header assistant trigger > renders-centered-ask-me-trigger
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "ask me!"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  <header
+    class="absolute top-0 left-0 w-full px-6 md:px-20 pt-10 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "chan.works":
+  <a
+    class="font-bold hover:opacity-75 transition-opacity uppercase"
+    href="/"
+  />
+
+  Name "HOME":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-100 font-semibold border-b border-black pb-0.5"
+    href="/"
+  />
+
+  Name "ABOUT":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/about"
+  />
+
+  Name "PROJECTS":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/projects"
+  />
+
+  Name "POSTS":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/posts"
+  />
+
+  Name "CONTACT":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/contact"
+  />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "":
+  <nav
+    class="flex gap-8"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Toggle menu":
+  <button
+    aria-label="Toggle menu"
+    class="md:hidden relative z-[60] p-2 -mr-2"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <header
+      class="absolute top-0 left-0 w-full px-6 md:px-20 pt-10 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono"
+    >
+      <div
+        class="flex flex-col items-start relative z-[60]"
+      >
+        <a
+          class="font-bold hover:opacity-75 transition-opacity uppercase"
+          href="/"
+        >
+          chan.works
+        </a>
+        <div
+          class="flex items-center mt-1"
+        >
+          <div
+            class="rounded-full bg-green-500 h-1.5 w-1.5 animate-pulse"
+          />
+          <span
+            class="ml-1.5 opacity-60 text-[9px] uppercase tracking-wider"
+          >
+            AVAILABLE FOR WORK
+          </span>
+        </div>
+      </div>
+      <div
+        class="hidden md:flex gap-16 items-start"
+      >
+        <nav
+          class="flex gap-8"
+        >
+          <a
+            class="transition-opacity hover:opacity-50 opacity-100 font-semibold border-b border-black pb-0.5"
+            href="/"
+          >
+            HOME
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/about"
+          >
+            ABOUT
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/projects"
+          >
+            PROJECTS
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/posts"
+          >
+            POSTS
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/contact"
+          >
+            CONTACT
+          </a>
+        </nav>
+        <div
+          class="flex flex-col items-end opacity-60"
+        >
+          <span>
+            SEOUL TIME
+          </span>
+          <span
+            class="mt-1 tabular-nums font-medium"
+          >
+            16:06:19
+          </span>
+        </div>
+      </div>
+      <button
+        aria-label="Toggle menu"
+        class="md:hidden relative z-[60] p-2 -mr-2"
+      >
+        <div
+          class="flex flex-col gap-1 items-end w-5"
+        >
+          <div
+            class="h-[1px] bg-black transition-all duration-300 w-5"
+          />
+          <div
+            class="h-[1px] bg-black transition-all duration-300 w-3"
+          />
+          <div
+            class="h-[1px] bg-black transition-all duration-300 w-4"
+          />
+        </div>
+      </button>
+    </header>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/home/__tests__/Header.test.tsx:14:28
+     12|     render(<Header />);
+     13|
+     14|     const trigger = screen.getByRole("button", { name: "ask me!" });
+       |                            ^
+     15|     expect(trigger).toBeInTheDocument();
+     16|     expect(trigger).toHaveAttribute("data-assistant-trigger", "desktop…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/components/home/__tests__/Header.test.tsx > Header assistant trigger > mobile-ask-me-closes-menu-and-opens-island
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "ask me!"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  <header
+    class="absolute top-0 left-0 w-full px-6 md:px-20 pt-10 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "chan.works":
+  <a
+    class="font-bold hover:opacity-75 transition-opacity uppercase"
+    href="/"
+  />
+
+  Name "HOME":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-100 font-semibold border-b border-black pb-0.5"
+    href="/"
+  />
+
+  Name "ABOUT":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/about"
+  />
+
+  Name "PROJECTS":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/projects"
+  />
+
+  Name "POSTS":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/posts"
+  />
+
+  Name "CONTACT":
+  <a
+    class="transition-opacity hover:opacity-50 opacity-60"
+    href="/contact"
+  />
+
+  Name "HOME":
+  <a
+    class="hover:opacity-50 py-2 border-b border-black/5"
+    href="/"
+  />
+
+  Name "ABOUT":
+  <a
+    class="hover:opacity-50 py-2 border-b border-black/5"
+    href="/about"
+  />
+
+  Name "PROJECTS":
+  <a
+    class="hover:opacity-50 py-2 border-b border-black/5"
+    href="/projects"
+  />
+
+  Name "POSTS":
+  <a
+    class="hover:opacity-50 py-2 border-b border-black/5"
+    href="/posts"
+  />
+
+  Name "CONTACT":
+  <a
+    class="hover:opacity-50 py-2 border-b border-black/5"
+    href="/contact"
+  />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "":
+  <nav
+    class="flex gap-8"
+  />
+
+  Name "":
+  <nav
+    class="flex flex-col gap-6 text-base font-bold tracking-widest text-center"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Toggle menu":
+  <button
+    aria-label="Toggle menu"
+    class="md:hidden relative z-[60] p-2 -mr-2"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <header
+      class="absolute top-0 left-0 w-full px-6 md:px-20 pt-10 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono"
+    >
+      <div
+        class="flex flex-col items-start relative z-[60]"
+      >
+        <a
+          class="font-bold hover:opacity-75 transition-opacity uppercase"
+          href="/"
+        >
+          chan.works
+        </a>
+        <div
+          class="flex items-center mt-1"
+        >
+          <div
+            class="rounded-full bg-green-500 h-1.5 w-1.5 animate-pulse"
+          />
+          <span
+            class="ml-1.5 opacity-60 text-[9px] uppercase tracking-wider"
+          >
+            AVAILABLE FOR WORK
+          </span>
+        </div>
+      </div>
+      <div
+        class="hidden md:flex gap-16 items-start"
+      >
+        <nav
+          class="flex gap-8"
+        >
+          <a
+            class="transition-opacity hover:opacity-50 opacity-100 font-semibold border-b border-black pb-0.5"
+            href="/"
+          >
+            HOME
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/about"
+          >
+            ABOUT
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/projects"
+          >
+            PROJECTS
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/posts"
+          >
+            POSTS
+          </a>
+          <a
+            class="transition-opacity hover:opacity-50 opacity-60"
+            href="/contact"
+          >
+            CONTACT
+          </a>
+        </nav>
+        <div
+          class="flex flex-col items-end opacity-60"
+        >
+          <span>
+            SEOUL TIME
+          </span>
+          <span
+            class="mt-1 tabular-nums font-medium"
+          >
+            16:06:19
+          </span>
+        </div>
+      </div>
+      <button
+        aria-label="Toggle menu"
+        class="md:hidden relative z-[60] p-2 -mr-2"
+      >
+        <div
+          class="flex flex-col gap-1 items-end w-5"
+        >
+          <div
+            class="h-[1px] bg-black transition-all duration-300 transform rotate-45 translate-y-1 w-5"
+          />
+          <div
+            class="h-[1px] bg-black transition-all duration-300 opacity-0 w-0"
+          />
+          <div
+            class="h-[1px] bg-black transition-all duration-300 transform -rotate-45 -translate-y-1 w-5"
+          />
+        </div>
+      </button>
+      <div
+        class="fixed inset-0 bg-white z-[50] flex flex-col justify-center px-6"
+      >
+        <nav
+          class="flex flex-col gap-6 text-base font-bold tracking-widest text-center"
+        >
+          <a
+            class="hover:opacity-50 py-2 border-b border-black/5"
+            href="/"
+          >
+            HOME
+          </a>
+          <a
+            class="hover:opacity-50 py-2 border-b border-black/5"
+            href="/about"
+          >
+            ABOUT
+          </a>
+          <a
+            class="hover:opacity-50 py-2 border-b border-black/5"
+            href="/projects"
+          >
+            PROJECTS
+          </a>
+          <a
+            class="hover:opacity-50 py-2 border-b border-black/5"
+            href="/posts"
+          >
+            POSTS
+          </a>
+          <a
+            class="hover:opacity-50 py-2 border-b border-black/5"
+            href="/contact"
+          >
+            CONTACT
+          </a>
+        </nav>
+        <div
+          class="absolute bottom-10 left-0 w-full flex flex-col items-center opacity-60 text-[10px]"
+        >
+          <span>
+            SEOUL TIME
+          </span>
+          <span
+            class="mt-1 tabular-nums font-semibold text-xs"
+          >
+            16:06:19
+          </span>
+        </div>
+      </div>
+    </header>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/home/__tests__/Header.test.tsx:23:28
+     21|
+     22|     fireEvent.click(screen.getByRole("button", { name: "Toggle menu" }…
+     23|     fireEvent.click(screen.getByRole("button", { name: "ask me!" }));
+       |                            ^
+     24|
+     25|     await waitFor(() => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+[2m Test Files [22m [1m[31m5 failed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m   Start at [22m 16:06:16
+[2m   Duration [22m 2.52s[2m (transform 239ms, setup 1.78s, import 302ms, tests 307ms, environment 6.46s)[22m
+

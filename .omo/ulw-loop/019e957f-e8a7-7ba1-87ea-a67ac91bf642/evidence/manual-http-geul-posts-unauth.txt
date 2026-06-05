@@ -1,0 +1,16 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0
+HTTP/1.1 401 Unauthorized
+vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+content-type: application/json
+Date: Fri, 05 Jun 2026 09:31:58 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+100     44   0     44   0      0    102      0                              0
+100     44   0     44   0      0    102      0                              0
+100     44   0     44   0      0    102      0                              0
+{"message":"작성 권한이 없습니다."}

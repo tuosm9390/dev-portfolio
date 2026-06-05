@@ -1,0 +1,416 @@
+
+> chanworks@0.1.0 lint
+> eslint
+
+
+D:\development\dev-portfolio\.agents\skills\gstack\bin\gstack-global-discover.ts
+  219:9  error  'cwd' is never reassigned. Use 'const' instead          prefer-const
+  361:7  error  'projectsMap' is never reassigned. Use 'const' instead  prefer-const
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\dist\bun-polyfill.cjs
+  13:14  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  14:30  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\dist\server-node.mjs
+  1367:13  warning  'oldContext' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  1841:5   warning  'ALL_COMMANDS' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  3114:9   warning  'server' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\browser-manager.ts
+  489:13  warning  'oldContext' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\bun-polyfill.cjs
+  13:14  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  14:30  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\cli.ts
+  255:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  338:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\config.ts
+   83:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\cookie-import-browser.ts
+  229:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\cookie-picker-routes.ts
+   17:85  warning  'PlaywrightCookie' is defined but never used  @typescript-eslint/no-unused-vars
+   33:29  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  108:17  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  156:17  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  200:17  error    Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\meta-commands.ts
+   11:13  warning  'fs' is defined but never used            @typescript-eslint/no-unused-vars
+  212:23  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\server.ts
+  197:25  error    Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  217:36  error    Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  257:17  error    Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  303:9   warning  'server' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\snapshot.ts
+   20:15  warning  'Page' is defined but never used          @typescript-eslint/no-unused-vars
+   90:18  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:18  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   96:16  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  208:68  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  212:45  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  314:26  error    A `require()` style import is forbidden   @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\src\write-commands.ts
+   78:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  292:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\bun-polyfill.test.ts
+  1:34  warning  'afterAll' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\commands.test.ts
+    15:40  warning  'dialogBuffer' is defined but never used    @typescript-eslint/no-unused-vars
+    15:88  warning  'addDialogEntry' is defined but never used  @typescript-eslint/no-unused-vars
+   115:49  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   295:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   501:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   511:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   521:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   531:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   541:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   551:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   969:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   978:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1007:11  warning  'snap' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  1019:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1028:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1060:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1069:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1089:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1112:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1121:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1144:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1153:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1202:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1211:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1220:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1229:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1238:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1247:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1256:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1265:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1274:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1284:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1293:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1302:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1312:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1321:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1330:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1339:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1346:42  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1348:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1355:43  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1357:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1364:42  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1366:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1587:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1599:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1613:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1628:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1639:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1714:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1731:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1741:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1750:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1759:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1780:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1789:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1798:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  1810:19  error    Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\config.test.ts
+  181:35  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  201:39  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  206:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  222:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\cookie-import-browser.test.ts
+   16:55  warning  'mock' is defined but never used                                                                                     @typescript-eslint/no-unused-vars
+   21:13  warning  'os' is defined but never used                                                                                       @typescript-eslint/no-unused-vars
+  119:28  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  120:18  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  121:5   warning  'importCookies' is assigned a value but never used                                                                   @typescript-eslint/no-unused-vars
+  121:20  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  122:24  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  129:3   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  130:29  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  130:40  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  133:13  warning  'service' is assigned a value but never used                                                                         @typescript-eslint/no-unused-vars
+  223:18  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  226:54  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  240:18  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  253:18  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  277:18  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  291:96  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  295:95  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  299:93  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  319:18  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  390:21  error    Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\cookie-picker-routes.test.ts
+  14:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:10  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\find-browse.test.ts
+  28:17  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  28:44  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\gstack-update-check.test.ts
+  233:23  warning  'stdout' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\handoff.test.ts
+   10:31  warning  'BrowserState' is defined but never used  @typescript-eslint/no-unused-vars
+   54:17  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  146:12  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  149:12  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\snapshot.test.ts
+  188:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  232:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  398:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  407:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  416:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  426:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  435:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\browse\test\test-server.ts
+  53:11  warning  'server' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\scripts\analytics.ts
+  92:11  warning  'maxName' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  93:11  warning  'maxCount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\scripts\dev-skill.ts
+  25:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\scripts\eval-list.ts
+  60:65  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\scripts\gen-skill-docs.ts
+   103:35  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+   139:32  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+   275:32  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+   616:35  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+   637:32  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+   981:36  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  1305:34  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  1352:39  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  1421:32  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  1931:40  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  1935:40  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  1939:42  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  2065:31  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  2509:34  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+  2736:34  warning  '_ctx' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\scripts\skill-check.ts
+  142:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  156:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\analytics.test.ts
+   7:10  warning  'execSync' is defined but never used         @typescript-eslint/no-unused-vars
+  10:7   warning  'SCRIPT' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\codex-e2e.test.ts
+  17:25  warning  'parseCodexJSONL' is defined but never used         @typescript-eslint/no-unused-vars
+  17:42  warning  'installSkillToTempHome' is defined but never used  @typescript-eslint/no-unused-vars
+  20:15  warning  'EvalTestEntry' is defined but never used           @typescript-eslint/no-unused-vars
+  21:58  warning  'E2E_TOUCHFILES' is defined but never used          @typescript-eslint/no-unused-vars
+  22:13  warning  'fs' is defined but never used                      @typescript-eslint/no-unused-vars
+  24:13  warning  'os' is defined but never used                      @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\gen-skill-docs.test.ts
+  355:17  warning  'cmd' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  370:17  warning  'cmd' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\global-discover.test.ts
+    1:46  warning  'afterEach' is defined but never used      @typescript-eslint/no-unused-vars
+    2:10  warning  'mkdtempSync' is defined but never used    @typescript-eslint/no-unused-vars
+    2:23  warning  'mkdirSync' is defined but never used      @typescript-eslint/no-unused-vars
+    2:34  warning  'writeFileSync' is defined but never used  @typescript-eslint/no-unused-vars
+    2:49  warning  'rmSync' is defined but never used         @typescript-eslint/no-unused-vars
+    2:57  warning  'existsSync' is defined but never used     @typescript-eslint/no-unused-vars
+    4:10  warning  'tmpdir' is defined but never used         @typescript-eslint/no-unused-vars
+  182:42  error    Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\e2e-helpers.ts
+    8:26  warning  'afterAll' is defined but never used      @typescript-eslint/no-unused-vars
+   10:25  warning  'judgePassed' is defined but never used   @typescript-eslint/no-unused-vars
+  141:96  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\eval-store.ts
+   30:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  125:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  650:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\gemini-session-runner.ts
+  16:13  warning  'path' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\llm-judge.ts
+   44:17   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:16   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:106  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\observability.test.ts
+  40:11  warning  'expected' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\session-runner.ts
+  37:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  64:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\helpers\skill-parser.ts
+  124:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\hook-scripts.test.ts
+  11:112  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:15   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:118  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:15   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-browse.test.ts
+  1:10  warning  'describe' is defined but never used      @typescript-eslint/no-unused-vars
+  1:20  warning  'test' is defined but never used          @typescript-eslint/no-unused-vars
+  4:27  warning  'evalsEnabled' is defined but never used  @typescript-eslint/no-unused-vars
+  6:3   warning  'copyDirSync' is defined but never used   @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-deploy.test.ts
+  1:10  warning  'describe' is defined but never used                  @typescript-eslint/no-unused-vars
+  4:9   warning  'browseBin' is defined but never used                 @typescript-eslint/no-unused-vars
+  4:27  warning  'evalsEnabled' is defined but never used              @typescript-eslint/no-unused-vars
+  5:23  warning  'testConcurrentIfSelected' is defined but never used  @typescript-eslint/no-unused-vars
+  6:16  warning  'setupBrowseShims' is defined but never used          @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-design.test.ts
+    1:10  warning  'describe' is defined but never used               @typescript-eslint/no-unused-vars
+    5:27  warning  'evalsEnabled' is defined but never used           @typescript-eslint/no-unused-vars
+    7:3   warning  'copyDirSync' is defined but never used            @typescript-eslint/no-unused-vars
+  132:9   warning  '_' is defined but never used                      @typescript-eslint/no-unused-vars
+  381:13  warning  'hasRatings' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  389:13  warning  'planOriginal' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  564:62  error    Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-plan.test.ts
+  1:10  warning  'describe' is defined but never used                  @typescript-eslint/no-unused-vars
+  4:9   warning  'browseBin' is defined but never used                 @typescript-eslint/no-unused-vars
+  4:27  warning  'evalsEnabled' is defined but never used              @typescript-eslint/no-unused-vars
+  5:23  warning  'testConcurrentIfSelected' is defined but never used  @typescript-eslint/no-unused-vars
+  6:3   warning  'copyDirSync' is defined but never used               @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-qa-bugs.test.ts
+    7:3    warning  'describeIfSelected' is defined but never used  @typescript-eslint/no-unused-vars
+    7:23   warning  'describeE2E' is defined but never used         @typescript-eslint/no-unused-vars
+   12:10   warning  'spawnSync' is defined but never used           @typescript-eslint/no-unused-vars
+  146:121  error    Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  161:10   error    Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-qa-workflow.test.ts
+  1:10  warning  'describe' is defined but never used      @typescript-eslint/no-unused-vars
+  4:27  warning  'evalsEnabled' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-review.test.ts
+    1:10  warning  'describe' is defined but never used            @typescript-eslint/no-unused-vars
+    4:9   warning  'browseBin' is defined but never used           @typescript-eslint/no-unused-vars
+    4:27  warning  'evalsEnabled' is defined but never used        @typescript-eslint/no-unused-vars
+    4:41  warning  'selectedTests' is defined but never used       @typescript-eslint/no-unused-vars
+    6:3   warning  'copyDirSync' is defined but never used         @typescript-eslint/no-unused-vars
+    6:16  warning  'setupBrowseShims' is defined but never used    @typescript-eslint/no-unused-vars
+  315:11  warning  'allOutput' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e-workflow.test.ts
+    1:10  warning  'describe' is defined but never used                  @typescript-eslint/no-unused-vars
+    4:9   warning  'browseBin' is defined but never used                 @typescript-eslint/no-unused-vars
+    4:27  warning  'evalsEnabled' is defined but never used              @typescript-eslint/no-unused-vars
+    6:16  warning  'setupBrowseShims' is defined but never used          @typescript-eslint/no-unused-vars
+  373:11  warning  'mentionsUpgrade' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-e2e.test.ts
+   149:89  error    Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+   517:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+   908:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+   995:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  1078:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  1172:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  1272:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  1372:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  1459:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  1638:11  warning  'allOutput' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  1982:11  warning  'mentionsUpgrade' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  2029:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  2262:11  warning  'hasColorRef' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  2301:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  2364:11  warning  'hasRatings' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  2372:11  warning  'planOriginal' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  2452:27  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  2534:62  error    Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  2731:44  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  2803:44  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+  2873:44  error    A `require()` style import is forbidden               @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\skill-routing-e2e.test.ts
+   5:15  warning  'EvalTestEntry' is defined but never used           @typescript-eslint/no-unused-vars
+  36:5   warning  'selectedTests' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\telemetry.test.ts
+  32:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\development\dev-portfolio\.agents\skills\gstack\test\touchfiles.test.ts
+   17:3   warning  'GLOBAL_TOUCHFILES' is defined but never used    @typescript-eslint/no-unused-vars
+  212:11  error    'name' is never reassigned. Use 'const' instead  prefer-const
+
+D:\development\dev-portfolio\next.config.ts
+  2:8  warning  'path' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\scripts\build-node-server.js
+  1:22  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:12  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  3:14  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\scripts\diag.js
+  1:22  error    A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:12  error    A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  7:92  warning  'e' is defined but never used            @typescript-eslint/no-unused-vars
+  8:42  warning  'e' is defined but never used            @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\scripts\test-playwright.js
+  1:22  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\src\app\geul\GeulEditor.tsx
+  32:26  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\development\dev-portfolio\src\app\geul\[slug]\GeulPostReader.tsx
+  34:26  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\development\dev-portfolio\src\app\projects\[id]\page.tsx
+  272:54  warning  'props' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\development\dev-portfolio\src\dataconnect-generated\index.cjs.js
+  1:80  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\src\dataconnect-generated\react\index.cjs.js
+  1:173  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:45   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  3:76   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+D:\development\dev-portfolio\src\dataconnect-generated\react\index.d.ts
+  3:10  warning  'UseQueryResult' is defined but never used     @typescript-eslint/no-unused-vars
+  3:26  warning  'UseMutationResult' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 284 problems (174 errors, 110 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+

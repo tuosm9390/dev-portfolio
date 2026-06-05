@@ -1,0 +1,14 @@
+
+> chanworks@0.1.0 browse
+> D:\development\dev-portfolio\.agents\skills\gstack\browse\dist\browse.exe chain
+
+[browse] Starting server...
+[viewport] Viewport set to 1440x900
+
+[goto] Navigated to http://localhost:3001/posts (200)
+
+[wait] Element a[href='/geul/anxiety'] appeared
+
+[js] {"postLinks":["/geul/anxiety","/geul/90","/geul/ai"],"hasAllThree":true}
+
+[screenshot] Screenshot saved (viewport): D:\development\dev-portfolio\.omo\ulw-loop\019e957f-e8a7-7ba1-87ea-a67ac91bf642\evidence\manual-browser-posts.png

@@ -56,7 +56,6 @@ export async function getPublishedGeulPostsFromServer() {
   const snapshot = await getGeulAdminFirestore()
     .collection(collectionName)
     .where("status", "==", "published")
-    .limit(50)
     .get();
 
   return snapshot.docs
@@ -65,11 +64,7 @@ export async function getPublishedGeulPostsFromServer() {
 }
 
 export async function getAuthorGeulPostsFromServer() {
-  const snapshot = await getGeulAdminFirestore()
-    .collection(collectionName)
-    .where("authorUid", "==", serverAuthorId)
-    .limit(20)
-    .get();
+  const snapshot = await getGeulAdminFirestore().collection(collectionName).get();
 
   return snapshot.docs
     .map((item) => normalizePost(item.id, item.data()))

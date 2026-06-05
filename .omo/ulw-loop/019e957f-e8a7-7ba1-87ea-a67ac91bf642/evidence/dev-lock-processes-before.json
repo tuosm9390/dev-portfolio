@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 9680,
+    "ParentProcessId": 29180,
+    "CommandLine": "\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" run dev -- -p 3001"
+  },
+  {
+    "ProcessId": 17164,
+    "ParentProcessId": 6184,
+    "CommandLine": "\"node\"   \"D:\\development\\dev-portfolio\\node_modules\\.bin\\\\..\\next\\dist\\bin\\next\" dev -p 3001"
+  },
+  {
+    "ProcessId": 29460,
+    "ParentProcessId": 17164,
+    "CommandLine": "\"C:\\Program Files\\nodejs\\node.exe\" D:\\development\\dev-portfolio\\node_modules\\next\\dist\\server\\lib\\start-server.js"
+  },
+  {
+    "ProcessId": 17392,
+    "ParentProcessId": 29460,
+    "CommandLine": "\"node\" D:\\development\\dev-portfolio\\.next\\dev\\build\\postcss.js 52983"
+  }
+]

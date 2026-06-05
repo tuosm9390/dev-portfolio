@@ -1,0 +1,7 @@
+{
+  "pid": 30124,
+  "ready": true,
+  "lockExists": true,
+  "logTail": "> node scripts/sync-descriptions.mjs\n\n🔄 프로젝트 상세 설명 동기화 시작...\n✅ [threads-autoposter] 동기화 완료\n✅ [minions-bid] 동기화 완료\n✅ [investment-platform] 동기화 완료\n✅ [persona-style] 동기화 완료\n✅ [sumpyo-flutter-app] 동기화 완료\n✅ [quote-builder] 동기화 완료\n✅ [Synapso.dev] 동기화 완료\n✅ [cafe-book] 동기화 완료\n✅ [self-growth-dashboard] 동기화 완료\n✨ 모든 동기화 작업이 완료되었습니다.\n▲ Next.js 16.1.6 (Turbopack)\n- Local:         http://localhost:3001\n- Network:       http://118.32.211.161:3001\n- Environments: .env.local\n\n✓ Starting...\n✓ Ready in 954ms",
+  "errTail": ""
+}

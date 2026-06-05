@@ -1,0 +1,48 @@
+
+> chanworks@0.1.0 dev
+> npm run sync && next dev -p 3001
+
+
+> chanworks@0.1.0 sync
+> node scripts/sync-descriptions.mjs
+
+🔄 프로젝트 상세 설명 동기화 시작...
+✅ [threads-autoposter] 동기화 완료
+✅ [minions-bid] 동기화 완료
+✅ [investment-platform] 동기화 완료
+✅ [persona-style] 동기화 완료
+✅ [sumpyo-flutter-app] 동기화 완료
+✅ [quote-builder] 동기화 완료
+✅ [Synapso.dev] 동기화 완료
+✅ [cafe-book] 동기화 완료
+✅ [self-growth-dashboard] 동기화 완료
+✨ 모든 동기화 작업이 완료되었습니다.
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://118.32.211.161:3001
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 1180ms
+ GET / 200 in 1146ms (compile: 885ms, render: 261ms)
+ GET / 200 in 68ms (compile: 6ms, render: 62ms)
+ POST /api/assistant 400 in 1131ms (compile: 1112ms, render: 19ms)
+ POST /api/assistant 200 in 9ms (compile: 4ms, render: 5ms)
+ POST /api/assistant 503 in 455ms (compile: 4ms, render: 451ms)
+ POST /api/assistant 400 in 12ms (compile: 6ms, render: 6ms)
+ POST /api/assistant 200 in 11ms (compile: 4ms, render: 7ms)
+ POST /api/assistant 503 in 496ms (compile: 4ms, render: 492ms)
+ GET / 200 in 47ms (compile: 3ms, render: 43ms)
+ GET / 200 in 52ms (compile: 4ms, render: 48ms)
+ GET / 200 in 51ms (compile: 3ms, render: 47ms)
+ GET / 200 in 74ms (compile: 5ms, render: 69ms)
+ GET / 200 in 62ms (compile: 4ms, render: 59ms)
+ GET / 200 in 250ms (compile: 72ms, render: 178ms)
+ GET / 200 in 54ms (compile: 4ms, render: 50ms)
+ GET / 200 in 43ms (compile: 3ms, render: 39ms)
+ GET / 200 in 42ms (compile: 5ms, render: 37ms)
+ GET / 200 in 46ms (compile: 4ms, render: 42ms)
+ GET /api/geul/posts 401 in 529ms (compile: 512ms, render: 18ms)
+ GET /posts 200 in 678ms (compile: 277ms, render: 401ms)
+✓ Compiled in 50ms
+ GET / 200 in 70ms (compile: 5ms, render: 65ms)

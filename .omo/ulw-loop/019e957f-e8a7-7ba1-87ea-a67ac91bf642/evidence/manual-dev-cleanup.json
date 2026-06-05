@@ -1,0 +1,17 @@
+{
+  "stopped": [
+    36064,
+    34212,
+    33220,
+    17192
+  ],
+  "remaining": null,
+  "lockExists": false,
+  "port3001": [
+    "  TCP    [::1]:50840            [::1]:3001             TIME_WAIT       0",
+    "  TCP    [::1]:50872            [::1]:3001             TIME_WAIT       0",
+    "  TCP    [::1]:64327            [::1]:3001             TIME_WAIT       0",
+    "  TCP    [::1]:64959            [::1]:3001             TIME_WAIT       0",
+    "  TCP    [::1]:65236            [::1]:3001             TIME_WAIT       0"
+  ]
+}

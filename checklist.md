@@ -75,3 +75,5 @@
 - [x] Add header-centered `ask me!` Dynamic Island style assistant UI.
 - [x] Verify assistant context, policy, API route, widget, and header integration with focused Vitest.
 - [x] Verify portfolio assistant implementation with full tests, lint, build, and browser/API QA.
+- [x] Remove geul post list query caps so all authored/published posts can be displayed.
+- [x] Clear the stale Next dev process and verify `npm run dev` starts without `.next/dev/lock` failure.

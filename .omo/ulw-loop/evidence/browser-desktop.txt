@@ -1,0 +1,16 @@
+
+> chanworks@0.1.0 browse
+> D:\development\dev-portfolio\.agents\skills\gstack\browse\dist\browse.exe chain
+
+[browse] Starting server...
+[viewport] Viewport set to 1440x900
+
+[goto] Navigated to http://localhost:3001 (200)
+
+[click] Clicked [data-assistant-trigger='desktop'] → now at http://localhost:3001/
+
+[wait] Element [role='dialog'] appeared
+
+[js] {"x":597.6953125,"y":3.476837158203125,"width":244.609375,"height":237,"top":3.476837158203125,"right":842.3046875,"bottom":240.47683715820312,"left":597.6953125}
+
+[screenshot] Screenshot saved (viewport): D:\development\dev-portfolio\.omo\ulw-loop\evidence\assistant-desktop.png

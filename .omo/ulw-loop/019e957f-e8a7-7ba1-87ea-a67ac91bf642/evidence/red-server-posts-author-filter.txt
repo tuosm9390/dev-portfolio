@@ -1,0 +1,38 @@
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/development/dev-portfolio[39m
+
+(node:16788) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [31m❯[39m src/lib/geul/__tests__/server-posts.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 24[2mms[22m[39m
+[31m     [31m×[31m 작성자 글 조회에 임의 limit이나 legacy author 필터를 걸지 않고 모든 글을 최신 수정순으로 반환한다[39m[32m 10[2mms[22m[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/geul/__tests__/server-posts.test.ts > getAuthorGeulPostsFromServer > 작성자 글 조회에 임의 limit이나 legacy author 필터를 걸지 않고 모든 글을 최신 수정순으로 반환한다
+AssertionError: expected "vi.fn()" to not be called with arguments: [ 'authorUid', '==', …(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+Compared values have no visual difference.
+
+
+Number of calls: 1
+
+ ❯ src/lib/geul/__tests__/server-posts.test.ts:96:27
+     94|
+     95|     expect(limitMock).not.toHaveBeenCalled();
+     96|     expect(whereMock).not.toHaveBeenCalledWith("authorUid", "==", "geu…
+       |                           ^
+     97|     expect(posts.map((post) => post.slug)).toEqual(["published-one", "…
+     98|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 18:30:23
+[2m   Duration [22m 1.58s[2m (transform 45ms, setup 246ms, import 347ms, tests 24ms, environment 791ms)[22m
+

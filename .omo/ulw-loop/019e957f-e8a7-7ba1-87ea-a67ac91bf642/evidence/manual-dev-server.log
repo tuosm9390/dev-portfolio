@@ -1,0 +1,29 @@
+
+> chanworks@0.1.0 dev
+> npm run sync && next dev -p 3001
+
+
+> chanworks@0.1.0 sync
+> node scripts/sync-descriptions.mjs
+
+🔄 프로젝트 상세 설명 동기화 시작...
+✅ [threads-autoposter] 동기화 완료
+✅ [minions-bid] 동기화 완료
+✅ [investment-platform] 동기화 완료
+✅ [persona-style] 동기화 완료
+✅ [sumpyo-flutter-app] 동기화 완료
+✅ [quote-builder] 동기화 완료
+✅ [Synapso.dev] 동기화 완료
+✅ [cafe-book] 동기화 완료
+✅ [self-growth-dashboard] 동기화 완료
+✨ 모든 동기화 작업이 완료되었습니다.
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://118.32.211.161:3001
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 954ms
+ GET /api/geul/posts 401 in 135ms (compile: 109ms, render: 25ms)
+ GET /posts 200 in 1664ms (compile: 759ms, render: 905ms)
+ GET /posts 200 in 218ms (compile: 4ms, render: 214ms)

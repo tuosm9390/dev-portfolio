@@ -1,0 +1,65 @@
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/development/dev-portfolio[39m
+
+(node:35256) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [31m❯[39m src/lib/geul/__tests__/server-posts.test.ts [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 31[2mms[22m[39m
+[31m     [31m×[31m 공개 글 조회에 임의 limit을 걸지 않고 모든 글을 최신순으로 반환한다[39m[32m 26[2mms[22m[39m
+[31m     [31m×[31m 작성자 글 조회에 임의 limit을 걸지 않고 모든 글을 최신 수정순으로 반환한다[39m[32m 1[2mms[22m[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/geul/__tests__/server-posts.test.ts > getPublishedGeulPostsFromServer > 공개 글 조회에 임의 limit을 걸지 않고 모든 글을 최신순으로 반환한다
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      50,
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/lib/geul/__tests__/server-posts.test.ts:57:27
+     55|     const posts = await getPublishedGeulPostsFromServer();
+     56|
+     57|     expect(limitMock).not.toHaveBeenCalled();
+       |                           ^
+     58|     expect(posts.map((post) => post.slug)).toEqual(["new-post", "middl…
+     59|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/geul/__tests__/server-posts.test.ts > getAuthorGeulPostsFromServer > 작성자 글 조회에 임의 limit을 걸지 않고 모든 글을 최신 수정순으로 반환한다
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      20,
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/lib/geul/__tests__/server-posts.test.ts:95:27
+     93|     const posts = await getAuthorGeulPostsFromServer();
+     94|
+     95|     expect(limitMock).not.toHaveBeenCalled();
+       |                           ^
+     96|     expect(posts.map((post) => post.slug)).toEqual(["published-one", "…
+     97|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+[2m   Start at [22m 18:28:42
+[2m   Duration [22m 1.95s[2m (transform 58ms, setup 338ms, import 426ms, tests 31ms, environment 971ms)[22m
+

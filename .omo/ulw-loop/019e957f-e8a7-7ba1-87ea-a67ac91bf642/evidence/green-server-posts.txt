@@ -1,0 +1,11 @@
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/development/dev-portfolio[39m
+
+(node:25284) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 18:29:04
+[2m   Duration [22m 2.07s[2m (transform 66ms, setup 404ms, import 557ms, tests 18ms, environment 894ms)[22m
+

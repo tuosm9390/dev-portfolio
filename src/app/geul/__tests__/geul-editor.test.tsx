@@ -2,6 +2,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import GeulEditor from "../GeulEditor";
+import { getAuthorGeulPosts } from "@/lib/geul/posts";
 
 vi.mock("@/lib/geul/posts", () => ({
   getAuthorGeulPosts: vi.fn(),
@@ -9,6 +10,7 @@ vi.mock("@/lib/geul/posts", () => ({
 }));
 
 beforeEach(() => {
+  vi.mocked(getAuthorGeulPosts).mockResolvedValue([]);
   vi.stubGlobal(
     "fetch",
     vi.fn().mockResolvedValue({
@@ -45,5 +47,61 @@ describe("GeulEditor", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("왜 이 글을 쓰는가")).toBeInTheDocument();
     expect(screen.getByText("포트폴리오는 결과를 보여준다.")).toBeInTheDocument();
+  });
+
+  it("인증된 작성자 화면에서 서버가 반환한 모든 글을 recent posts에 표시한다", async () => {
+    vi.mocked(getAuthorGeulPosts).mockResolvedValue([
+      {
+        slug: "first-post",
+        title: "첫 번째 글",
+        topic: "기록",
+        body: "첫 번째 본문",
+        status: "published",
+        excerpt: "",
+        authorUid: "legacy-user-a",
+        createdAt: "2026-06-01T00:00:00.000Z",
+        updatedAt: "2026-06-01T00:00:00.000Z",
+        publishedAt: "2026-06-01T00:00:00.000Z",
+      },
+      {
+        slug: "second-post",
+        title: "두 번째 글",
+        topic: "기록",
+        body: "두 번째 본문",
+        status: "draft",
+        excerpt: "",
+        authorUid: "legacy-user-b",
+        createdAt: "2026-06-02T00:00:00.000Z",
+        updatedAt: "2026-06-02T00:00:00.000Z",
+        publishedAt: null,
+      },
+      {
+        slug: "third-post",
+        title: "세 번째 글",
+        topic: "기록",
+        body: "세 번째 본문",
+        status: "published",
+        excerpt: "",
+        authorUid: "geul-password-owner",
+        createdAt: "2026-06-03T00:00:00.000Z",
+        updatedAt: "2026-06-03T00:00:00.000Z",
+        publishedAt: "2026-06-03T00:00:00.000Z",
+      },
+    ]);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ authenticated: true, configured: true }),
+      }),
+    );
+
+    render(<GeulEditor />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /첫 번째 글/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /두 번째 글/ })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /세 번째 글/ })).toBeInTheDocument();
+    });
   });
 });

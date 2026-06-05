@@ -1,0 +1,4 @@
+
+> chanworks@0.1.0 browse
+> D:\development\dev-portfolio\.agents\skills\gstack\browse\dist\browse.exe js JSON.stringify(document.querySelector('[role=dialog]').getBoundingClientRect().toJSON())
+
