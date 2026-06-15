@@ -1,11 +1,17 @@
 // geul 서버 글 목록 조회가 모든 문서를 반환하는지 검증한다
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getAuthorGeulPostsFromServer, getPublishedGeulPostsFromServer } from "../server-posts";
+import {
+  getAuthorGeulPostsFromServer,
+  getPublishedGeulPostsFromServer,
+  saveGeulPostFromServer,
+} from "../server-posts";
 
 const getMock = vi.fn();
+const setMock = vi.fn();
+const docMock = vi.fn((id?: string) => ({ get: getMock, set: setMock, id: id ?? "generated-post-id" }));
 const limitMock = vi.fn(() => ({ get: getMock }));
 const whereMock = vi.fn(() => ({ limit: limitMock, get: getMock }));
-const collectionMock = vi.fn(() => ({ where: whereMock, get: getMock }));
+const collectionMock = vi.fn(() => ({ where: whereMock, get: getMock, doc: docMock }));
 
 vi.mock("../admin", () => ({
   getGeulAdminFirestore: () => ({
@@ -95,5 +101,54 @@ describe("getAuthorGeulPostsFromServer", () => {
     expect(limitMock).not.toHaveBeenCalled();
     expect(whereMock).not.toHaveBeenCalledWith("authorUid", "==", "geul-password-owner");
     expect(posts.map((post) => post.slug)).toEqual(["published-one", "draft-two", "draft-one"]);
+  });
+});
+
+describe("saveGeulPostFromServer", () => {
+  it("새 글은 작성자가 입력한 slug 없이 Firestore 랜덤 문서 ID로 저장한다", async () => {
+    getMock.mockResolvedValueOnce({ exists: false });
+    setMock.mockResolvedValueOnce(undefined);
+
+    const id = await saveGeulPostFromServer({
+      title: "랜덤 ID 글",
+      topic: "기록",
+      body: "랜덤 문서 ID로 저장되어야 하는 글 본문입니다.",
+      status: "published",
+      excerpt: "랜덤 문서 ID",
+    });
+
+    expect(docMock).toHaveBeenCalledWith();
+    expect(setMock).toHaveBeenCalledWith(
+      expect.not.objectContaining({ slug: expect.anything() }),
+      { merge: true },
+    );
+    expect(id).toBe("generated-post-id");
+  });
+
+  it("기존 글 수정은 현재 문서 ID를 유지한다", async () => {
+    getMock.mockResolvedValueOnce({
+      exists: true,
+      data: () => ({
+        title: "기존 글",
+        topic: "기록",
+        body: "기존 본문",
+        status: "draft",
+        createdAt: "2026-06-01T00:00:00.000Z",
+        publishedAt: null,
+      }),
+    });
+    setMock.mockResolvedValueOnce(undefined);
+
+    const id = await saveGeulPostFromServer({
+      slug: "existing-post-id",
+      title: "수정된 글",
+      topic: "기록",
+      body: "기존 문서 ID로 수정되어야 하는 글 본문입니다.",
+      status: "draft",
+      excerpt: "",
+    });
+
+    expect(docMock).toHaveBeenCalledWith("existing-post-id");
+    expect(id).toBe("existing-post-id");
   });
 });

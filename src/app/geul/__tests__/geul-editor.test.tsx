@@ -2,7 +2,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import GeulEditor from "../GeulEditor";
-import { getAuthorGeulPosts } from "@/lib/geul/posts";
+import { getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
 
 vi.mock("@/lib/geul/posts", () => ({
   getAuthorGeulPosts: vi.fn(),
@@ -47,6 +47,41 @@ describe("GeulEditor", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("왜 이 글을 쓰는가")).toBeInTheDocument();
     expect(screen.getByText("포트폴리오는 결과를 보여준다.")).toBeInTheDocument();
+  });
+
+  it("새 글 작성 화면에서 slug 입력을 노출하지 않고 저장 요청에도 slug를 보내지 않는다", async () => {
+    vi.mocked(saveGeulPost).mockResolvedValue("generated-post-id");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ authenticated: true, configured: true }),
+      }),
+    );
+
+    render(<GeulEditor />);
+
+    await waitFor(() => {
+      expect(screen.queryByText("slug")).not.toBeInTheDocument();
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("AI 시대에 프론트엔드로 성장한다는 것"), {
+      target: { value: "랜덤 ID로 저장되는 글" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("성장의 기록"), {
+      target: { value: "기록" },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/비전공자로 시작한 나는/), {
+      target: { value: "본문은 랜덤 ID 저장을 검증할 만큼 충분히 길다." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "publish" }));
+
+    await waitFor(() => {
+      expect(saveGeulPost).toHaveBeenCalledWith(
+        expect.not.objectContaining({ slug: expect.anything() }),
+      );
+    });
+    expect(await screen.findByText("공개했습니다. /geul/generated-post-id")).toBeInTheDocument();
   });
 
   it("인증된 작성자 화면에서 서버가 반환한 모든 글을 recent posts에 표시한다", async () => {

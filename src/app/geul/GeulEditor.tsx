@@ -2,12 +2,13 @@
 // geul 글 작성 폼과 마크다운 미리보기를 제공한다
 
 import { FormEvent, useEffect, useState } from "react";
+import Image from "next/image";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
 import type { GeulPost, GeulPostInput, GeulPostStatus } from "@/lib/geul/types";
-import { createExcerpt, createSlug, geulPostSchema } from "@/lib/geul/validation";
+import { createExcerpt, geulPostSchema } from "@/lib/geul/validation";
 import { formatGeulDate } from "@/lib/geul/dates";
 
 const markdownComponents: Components = {
@@ -29,7 +30,17 @@ const markdownComponents: Components = {
   del: ({ children }) => <del className="line-through opacity-50">{children}</del>,
   hr: () => <hr className="border-t border-black/10 my-8" />,
   a: ({ href, children }) => <a href={href} className="underline opacity-70 hover:opacity-40">{children}</a>,
-  img: ({ src, alt }) => <img src={src} alt={alt ?? ""} className="max-w-full rounded my-4" />,
+  img: ({ src, alt }) =>
+    typeof src === "string" ? (
+      <Image
+        src={src}
+        alt={alt ?? ""}
+        width={1200}
+        height={675}
+        unoptimized
+        className="my-4 h-auto max-w-full rounded"
+      />
+    ) : null,
   table: ({ children }) => (
     <div className="overflow-x-auto mb-4">
       <table className="w-full text-xs border-collapse font-mono">{children}</table>
@@ -45,7 +56,6 @@ const markdownComponents: Components = {
 };
 
 const emptyPost: GeulPostInput = {
-  slug: "",
   title: "",
   topic: "",
   body: "",
@@ -143,13 +153,6 @@ export default function GeulEditor() {
       excerpt: post.excerpt,
     });
     setMessage(`${post.title} 글을 불러왔습니다.`);
-  }
-
-  function applyTitleSlug() {
-    const nextSlug = createSlug(form.title);
-    if (nextSlug) {
-      updateField("slug", nextSlug);
-    }
   }
 
   async function handleSave(status: GeulPostStatus) {
@@ -272,25 +275,6 @@ export default function GeulEditor() {
                   className="mt-2 w-full border border-black/10 px-3 py-3 text-sm outline-none focus:border-black"
                   placeholder="성장의 기록"
                 />
-              </label>
-
-              <label className="block">
-                <span className="text-[10px] uppercase tracking-widest opacity-50">slug</span>
-                <div className="mt-2 flex gap-2">
-                  <input
-                    value={form.slug}
-                    onChange={(event) => updateField("slug", event.target.value)}
-                    className="w-full border border-black/10 px-3 py-3 text-sm outline-none focus:border-black"
-                    placeholder="ai-frontend-growth"
-                  />
-                  <button
-                    type="button"
-                    onClick={applyTitleSlug}
-                    className="border border-black px-3 text-[10px] uppercase tracking-widest hover:bg-black hover:text-white"
-                  >
-                    make
-                  </button>
-                </div>
               </label>
 
               <label className="block">

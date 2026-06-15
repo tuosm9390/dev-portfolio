@@ -9,7 +9,8 @@ export const geulPostSchema = z.object({
     .trim()
     .min(2, "slug는 2자 이상이어야 합니다.")
     .max(80, "slug는 80자 이하여야 합니다.")
-    .regex(slugPattern, "slug는 영문 소문자, 숫자, 하이픈만 사용할 수 있습니다."),
+    .regex(slugPattern, "slug는 영문 소문자, 숫자, 하이픈만 사용할 수 있습니다.")
+    .optional(),
   title: z
     .string()
     .trim()
@@ -32,17 +33,6 @@ export const geulPostSchema = z.object({
 });
 
 export type GeulPostFormValues = z.infer<typeof geulPostSchema>;
-
-export function createSlug(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9가-힣\s-]/g, "")
-    .replace(/[가-힣]+/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 export function createExcerpt(body: string) {
   return body

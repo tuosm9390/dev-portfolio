@@ -72,7 +72,8 @@ export async function getAuthorGeulPostsFromServer() {
 }
 
 export async function saveGeulPostFromServer(input: GeulPostInput) {
-  const ref = getGeulAdminFirestore().collection(collectionName).doc(input.slug);
+  const collection = getGeulAdminFirestore().collection(collectionName);
+  const ref = input.slug ? collection.doc(input.slug) : collection.doc();
   const snapshot = await ref.get();
   const existing = snapshot.exists ? normalizePost(snapshot.id, snapshot.data() ?? {}) : null;
   const now = FieldValue.serverTimestamp();
@@ -81,7 +82,11 @@ export async function saveGeulPostFromServer(input: GeulPostInput) {
 
   await ref.set(
     {
-      ...input,
+      title: input.title,
+      topic: input.topic,
+      body: input.body,
+      status: input.status,
+      excerpt: input.excerpt,
       authorUid: serverAuthorId,
       createdAt: existing?.createdAt ?? now,
       updatedAt: now,
@@ -90,5 +95,5 @@ export async function saveGeulPostFromServer(input: GeulPostInput) {
     { merge: true },
   );
 
-  return input.slug;
+  return ref.id;
 }

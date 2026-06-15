@@ -81,3 +81,8 @@
 - [x] Add a regression test that keeps `/posts` dynamically rendered for fresh published geul posts.
 - [x] Apply the minimum route-level fix for immediate posts-page visibility.
 - [x] Verify focused tests, build/type surface, and real `/posts` HTTP output.
+- [x] Remove author-entered slug from the geul editor.
+- [x] Generate a random Firestore document ID on the server for new geul posts.
+- [x] Preserve existing document IDs when editing existing geul posts.
+- [x] Show every authored geul post on `/posts`, including just-saved drafts and published posts.
+- [x] Verify the slug-free save and all-posts listing with tests, build, and HTTP/browser QA.
