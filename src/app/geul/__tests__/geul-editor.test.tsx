@@ -2,15 +2,18 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import GeulEditor from "../GeulEditor";
-import { getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
+import { deleteGeulPost, getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
 
 vi.mock("@/lib/geul/posts", () => ({
+  deleteGeulPost: vi.fn(),
   getAuthorGeulPosts: vi.fn(),
   saveGeulPost: vi.fn(),
 }));
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.spyOn(window, "confirm").mockReturnValue(true);
+  vi.mocked(deleteGeulPost).mockResolvedValue(undefined);
   vi.mocked(getAuthorGeulPosts).mockResolvedValue([]);
   vi.stubGlobal(
     "fetch",
@@ -181,5 +184,40 @@ describe("GeulEditor", () => {
     expect(saveGeulPost).toHaveBeenCalledWith(
       expect.not.objectContaining({ slug: expect.anything() }),
     );
+  });
+
+  it("인증된 작성자 화면에서 생성된 글을 삭제한다", async () => {
+    vi.mocked(getAuthorGeulPosts)
+      .mockResolvedValueOnce([
+        {
+          slug: "generated-post-id",
+          title: "삭제할 글",
+          topic: "기록",
+          body: "삭제할 글 본문입니다.",
+          status: "draft",
+          excerpt: "",
+          authorUid: "geul-password-owner",
+          createdAt: "2026-06-01T00:00:00.000Z",
+          updatedAt: "2026-06-01T00:00:00.000Z",
+          publishedAt: null,
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ authenticated: true, configured: true }),
+      }),
+    );
+
+    render(<GeulEditor />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "delete" }));
+
+    await waitFor(() => {
+      expect(deleteGeulPost).toHaveBeenCalledWith("generated-post-id");
+    });
+    expect(await screen.findByText("삭제할 글 글을 삭제했습니다.")).toBeInTheDocument();
   });
 });

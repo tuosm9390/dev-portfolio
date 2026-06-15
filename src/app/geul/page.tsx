@@ -1,6 +1,9 @@
 // geul 작성자 전용 편집 라우트를 렌더링한다
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import GeulEditor from "./GeulEditor";
+import { geulGateCookieName, verifyGeulGateToken } from "@/lib/geul/session";
 
 export const metadata: Metadata = {
   title: "geul editor | chan.works",
@@ -11,6 +14,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GeulPage() {
+export default async function GeulPage() {
+  const cookieStore = await cookies();
+
+  if (!verifyGeulGateToken(cookieStore.get(geulGateCookieName)?.value)) {
+    notFound();
+  }
+
   return <GeulEditor />;
 }

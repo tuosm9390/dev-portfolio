@@ -1,6 +1,7 @@
 // geul 서버 글 목록 조회가 모든 문서를 반환하는지 검증한다
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  deleteGeulPostFromServer,
   getAuthorGeulPostsFromServer,
   getPublishedGeulPostsFromServer,
   saveGeulPostFromServer,
@@ -8,7 +9,13 @@ import {
 
 const getMock = vi.fn();
 const setMock = vi.fn();
-const docMock = vi.fn((id?: string) => ({ get: getMock, set: setMock, id: id ?? "generated-post-id" }));
+const deleteMock = vi.fn();
+const docMock = vi.fn((id?: string) => ({
+  delete: deleteMock,
+  get: getMock,
+  set: setMock,
+  id: id ?? "generated-post-id",
+}));
 const limitMock = vi.fn(() => ({ get: getMock }));
 const whereMock = vi.fn(() => ({ limit: limitMock, get: getMock }));
 const collectionMock = vi.fn(() => ({ where: whereMock, get: getMock, doc: docMock }));
@@ -150,5 +157,16 @@ describe("saveGeulPostFromServer", () => {
 
     expect(docMock).toHaveBeenCalledWith("Firestore_Auto.ID_123");
     expect(id).toBe("Firestore_Auto.ID_123");
+  });
+});
+
+describe("deleteGeulPostFromServer", () => {
+  it("문서 ID로 생성된 geul 글을 삭제한다", async () => {
+    deleteMock.mockResolvedValueOnce(undefined);
+
+    await deleteGeulPostFromServer("generated-post-id");
+
+    expect(docMock).toHaveBeenCalledWith("generated-post-id");
+    expect(deleteMock).toHaveBeenCalled();
   });
 });

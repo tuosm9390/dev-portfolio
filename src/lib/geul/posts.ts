@@ -38,3 +38,14 @@ export async function saveGeulPost(input: GeulPostInput) {
 
   return ((await response.json()) as { slug: string }).slug;
 }
+
+export async function deleteGeulPost(slug: string) {
+  const response = await fetch(`/api/geul/posts/${encodeURIComponent(slug)}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    const error = (await response.json().catch(() => null)) as { message?: string } | null;
+    throw new Error(error?.message ?? "삭제에 실패했습니다.");
+  }
+}

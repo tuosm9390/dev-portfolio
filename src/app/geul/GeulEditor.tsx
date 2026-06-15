@@ -6,7 +6,7 @@ import Image from "next/image";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
-import { getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
+import { deleteGeulPost, getAuthorGeulPosts, saveGeulPost } from "@/lib/geul/posts";
 import type { GeulPost, GeulPostInput, GeulPostStatus } from "@/lib/geul/types";
 import { createExcerpt, geulPostSchema } from "@/lib/geul/validation";
 import { formatGeulDate } from "@/lib/geul/dates";
@@ -73,6 +73,7 @@ export default function GeulEditor() {
   const [posts, setPosts] = useState<GeulPost[]>([]);
   const [message, setMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
 
   const previewExcerpt = form.excerpt || createExcerpt(form.body);
 
@@ -186,6 +187,35 @@ export default function GeulEditor() {
       setMessage(error instanceof Error ? error.message : "저장에 실패했습니다.");
     } finally {
       setIsSaving(false);
+    }
+  }
+
+  async function handleDelete(post: GeulPost) {
+    if (!isAuthenticated) {
+      setMessage("작성 권한이 없습니다.");
+      return;
+    }
+
+    if (!window.confirm(`${post.title} 글을 삭제할까요?`)) {
+      return;
+    }
+
+    setDeletingSlug(post.slug);
+    setMessage("");
+
+    try {
+      await deleteGeulPost(post.slug);
+      setMessage(`${post.title} 글을 삭제했습니다.`);
+      const nextPosts = await getAuthorGeulPosts();
+      setPosts(nextPosts);
+
+      if (form.postId === post.slug) {
+        setForm(emptyPost);
+      }
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "삭제에 실패했습니다.");
+    } finally {
+      setDeletingSlug(null);
     }
   }
 
@@ -358,17 +388,29 @@ export default function GeulEditor() {
                 <h2 className="mb-3 text-[11px] uppercase tracking-[0.2em] opacity-50">recent posts</h2>
                 <div className="space-y-2">
                   {posts.map((post) => (
-                    <button
+                    <div
                       key={post.slug}
-                      type="button"
-                      onClick={() => loadPost(post)}
-                      className="block w-full border border-black/10 px-3 py-3 text-left hover:border-black"
+                      className="flex items-stretch gap-2 border border-black/10 p-2 hover:border-black"
                     >
-                      <span className="block text-xs font-semibold">{post.title}</span>
-                      <span className="mt-1 block text-[10px] uppercase tracking-widest opacity-50">
-                        {post.status} · {formatGeulDate(post.updatedAt)}
-                      </span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => loadPost(post)}
+                        className="min-w-0 flex-1 px-1 py-1 text-left"
+                      >
+                        <span className="block truncate text-xs font-semibold">{post.title}</span>
+                        <span className="mt-1 block text-[10px] uppercase tracking-widest opacity-50">
+                          {post.status} · {formatGeulDate(post.updatedAt)}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={deletingSlug === post.slug}
+                        onClick={() => handleDelete(post)}
+                        className="border border-black/10 px-3 text-[10px] uppercase tracking-widest opacity-50 hover:border-black hover:opacity-100 disabled:opacity-30"
+                      >
+                        delete
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>

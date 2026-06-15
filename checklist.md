@@ -89,3 +89,7 @@
 - [x] Replace edit-save `slug` input validation with internal `postId` handling.
 - [x] Preserve arbitrary existing Firestore document IDs when editing geul posts.
 - [x] Verify the edit-save regression with focused tests, lint, typecheck, build, and HTTP QA.
+- [x] Add authenticated deletion for generated geul posts.
+- [x] Add a private gate before the geul editor login screen is exposed.
+- [x] Keep public generated post readers unchanged unless a post is deleted.
+- [x] Verify deletion, gate behavior, and build/type surface.

@@ -97,3 +97,7 @@ export async function saveGeulPostFromServer(input: GeulPostInput) {
 
   return ref.id;
 }
+
+export async function deleteGeulPostFromServer(slug: string) {
+  await getGeulAdminFirestore().collection(collectionName).doc(slug).delete();
+}
