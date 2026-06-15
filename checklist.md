@@ -77,3 +77,7 @@
 - [x] Verify portfolio assistant implementation with full tests, lint, build, and browser/API QA.
 - [x] Remove geul post list query caps so all authored/published posts can be displayed.
 - [x] Clear the stale Next dev process and verify `npm run dev` starts without `.next/dev/lock` failure.
+- [x] Allow portfolio assistant provider to use GOOGLE_API_KEY from `.env.local` when GEMINI_API_KEY is absent.
+- [x] Add a regression test that keeps `/posts` dynamically rendered for fresh published geul posts.
+- [x] Apply the minimum route-level fix for immediate posts-page visibility.
+- [x] Verify focused tests, build/type surface, and real `/posts` HTTP output.

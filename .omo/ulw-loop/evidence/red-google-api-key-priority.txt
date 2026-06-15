@@ -1,0 +1,41 @@
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90mD:/development/dev-portfolio[39m
+
+ [31m❯[39m src/lib/__tests__/portfolio-assistant.test.ts [2m([22m[2m9 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m8 skipped[39m[2m)[22m[32m 12[2mms[22m[39m
+[31m     [31m×[31m prefers-google-api-key-env-over-existing-gemini-key[39m[32m 9[2mms[22m[39m
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/__tests__/portfolio-assistant.test.ts > portfolio assistant policy > prefers-google-api-key-env-over-existing-gemini-key
+AssertionError: expected "vi.fn()" to be called with arguments: [ Array(1) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+    {
+-     "apiKey": "google-api-key-from-env-local",
++     "apiKey": "ambient-gemini-key",
+    },
+  ]
+
+
+Number of calls: 1
+
+ ❯ src/lib/__tests__/portfolio-assistant.test.ts:98:37
+     96|     await handlePortfolioAssistantMessage("Synapso.dev는 뭐야?");
+     97|
+     98|     expect(geminiMocks.GoogleGenAI).toHaveBeenCalledWith({ apiKey: "go…
+       |                                     ^
+     99|   });
+    100|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m8 skipped[39m[90m (9)[39m
+[2m   Start at [22m 12:30:16
+[2m   Duration [22m 1.69s[2m (transform 129ms, setup 298ms, import 184ms, tests 12ms, environment 981ms)[22m
+

@@ -1,0 +1,33 @@
+{
+  "aiSlopCleaner": {
+    "status": "passed",
+    "evidence": "No separate ai-slop-cleaner executable is available in this tool session; self-review found the change is a single route config plus focused regression test."
+  },
+  "verification": {
+    "status": "passed",
+    "commands": [
+      "npx vitest run src/app/posts/__tests__/posts-page.test.tsx",
+      "npx vitest run src/lib/geul/__tests__/server-posts.test.ts src/app/posts/__tests__/posts-page.test.tsx",
+      "npx eslint src/app/posts/page.tsx src/app/posts/__tests__/posts-page.test.tsx",
+      "npx tsc --noEmit --pretty false",
+      "npm run build",
+      "npx vitest run"
+    ],
+    "evidence": ".omo/ulw-loop/evidence/posts-page-full-vitest.txt and related posts-page evidence files"
+  },
+  "codeReview": {
+    "recommendation": "APPROVE",
+    "architectStatus": "CLEAR",
+    "evidence": "Self-review: src/app/posts/page.tsx only adds Next dynamic route config; new test pins route config and rendered published link; no draft query logic changed."
+  },
+  "criteriaCoverage": {
+    "totalCriteria": 3,
+    "passCount": 3,
+    "adversarialClassesCovered": [
+      "stale_state_static_cache",
+      "adjacent_regression",
+      "dirty_worktree",
+      "leftover_runtime_state"
+    ]
+  }
+}

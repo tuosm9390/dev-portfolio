@@ -1,0 +1,65 @@
+
+> chanworks@0.1.0 build
+> npm run sync && next build
+
+
+> chanworks@0.1.0 sync
+> node scripts/sync-descriptions.mjs
+
+🔄 프로젝트 상세 설명 동기화 시작...
+✅ [threads-autoposter] 동기화 완료
+✅ [minions-bid] 동기화 완료
+✅ [investment-platform] 동기화 완료
+✅ [persona-style] 동기화 완료
+✅ [sumpyo-flutter-app] 동기화 완료
+✅ [quote-builder] 동기화 완료
+✅ [Synapso.dev] 동기화 완료
+✅ [cafe-book] 동기화 완료
+✅ [self-growth-dashboard] 동기화 완료
+✨ 모든 동기화 작업이 완료되었습니다.
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.8s
+  Running TypeScript ...
+  Collecting page data using 15 workers ...
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 15 workers (0/27) ...
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+  Generating static pages using 15 workers (6/27) 
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+  Generating static pages using 15 workers (13/27) 
+  Generating static pages using 15 workers (20/27) 
+✓ Generating static pages using 15 workers (27/27) in 1487.8ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/assistant
+├ ƒ /api/geul/posts
+├ ƒ /api/geul/posts/[slug]
+├ ƒ /api/geul/session
+├ ○ /contact
+├ ○ /geul
+├ ƒ /geul/[slug]
+├ ○ /llms.txt
+├ ƒ /opengraph-image
+├ ○ /posts
+├ ○ /projects
+├ ● /projects/[id]
+│ ├ /projects/Synapso.dev
+│ ├ /projects/minions-bid
+│ ├ /projects/threads-autoposter
+│ └ [+9 more paths]
+├ ƒ /projects/[id]/opengraph-image
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

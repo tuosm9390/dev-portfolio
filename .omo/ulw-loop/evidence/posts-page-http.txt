@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Contains Posts shell: True
+Route: http://127.0.0.1:3018/posts
+Body excerpt:
+<!DOCTYPE html><html lang="ko"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/chunks/de4fc1236b4cce41.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/829804b57d7fb43c.js"/><script src="/_next/static/chunks/82abf2d65f5428ae.js" async=""></script><script src="/_next/static/chunks/f7b7e553fbb6d147.js" async=""></script><script src="/_next/static/chunks/0e9f8bc36c80a37f.js" async=""></script><script src="/_next/static/chunks/turbopack-e32ae792dced879e.js" async=""></script><script src="/_next/static/chunks/ff1a16fafef87110.js" async=""></script><script src="/_next/static/chunks/0bd6498bda341889.js" async=""></script><script src="/_next/static/chunks/135aa1e47e43b074.js" async=""></script><script src="/_next/static/chunks/3f27c8b3536b5443.js" async=""></script><title>Posts | chan.works</title><meta name="description" content="김상찬의 개발과 성장에 관한 글"/><meta property="og:title" content="Posts | chan.works"/><meta property="og:description" content="김상찬의 개발과 성장에 관한 글"/><meta property="og:image:alt" content="chan.works | AI 툴을 활용하는 프론트엔드 포트폴리오"/

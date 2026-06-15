@@ -1,0 +1,8 @@
+{
+  "GEMINI_API_KEY": true,
+  "GEMINI_API_KEY_length": 39,
+  "GOOGLE_API_KEY": true,
+  "GOOGLE_API_KEY_length": 53,
+  "GOOGLE_GENERATIVE_AI_API_KEY": false,
+  "GOOGLE_GENERATIVE_AI_API_KEY_length": 0
+}

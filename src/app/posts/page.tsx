@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "김상찬의 개발과 성장에 관한 글",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function PostsPage() {
   let posts: Awaited<ReturnType<typeof getPublishedGeulPostsFromServer>> = [];
 

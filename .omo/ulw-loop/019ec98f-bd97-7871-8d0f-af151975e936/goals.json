@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "createdAt": "2026-06-15T04:36:38.348Z",
+  "updatedAt": "2026-06-15T04:43:42.127Z",
+  "briefPath": ".omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/brief.md",
+  "goalsPath": ".omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/goals.json",
+  "ledgerPath": ".omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/ledger.jsonl",
+  "codexGoalMode": "aggregate",
+  "goals": [
+    {
+      "id": "G001-posts-posts",
+      "title": "글을 작성하고 공개했는데 posts 페이지에 바로 노출되지 않는 문제를 최소 수정으로 해결한다. posts 페이지는 새로 공...",
+      "objective": "글을 작성하고 공개했는데 posts 페이지에 바로 노출되지 않는 문제를 최소 수정으로 해결한다. posts 페이지는 새로 공개된 geul 글을 즉시 조회해야 하며, 초안은 계속 숨겨야 한다.",
+      "status": "complete",
+      "successCriteria": [
+        {
+          "id": "C001",
+          "scenario": "HTTP call: start local Next server, curl -i http://127.0.0.1:<port>/posts, PASS if response is HTTP 200 and contains the Posts page shell instead of a build/static error.",
+          "userModel": "happy",
+          "expectedEvidence": ".omo/ulw-loop/evidence/posts-page-http.txt",
+          "capturedEvidence": ".omo/ulw-loop/evidence/posts-page-http.txt: HTTP/1.1 200 OK, Contains Posts shell=True | cleanup: .omo/ulw-loop/evidence/posts-page-http-cleanup.txt stopped npm pid and port 3018 owning processes; processAlive=False; portBound=False",
+          "status": "pass",
+          "capturedAt": "2026-06-15T04:42:08.685Z"
+        },
+        {
+          "id": "C002",
+          "scenario": "Vitest: npx vitest run src/app/posts/__tests__/posts-page.test.tsx, PASS if dynamic export equals force-dynamic and a mocked published post link renders.",
+          "userModel": "edge",
+          "expectedEvidence": ".omo/ulw-loop/evidence/green-posts-page-dynamic.txt",
+          "capturedEvidence": ".omo/ulw-loop/evidence/red-posts-page-dynamic.txt failed with expected undefined to be force-dynamic before fix; .omo/ulw-loop/evidence/green-posts-page-dynamic.txt passed 2 tests after fix | cleanup: no runtime process spawned for Vitest; command exited",
+          "status": "pass",
+          "capturedAt": "2026-06-15T04:42:09.766Z"
+        },
+        {
+          "id": "C003",
+          "scenario": "Vitest: npx vitest run src/lib/geul/__tests__/server-posts.test.ts src/app/posts/__tests__/posts-page.test.tsx, PASS if published-only list behavior and page rendering both pass.",
+          "userModel": "regression",
+          "expectedEvidence": ".omo/ulw-loop/evidence/geul-posts-regression-tests.txt",
+          "capturedEvidence": ".omo/ulw-loop/evidence/geul-posts-regression-tests.txt passed 2 files / 4 tests, preserving published list behavior | cleanup: no runtime process spawned for Vitest; command exited",
+          "status": "pass",
+          "capturedAt": "2026-06-15T04:42:10.846Z"
+        }
+      ],
+      "attempt": 0,
+      "createdAt": "2026-06-15T04:36:38.348Z",
+      "updatedAt": "2026-06-15T04:43:42.127Z",
+      "completedAt": "2026-06-15T04:43:42.127Z",
+      "evidence": "C001 HTTP /posts 200 with Posts shell; C002 RED-to-GREEN dynamic route test; C003 geul server posts regression passed; cleanup receipts recorded."
+    }
+  ],
+  "codexObjective": "Complete the durable ulw-loop plan in .omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/goals.json, including later accepted/appended stories, under the original brief constraints; use .omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/ledger.jsonl as the audit trail.",
+  "aggregateCompletion": {
+    "status": "complete",
+    "completedAt": "2026-06-15T04:43:42.127Z",
+    "evidence": "C001 HTTP /posts 200 with Posts shell; C002 RED-to-GREEN dynamic route test; C003 geul server posts regression passed; cleanup receipts recorded.",
+    "codexGoal": {
+      "threadId": "019ec98f-bd97-7871-8d0f-af151975e936",
+      "objective": "Complete the durable ulw-loop plan in .omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/goals.json, including later accepted/appended stories, under the original brief constraints; use .omo/ulw-loop/019ec98f-bd97-7871-8d0f-af151975e936/ledger.jsonl as the audit trail.",
+      "status": "complete",
+      "tokensUsed": 48398,
+      "timeUsedSeconds": 374
+    }
+  }
+}
