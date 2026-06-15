@@ -145,7 +145,7 @@ export default function GeulEditor() {
 
   function loadPost(post: GeulPost) {
     setForm({
-      slug: post.slug,
+      postId: post.slug,
       title: post.title,
       topic: post.topic,
       body: post.body,

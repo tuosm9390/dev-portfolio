@@ -73,7 +73,7 @@ export async function getAuthorGeulPostsFromServer() {
 
 export async function saveGeulPostFromServer(input: GeulPostInput) {
   const collection = getGeulAdminFirestore().collection(collectionName);
-  const ref = input.slug ? collection.doc(input.slug) : collection.doc();
+  const ref = input.postId ? collection.doc(input.postId) : collection.doc();
   const snapshot = await ref.get();
   const existing = snapshot.exists ? normalizePost(snapshot.id, snapshot.data() ?? {}) : null;
   const now = FieldValue.serverTimestamp();

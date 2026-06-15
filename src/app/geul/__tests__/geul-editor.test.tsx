@@ -10,6 +10,7 @@ vi.mock("@/lib/geul/posts", () => ({
 }));
 
 beforeEach(() => {
+  vi.clearAllMocks();
   vi.mocked(getAuthorGeulPosts).mockResolvedValue([]);
   vi.stubGlobal(
     "fetch",
@@ -81,6 +82,9 @@ describe("GeulEditor", () => {
         expect.not.objectContaining({ slug: expect.anything() }),
       );
     });
+    expect(saveGeulPost).toHaveBeenCalledWith(
+      expect.not.objectContaining({ postId: expect.anything() }),
+    );
     expect(await screen.findByText("공개했습니다. /geul/generated-post-id")).toBeInTheDocument();
   });
 
@@ -138,5 +142,44 @@ describe("GeulEditor", () => {
       expect(screen.getByRole("button", { name: /두 번째 글/ })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /세 번째 글/ })).toBeInTheDocument();
     });
+  });
+
+  it("기존 글 수정 요청은 slug가 아니라 내부 postId로 저장한다", async () => {
+    vi.mocked(saveGeulPost).mockResolvedValue("Firestore_Auto.ID_123");
+    vi.mocked(getAuthorGeulPosts).mockResolvedValue([
+      {
+        slug: "Firestore_Auto.ID_123",
+        title: "기존 글",
+        topic: "기록",
+        body: "기존 글 본문입니다.",
+        status: "draft",
+        excerpt: "",
+        authorUid: "geul-password-owner",
+        createdAt: "2026-06-01T00:00:00.000Z",
+        updatedAt: "2026-06-01T00:00:00.000Z",
+        publishedAt: null,
+      },
+    ]);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ authenticated: true, configured: true }),
+      }),
+    );
+
+    render(<GeulEditor />);
+
+    fireEvent.click(await screen.findByRole("button", { name: /기존 글/ }));
+    fireEvent.click(screen.getByRole("button", { name: "publish" }));
+
+    await waitFor(() => {
+      expect(saveGeulPost).toHaveBeenCalledWith(
+        expect.objectContaining({ postId: "Firestore_Auto.ID_123" }),
+      );
+    });
+    expect(saveGeulPost).toHaveBeenCalledWith(
+      expect.not.objectContaining({ slug: expect.anything() }),
+    );
   });
 });

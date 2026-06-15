@@ -86,3 +86,6 @@
 - [x] Preserve existing document IDs when editing existing geul posts.
 - [x] Show every authored geul post on `/posts`, including just-saved drafts and published posts.
 - [x] Verify the slug-free save and all-posts listing with tests, build, and HTTP/browser QA.
+- [x] Replace edit-save `slug` input validation with internal `postId` handling.
+- [x] Preserve arbitrary existing Firestore document IDs when editing geul posts.
+- [x] Verify the edit-save regression with focused tests, lint, typecheck, build, and HTTP QA.

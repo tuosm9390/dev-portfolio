@@ -1,4 +1,4 @@
-// geul 글 입력 검증과 slug 생성 규칙을 테스트한다
+// geul 글 입력 검증과 내부 문서 ID 보존을 테스트한다
 import { describe, expect, it } from "vitest";
 import { createExcerpt, geulPostSchema } from "../validation";
 
@@ -23,9 +23,9 @@ describe("geulPostSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("기존 글 수정을 위해 전달된 대문자 slug를 거부한다", () => {
+  it("기존 글 수정을 위한 내부 postId는 slug 규칙으로 검증하지 않는다", () => {
     const result = geulPostSchema.safeParse({
-      slug: "AI-Growth",
+      postId: "Firestore_Auto.ID_123",
       title: "AI 시대에 프론트엔드로 성장한다는 것",
       topic: "성장의 기록",
       body: "비전공자로 시작한 나는 다시 성장하는 과정을 기록한다.",
@@ -33,6 +33,9 @@ describe("geulPostSchema", () => {
       excerpt: "",
     });
 
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.postId).toBe("Firestore_Auto.ID_123");
+    }
   });
 });

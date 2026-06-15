@@ -140,7 +140,7 @@ describe("saveGeulPostFromServer", () => {
     setMock.mockResolvedValueOnce(undefined);
 
     const id = await saveGeulPostFromServer({
-      slug: "existing-post-id",
+      postId: "Firestore_Auto.ID_123",
       title: "수정된 글",
       topic: "기록",
       body: "기존 문서 ID로 수정되어야 하는 글 본문입니다.",
@@ -148,7 +148,7 @@ describe("saveGeulPostFromServer", () => {
       excerpt: "",
     });
 
-    expect(docMock).toHaveBeenCalledWith("existing-post-id");
-    expect(id).toBe("existing-post-id");
+    expect(docMock).toHaveBeenCalledWith("Firestore_Auto.ID_123");
+    expect(id).toBe("Firestore_Auto.ID_123");
   });
 });

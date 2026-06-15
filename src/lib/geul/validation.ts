@@ -1,15 +1,13 @@
-// geul 글 입력값을 검증하고 공개 URL slug를 정리한다
+// geul 글 입력값과 내부 문서 ID를 검증한다
 import { z } from "zod";
 
-const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
 export const geulPostSchema = z.object({
-  slug: z
+  postId: z
     .string()
     .trim()
-    .min(2, "slug는 2자 이상이어야 합니다.")
-    .max(80, "slug는 80자 이하여야 합니다.")
-    .regex(slugPattern, "slug는 영문 소문자, 숫자, 하이픈만 사용할 수 있습니다.")
+    .min(1, "게시글 ID가 비어 있습니다.")
+    .max(1500, "게시글 ID가 너무 깁니다.")
+    .refine((value) => !value.includes("/"), "게시글 ID 형식이 올바르지 않습니다.")
     .optional(),
   title: z
     .string()

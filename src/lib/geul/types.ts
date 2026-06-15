@@ -20,7 +20,7 @@ export type GeulPost = {
 };
 
 export type GeulPostInput = {
-  slug?: string;
+  postId?: string;
   title: string;
   topic: string;
   body: string;
