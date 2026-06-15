@@ -1,23 +1,23 @@
-// 작성된 geul 글 목록을 보여주는 포스트 아카이브 페이지
+// 공개된 geul 글 목록을 보여주는 포스트 아카이브 페이지
 import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/home/Header";
 import Footer from "@/components/home/Footer";
-import { getAuthorGeulPostsFromServer } from "@/lib/geul/server-posts";
+import { getPublishedGeulPostsFromServer } from "@/lib/geul/server-posts";
 import { formatGeulDate } from "@/lib/geul/dates";
 
 export const metadata: Metadata = {
   title: "Posts | chan.works",
-  description: "김상찬이 작성한 개발과 성장에 관한 글",
+  description: "김상찬의 개발과 성장에 관한 글",
 };
 
 export const dynamic = "force-dynamic";
 
 export default async function PostsPage() {
-  let posts: Awaited<ReturnType<typeof getAuthorGeulPostsFromServer>> = [];
+  let posts: Awaited<ReturnType<typeof getPublishedGeulPostsFromServer>> = [];
 
   try {
-    posts = await getAuthorGeulPostsFromServer();
+    posts = await getPublishedGeulPostsFromServer();
   } catch {
     posts = [];
   }
@@ -43,7 +43,7 @@ export default async function PostsPage() {
 
           {posts.length === 0 ? (
             <p className="text-[11px] tracking-[0.15em] uppercase opacity-30">
-              아직 작성된 글이 없습니다.
+              아직 공개된 글이 없습니다.
             </p>
           ) : (
             <ul className="divide-y divide-black/10">
@@ -67,7 +67,7 @@ export default async function PostsPage() {
                       ) : null}
                     </div>
                     <span className="shrink-0 text-[10px] tabular-nums opacity-40 md:text-right">
-                      {formatGeulDate(post.publishedAt ?? post.updatedAt)}
+                      {formatGeulDate(post.publishedAt)}
                     </span>
                   </Link>
                 </li>
