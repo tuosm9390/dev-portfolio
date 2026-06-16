@@ -38,7 +38,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="absolute top-0 left-0 w-full px-6 md:px-20 pt-10 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono">
+    <header className="fixed top-0 left-0 w-full px-6 md:px-20 py-5 md:py-6 flex justify-between items-start z-50 text-[11px] tracking-tight font-mono bg-white/55 backdrop-blur-md border-b border-black/5 shadow-[0_12px_40px_rgba(255,255,255,0.16)]">
       {/* Brand & Availability Status */}
       <div className="flex flex-col items-start relative z-[60]">
         <Link href="/" className="font-bold hover:opacity-75 transition-opacity uppercase">

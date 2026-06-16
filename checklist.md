@@ -93,3 +93,6 @@
 - [x] Add a private gate before the geul editor login screen is exposed.
 - [x] Keep public generated post readers unchanged unless a post is deleted.
 - [x] Verify deletion, gate behavior, and build/type surface.
+- [x] Fix the portfolio menu bar to stay pinned to the top of the viewport.
+- [x] Add a subtle glassmorphism background to the pinned menu bar.
+- [x] Verify the header style change with focused tests and lint.
